@@ -10,14 +10,18 @@ import process.Process;
 
 public class Server {
 	
-//	Test port number
-//	public static final int portNumber = 55555;
+	// Test port number
+	public static final int testPortNumber = 55555;
 	
 	public static int portNumber;
-
+	
 	public static void main(String[] args) {
 		
-		portNumber = Integer.parseInt(args[0]);
+		try {
+			portNumber = Integer.parseInt(args[0]);
+		} catch (Exception e) {
+			portNumber = testPortNumber;
+		}
 
 		System.out.println("[ BOHNANZA SERVER ]");
 		System.out.println();
