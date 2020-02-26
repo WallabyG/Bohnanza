@@ -1,0 +1,36 @@
+package server.process;
+
+import message.Message;
+
+/*
+ * < Message Type >
+ * 
+ * 1 - Login
+ * 	0101 - player name duplicate check
+ *  0102 - add player name
+ * 
+ * 2 - Create online match
+ *  0201 - create online match
+ * 
+ */
+
+public class Process {
+
+	public static Object processMessage(Message message) {
+		
+		switch (message.getMessageType()) {
+		case 0101:
+			return Login.checkPlayerNameDuplicate((String) message.getContents());
+			
+		case 0102:
+			Login.addPlayerName(message.getPlayerName());
+			break;
+		
+		case 0201:
+			break;
+		}
+		
+		return null;
+	}
+	
+}
