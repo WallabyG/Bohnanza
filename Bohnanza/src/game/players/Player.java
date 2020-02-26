@@ -134,7 +134,7 @@ public class Player {
 		transaction.getDemand().clear();
 		
 		System.out.println("\n=======================================================");
-		System.out.println("Setting Transaction Phase");
+		System.out.println("Setting Transaction Phase : "+this);
 		while(true) {
 			System.out.println("\n  ---------------------------------------------------");
 			System.out.print("Your Offer | ");
@@ -149,7 +149,7 @@ public class Player {
 			else System.out.println("Invalid Bean Index");
 		}
 		
-		while(true) {
+		while(!openedBeans.isEmpty()) {
 			System.out.println("\n  ---------------------------------------------------");
 			System.out.print("Your Offer | ");
 			System.out.println(transaction.getOffer());
@@ -185,7 +185,7 @@ public class Player {
 		int tempPlant;
 		Beans b;
 		System.out.println("\n=======================================================");
-		System.out.println("Planting Traded Beans Phase");
+		System.out.println("Planting Opened Beans Phase : "+this);
 		while(!openedBeans.isEmpty()) {
 			System.out.println("\n  ---------------------------------------------------");
 			System.out.print("Remained Beans : ");
@@ -211,7 +211,7 @@ public class Player {
 
 	public void harvest() {
 		System.out.println("\n=======================================================");
-		System.out.println("Harvest Phase");
+		System.out.println("Harvest Phase : "+this);
 		int tempHarvest;
 		while(true) {
 			System.out.println("\n  ---------------------------------------------------");
@@ -236,13 +236,22 @@ public class Player {
 			System.out.println();
 			
 			tempHarvest=sc.nextInt();
-			if(tempHarvest<=0) break;
+			if(tempHarvest<0) break;
 			if(candidates.contains(tempHarvest))
 				gold+=fields.get(tempHarvest).harvest(deck);
 			else
 				System.err.println("Invalid Field Number");
 			this.updateFieldStatus();
 		}
+	}
+
+	public void gameSet() {
+		for(Field f:fields)
+			gold+=f.harvest(deck);
+	}
+	
+	public int getId() {
+		return id;
 	}
 	
 	public int getGold() {

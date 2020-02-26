@@ -42,7 +42,9 @@ public class Field {
 			itr.remove();
 		}
 		while(itr.hasNext()) {
-			deck.discard(itr.next());
+			Beans b=itr.next();
+			b.setTraded(false);
+			deck.discard(b);
 			itr.remove();
 		}
 		number=0;

@@ -3,12 +3,15 @@ package game.game;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Scanner;
 
 import game.cards.Beans;
 import game.cards.Deck;
 import game.players.Player;
 
 public class Game {
+	private static Scanner sc=new Scanner(System.in);
+	
 	private List<Player> players;
 	private Deck deck;
 	
@@ -48,10 +51,21 @@ public class Game {
 		
 		// TO-DO
 		// Perform Actual Trade
-		for(int i=0;i<playerNum;i++)
-			System.out.println("\n"+players.get(i)+"\n"+players.get(i).getTransaction());
+		for(Player player: players)
+			System.out.println("\n"+player+"\n"+player.getTransaction());
 		
-		
+		while(true) {
+			System.out.print("You want to trade with : ");
+			int tempTrade=sc.nextInt();
+			if(0<=tempTrade && tempTrade<playerNum) {
+				if(!(players.get(tempTrade).getId() == p.getId())) {
+					performTrade(p,players.get(tempTrade));
+					break;
+				}
+			}
+			else if(tempTrade<0) break;
+			System.err.println("Invalid Trade Index");
+		}
 	}
 	
 	public void performTrade(Player p1, Player p2) {
@@ -71,9 +85,9 @@ public class Game {
 		p2.getTransaction().getOffer().clear();
 	}
 	
-	public void plantOpenedPhase(Player p) {
-		for(int i=0;i<playerNum;i++)
-			p.plantOpenedBeans();
+	public void plantOpenedBeansPhase(Player p) {
+		for(Player player:players)
+			player.plantOpenedBeans();
 	}
 	
 	public int getPlayerNum() {
@@ -81,7 +95,7 @@ public class Game {
 	}
 
 	public void drawPhase(Player p) {
-		gameEndFlag=p.draw(3);
+		gameEndFlag=!p.draw(3);
 	}
 
 	public List<Player> getPlayers() {
@@ -94,17 +108,26 @@ public class Game {
 	
 	public void play() {
 		while(!gameEndFlag) {
-			for(int i=0;i<this.getPlayerNum();i++) {
-				plantPhase(players.get(i));
-				tradePhase(players.get(i));
-				plantOpenedPhase(players.get(i));
-				drawPhase(players.get(i));
+			for(Player p: players) {
+				System.out.println("\n=======================================================");
+				System.out.println("Refilled : "+deck.getRefillNum()+" | Card Left : "+deck.getLeftCardNumber()+" | Card Discarded : "+deck.getDiscardedNumber());
+				plantPhase(p);
+				tradePhase(p);
+				plantOpenedBeansPhase(p);
+				drawPhase(p);
+				if(gameEndFlag) break;
 			}
+		}
+		System.out.println("\n=======================================================");
+		System.out.println("Game Over");
+		for(Player p: players) {
+			p.gameSet();
+			System.out.println(p);
 		}
 	}
 	
 	public static void main(String[] args) {
-		Game game=new Game(2);
+		Game game=new Game(4);
 		game.play();
 	}
 }
