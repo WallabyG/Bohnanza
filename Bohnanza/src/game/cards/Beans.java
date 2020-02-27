@@ -1,14 +1,44 @@
 package game.cards;
 
+/**
+ * 게임에 사용하는 콩 카드 클래스
+ * @author ycm
+ * @version 1.0
+ */
 public class Beans {
+	/**
+	 * ID 생성을 위한 클래스 멤버
+	 */
 	private static int order_generated=0;
 	
+	/**
+	 * 콩의 거래 여부
+	 */
 	private boolean isTraded;
+	
+	/**
+	 * 콩 카드의 ID
+	 */
 	private int id;
+	
+	/**
+	 * 콩 카드의 종류(장수)
+	 */
 	private int number;
+	
+	/**
+	 * 콩값
+	 */
 	private int[] beanometer;
+	
+	/**
+	 * 콩 카드 이미지 경로
+	 */
 	private String imgPath;
 	
+	/**
+	 * 생성자 메서드
+	 */
 	public Beans(){
 		this.id=order_generated++;
 		this.isTraded=false;
@@ -16,6 +46,10 @@ public class Beans {
 		this.beanometer=new int[4];
 	}
 	
+	/**
+	 * 콩의 거래 여부를 반환
+	 * @return 콩의 거래 여부
+	 */
 	public boolean isTraded() {
 		return isTraded;
 	}
@@ -32,6 +66,11 @@ public class Beans {
 		this.imgPath = imgPath;
 	}
 
+	/**
+	 * n에 따라 콩 카드를 선택
+	 * @param n 콩 카드의 종류(장수)
+	 * @return 해당하는 콩 인스턴스
+	 */
 	public static Beans selectBeans(int n) {
 		Beans bean2return;
 		

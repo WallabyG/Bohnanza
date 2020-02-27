@@ -80,7 +80,7 @@ public class Game {
 	/**
 	 * 생성자 메서드(테스트를 위해 플레이어 이름은 임의로 작성)
 	 * 
-	 * @param playerNum
+	 * @param playerNum 게임에 참여하는 플레이어 수
 	 */
 	public Game(int playerNum) {
 		this.playerNum = playerNum;
@@ -98,7 +98,7 @@ public class Game {
 	/**
 	 * 내 콩 심기 단계
 	 * 
-	 * @param p
+	 * @param p 턴을 진행하는 플레이어
 	 */
 	public void plantPhase(Player p) {
 		p.plantPhase();
@@ -107,7 +107,7 @@ public class Game {
 	/**
 	 * 거래하기 단계
 	 * 
-	 * @param p
+	 * @param p 턴을 진행하는 플레이어
 	 */
 	public void tradePhase(Player p) {
 		Optional<Beans> b;
@@ -145,8 +145,8 @@ public class Game {
 	/**
 	 * 선택한 두 플레이어의 거래를 수행
 	 * 
-	 * @param p1
-	 * @param p2
+	 * @param p1 거래에 참여하는 플레이어 1
+	 * @param p2 거래에 참여하는 플레이어 2
 	 */
 	public void performTrade(Player p1, Player p2) {
 		for (Beans b : p1.getTransaction().getOffer()) {
@@ -168,7 +168,7 @@ public class Game {
 	/**
 	 * 공개된 콩 심기 단계
 	 * 
-	 * @param p
+	 * @param p 콩을 심는 플레이어
 	 */
 	public void plantOpenedBeansPhase(Player p) {
 		for (String name : players.keySet())
@@ -178,7 +178,7 @@ public class Game {
 	/**
 	 * 콩 보충하기 단계
 	 * 
-	 * @param p
+	 * @param p 턴을 진행하는 플레이어
 	 */
 	public void drawPhase(Player p) {
 		gameEndFlag = !p.draw(3);
@@ -187,7 +187,7 @@ public class Game {
 	/**
 	 * 매치 방의 정원을 반환
 	 * 
-	 * @return
+	 * @return 방의 정원
 	 */
 	public int getPlayerNum() {
 		return playerNum;
@@ -196,7 +196,7 @@ public class Game {
 	/**
 	 * 현재 접속한 인원 수를 반환
 	 * 
-	 * @return
+	 * @return 현재 접속 인원 수
 	 */
 	public int getCurrentUsers() {
 		return players.size();
@@ -205,8 +205,8 @@ public class Game {
 	/**
 	 * 새로운 플레이어를 추가
 	 * 
-	 * @param name
-	 * @return
+	 * @param name 새로운 플레이어의 이름
+	 * @return 추가 성공 여부
 	 */
 	public boolean addPlayer(String name) {
 		if (!isRoomFull()) {
@@ -221,7 +221,7 @@ public class Game {
 	/**
 	 * 방이 가득 찼는지 알려줌
 	 * 
-	 * @return
+	 * @return 방이 가득 찼을 경우 true, 아니라면 false
 	 */
 	public boolean isRoomFull() {
 		return playerNum == getCurrentUsers();

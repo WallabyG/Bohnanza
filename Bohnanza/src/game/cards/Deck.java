@@ -59,7 +59,7 @@ public class Deck {
 
 	/**
 	 * 덱에서 카드 1장을 뽑음
-	 * @return
+	 * @return 뽑을 카드가 있는 경우 그 카드를 가진 Optional 객체를, 없을 경우 빈 객체를 반환
 	 */
 	public Optional<Beans> draw() {
 		if (isDeckEmpty()) {
@@ -71,6 +71,9 @@ public class Deck {
 		return Optional.ofNullable(drawDeck.remove(0));
 	}
 
+	/**
+	 * 카드를 버림 더미로 버림
+	 */
 	public void discard(Beans b) {
 		discardPile.add(b);
 	}
@@ -79,6 +82,9 @@ public class Deck {
 		Collections.shuffle(drawDeck);
 	}
 
+	/**
+	 * 획득 더미를 리필
+	 */
 	public void refill() {
 		if (isDeckEmpty()) {
 			drawDeck = new LinkedList<>(discardPile);
