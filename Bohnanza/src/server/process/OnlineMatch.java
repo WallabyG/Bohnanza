@@ -37,11 +37,15 @@ public class OnlineMatch {
 		 */
 		
 		if (onlineMatchNameList.contains(matchName) && matchPW == onlineMatchPWMap.get(matchName)) {
+			Game game = onlineMatchMap.get(matchName);
+			
+			if (!game.addPlayer(playerName)) {
+				return 2;
+			}
+			
 			return 0;
 		} else if (!onlineMatchNameList.contains(matchName)) {
 			return 1;
-		} else if (false) {
-			return 2;
 		} else if (onlineMatchNameList.contains(matchName) && matchPW != onlineMatchPWMap.get(matchName)) {
 			return 3;
 		}
