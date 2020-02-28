@@ -68,10 +68,11 @@ public class OnlineMatch {
 	 * @param matchName 매치 이름
 	 * @param matchPW 매치 비밀번호
 	 * @return 온라인 매치 참여 결과<br>
-	 *  0 - Match join success
-	 *  1 - Match name mismatch
-	 *  2 - Match full
-	 *  3 - Match PW mismatch
+	 * <br>
+	 *  0 - Match join success<br>
+	 *  1 - Match name mismatch<br>
+	 *  2 - Match full<br>
+	 *  3 - Match PW mismatch<br>
 	 * -1 - Wrong
 	 * 
 	 */

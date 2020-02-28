@@ -24,7 +24,7 @@ public class Process {
 	 * 2 - Create/Join online match<br>
 	 *   201 - match name duplication check<br>
 	 *   202 - create online match<br>
-	 *   203 - join online match<br>
+	 *   203 - join online match
 	 * 
 	 * @param message 전송된 메시지
 	 * @return 반환할 메시지
