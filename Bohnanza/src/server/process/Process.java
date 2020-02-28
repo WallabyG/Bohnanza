@@ -2,22 +2,33 @@ package server.process;
 
 import server.message.Message;
 
-/*
- * < Message Type >
+/**
  * 
- * 1 - Login
- * 	101 - player name duplication check
- *  102 - add player name
+ * 메시지 처리 관련 기능
  * 
- * 2 - Create/Join online match
- *   201 - match name duplication check
- *   202 - create online match
- *   203 - join online match
- * 
+ * @author YJH
+ * @version 1.0
+ *
  */
-
 public class Process {
 
+	/**
+	 * 메시지 처리<br>
+	 * <br>
+	 * 메시지 타입<br>
+	 * <br>
+	 * 1 - Login<br>
+	 *   101 - player name duplication check<br>
+	 *   102 - add player name<br>
+	 * <br>
+	 * 2 - Create/Join online match<br>
+	 *   201 - match name duplication check<br>
+	 *   202 - create online match<br>
+	 *   203 - join online match<br>
+	 * 
+	 * @param message 전송된 메시지
+	 * @return 반환할 메시지
+	 */
 	public static Object processMessage(Message message) {
 		
 		switch (message.getMessageType()) {

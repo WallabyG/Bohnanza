@@ -8,10 +8,24 @@ import java.net.Socket;
 import server.message.Message;
 import server.process.Process;
 
+/**
+ * 
+ * 클라이언트 응답용 스레드
+ * 
+ * @author YJH
+ * @version 1.0
+ *
+ */
 class ResponseThread extends Thread {
 	
+	/**
+	 * 소켓
+	 */
 	Socket socket;
 	
+	/**
+	 * @param socket 소켓
+	 */
 	public ResponseThread(Socket socket) {
 		super();
 		this.socket = socket;
@@ -38,11 +52,24 @@ class ResponseThread extends Thread {
 	
 }
 
+/**
+ * 
+ * 서버 클래스
+ * 
+ * @author YJH
+ * @version 1.0
+ *
+ */
 public class Server {
 	
-	// Test port number
+	/**
+	 * 테스트용 포트 번호
+	 */
 	public static final int testPortNumber = 55555;
-	
+
+	/**
+	 * 포트 번호
+	 */
 	public static int portNumber;
 	
 	public static void main(String[] args) {
