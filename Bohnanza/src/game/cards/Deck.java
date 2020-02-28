@@ -73,6 +73,7 @@ public class Deck {
 
 	/**
 	 * 카드를 버림 더미로 버림
+	 * @param b 버릴 콩 카드
 	 */
 	public void discard(Beans b) {
 		discardPile.add(b);
