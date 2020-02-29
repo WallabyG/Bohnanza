@@ -69,11 +69,11 @@ public class OnlineMatch {
 	 * @param matchPW 매치 비밀번호
 	 * @return 온라인 매치 참여 결과<br>
 	 * <br>
-	 *  0 - Match join success<br>
-	 *  1 - Match name mismatch<br>
-	 *  2 - Match full<br>
-	 *  3 - Match PW mismatch<br>
-	 * -1 - Wrong
+	 *  0 - 매치 접속 성공<br>
+	 *  1 - 매치 이름 불일치<br>
+	 *  2 - 매치 가득 참<br>
+	 *  3 - 매치 비밀번호 불일치<br>
+	 * -1 - 오류
 	 * 
 	 */
 	public static int joinOnlineMatch(String playerName, String matchName, String matchPW) {
