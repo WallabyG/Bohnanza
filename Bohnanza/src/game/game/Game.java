@@ -3,6 +3,7 @@ package game.game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -40,6 +41,11 @@ public class Game {
 	 * 매치에 사용할 덱
 	 */
 	private Deck deck;
+
+	/**
+	 * 현재 턴을 진행하는 플레이어
+	 */
+	private Player currentPlayer;
 
 	/**
 	 * 매치에 참여하는 플레이어 숫자
@@ -237,22 +243,29 @@ public class Game {
 	public boolean getGameEndFlag() {
 		return gameEndFlag;
 	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
 
 	/**
 	 * 게임 시작
 	 */
 	public void play() {
+		Iterator<String> itr = orders.iterator();
 		while (!gameEndFlag) {
-			for (String name : orders) {
+			if (itr.hasNext()) {
+				String name = itr.next();
+				currentPlayer = players.get(name);
 				System.out.println("\n=======================================================");
 				System.out.println("Refilled : " + deck.getRefillNum() + " | Card Left : " + deck.getLeftCardNumber()
 						+ " | Card Discarded : " + deck.getDiscardedNumber());
-				plantPhase(players.get(name));
-				tradePhase(players.get(name));
-				plantOpenedBeansPhase(players.get(name));
-				drawPhase(players.get(name));
-				if (gameEndFlag)
-					break;
+				plantPhase(currentPlayer);
+				tradePhase(currentPlayer);
+				plantOpenedBeansPhase(currentPlayer);
+				drawPhase(currentPlayer);
+			} else {
+				itr = orders.iterator();
 			}
 		}
 		System.out.println("\n=======================================================");
