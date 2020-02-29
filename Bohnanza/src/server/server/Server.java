@@ -62,14 +62,8 @@ class ResponseThread extends Thread {
  */
 public class Server {
 	
-	/**
-	 * 테스트용 포트 번호
-	 */
 	public static final int testPortNumber = 55555;
 
-	/**
-	 * 포트 번호
-	 */
 	public static int portNumber;
 	
 	public static void main(String[] args) {

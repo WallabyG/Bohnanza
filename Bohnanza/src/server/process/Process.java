@@ -17,14 +17,14 @@ public class Process {
 	 * <br>
 	 * 메시지 타입<br>
 	 * <br>
-	 * 1 - Login<br>
-	 *   101 - player name duplication check<br>
-	 *   102 - add player name<br>
+	 * 1 - 로그인<br>
+	 *   101 - 플레이어 이름 중복 체크<br>
+	 *   102 - 플레이어 이름 추가<br>
 	 * <br>
-	 * 2 - Create/Join online match<br>
-	 *   201 - match name duplication check<br>
-	 *   202 - create online match<br>
-	 *   203 - join online match
+	 * 2 - 온라인 매치 생성/접속<br>
+	 *   201 - 매치 이름 중복 체크<br>
+	 *   202 - 온라인 매치 생성<br>
+	 *   203 - 온라인 매치 접속
 	 * 
 	 * @param message 전송된 메시지
 	 * @return 반환할 메시지
