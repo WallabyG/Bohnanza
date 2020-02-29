@@ -39,7 +39,7 @@ class ResponseThread extends Thread {
 			System.out.println("player name: " + message.getPlayerName() + " - message type: " + message.getMessageType());
 			System.out.println();
 			
-			Object returnObj = Process.processMessage(message);
+			Object returnObj = Process.processMessage(this,message);
 			
 			ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
 			outStream.writeObject(returnObj);

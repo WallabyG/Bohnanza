@@ -29,7 +29,7 @@ public class Process {
 	 * @param message 전송된 메시지
 	 * @return 반환할 메시지
 	 */
-	public static Object processMessage(Message message) {
+	public static Object processMessage(Thread thread, Message message) {
 		
 		switch (message.getMessageType()) {
 		case 101:
