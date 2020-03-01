@@ -1,56 +1,10 @@
 package server.server;
 
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-
-import server.message.Message;
-import server.process.Process;
-
-/**
- * 
- * 클라이언트 응답용 스레드
- * 
- * @author YJH
- * @version 1.0
- *
- */
-class ResponseThread extends Thread {
-	
-	/**
-	 * 소켓
-	 */
-	Socket socket;
-	
-	/**
-	 * @param socket 소켓
-	 */
-	public ResponseThread(Socket socket) {
-		super();
-		this.socket = socket;
-	}
-
-	@Override
-	public void run() {
-		try {
-			ObjectInputStream inStream = new ObjectInputStream(socket.getInputStream());
-			Message message = (Message)inStream.readObject();
-			System.out.println("player name: " + message.getPlayerName() + " - message type: " + message.getMessageType());
-			System.out.println();
-			
-			Object returnObj = Process.processMessage(this,message);
-			
-			ObjectOutputStream outStream = new ObjectOutputStream(socket.getOutputStream());
-			outStream.writeObject(returnObj);
-			outStream.flush();
-			socket.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-}
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
  * 
@@ -61,37 +15,49 @@ class ResponseThread extends Thread {
  *
  */
 public class Server {
-	
+
 	public static final int testPortNumber = 55555;
 
 	public static int portNumber;
-	
+
+	/**
+	 * 클라이언트 스트림 저장용 해시맵
+	 */
+	HashMap<String, ObjectOutputStream> clients;
+
+	Server() {
+		clients = new HashMap<String, ObjectOutputStream>();
+		Collections.synchronizedMap(clients);
+	}
+
+	public void start() {
+		ServerSocket serverSocket = null;
+		Socket socket = null;
+
+		try {
+			serverSocket = new ServerSocket(portNumber);
+			System.out.println("[ BOHNANZA SERVER ]");
+			System.out.println();
+
+			while (true) {
+				System.out.println("Listening at port " + portNumber + " ...");
+				socket = serverSocket.accept();
+				System.out.println("Connected from [" + socket.getInetAddress() + ":" + socket.getPort() + "]");
+				ServerReceiver thread = new ServerReceiver(socket);
+				thread.start();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	public static void main(String[] args) {
-		
 		try {
 			portNumber = Integer.parseInt(args[0]);
 		} catch (Exception e) {
 			portNumber = testPortNumber;
 		}
 
-		System.out.println("[ BOHNANZA SERVER ]");
-		System.out.println();
-		
-		try {
-			@SuppressWarnings("resource")
-			ServerSocket serverSocket = new ServerSocket(portNumber);
-			
-			while(true) {
-				System.out.println("Listening at port " + portNumber + " ...");
-				
-				Socket socket = serverSocket.accept();
-				
-				(new ResponseThread(socket)).start();
-			}
-		} catch(Exception e) {
-			e.printStackTrace();
-		}
-		
+		(new Server()).start();
 	}
-
 }
