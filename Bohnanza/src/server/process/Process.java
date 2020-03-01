@@ -24,7 +24,8 @@ public class Process {
 	 * 2 - 온라인 매치 생성/접속<br>
 	 *   201 - 매치 이름 중복 체크<br>
 	 *   202 - 온라인 매치 생성<br>
-	 *   203 - 온라인 매치 접속
+	 *   211 - 온라인 매치 접속<br>
+	 *   221 - 온라인 매치 상태 업데이트
 	 * 
 	 * @param message 전송된 메시지
 	 * @return 반환할 메시지
@@ -45,8 +46,11 @@ public class Process {
 		case 202:
 			break;
 			
-		case 203:
+		case 211:
 			break;
+			
+		case 221:
+			
 		}
 		
 		return null;
