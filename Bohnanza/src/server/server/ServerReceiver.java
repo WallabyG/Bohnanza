@@ -53,6 +53,7 @@ public class ServerReceiver extends Thread {
 	 * <br>
 	 * 0 - 서버에 접속<br>
 	 *   001 - 클라이언트의 스트림을 서버에 등록<br>
+	 * <br>
 	 * 1 - 로그인<br>
 	 *   101 - 플레이어 이름 중복 체크<br>
 	 *   102 - 플레이어 이름 추가<br>
