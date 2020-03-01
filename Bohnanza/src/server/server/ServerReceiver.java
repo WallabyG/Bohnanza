@@ -63,6 +63,8 @@ public class ServerReceiver extends Thread {
 	 *   202 - 온라인 매치 생성<br>
 	 *   203 - 온라인 매치 삭제<br>
 	 *   211 - 온라인 매치 접속<br>
+	 *   212 - 온라인 매치 정보 요청<br>
+	 *   213 - 온라인 매치 나가기<br>
 	 *   221 - 온라인 매치 상태 업데이트
 	 * 
 	 * @param message 전송된 메시지
@@ -92,8 +94,14 @@ public class ServerReceiver extends Thread {
 		case 211:
 			break;
 			
-		case 221:
+		case 212:
+			break;
+		
+		case 213:
+			break;
 			
+		case 221:
+			break;
 		}
 		
 		return null;
