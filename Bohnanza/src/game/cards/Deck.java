@@ -6,33 +6,33 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * °ÔÀÓ¿¡ »ç¿ëÇÏ´Â µ¦ Å¬·¡½º
+ * ê²Œì„ì— ì‚¬ìš©í•˜ëŠ” ë± í´ë˜ìŠ¤
  * @author ycm
  * @version 1.0
  */
 public class Deck {
 	/**
-	 * ÃÖ´ë ¸®ÇÊ È½¼ö == 2
+	 * ìµœëŒ€ ë¦¬í•„ íšŸìˆ˜ == 2
 	 */
 	private static final int MAX_REFILL_NUM = 2;
 
 	/**
-	 * È¹µæ ´õ¹Ì
+	 * íšë“ ë”ë¯¸
 	 */
 	private List<Beans> drawDeck;
 	
 	/**
-	 * ¹ö¸² ´õ¹Ì
+	 * ë²„ë¦¼ ë”ë¯¸
 	 */
 	private List<Beans> discardPile;
 
 	/**
-	 * ÇöÀç ¸®ÇÊ È½¼ö
+	 * í˜„ì¬ ë¦¬í•„ íšŸìˆ˜
 	 */
 	private int refillNum;
 
 	/**
-	 * µğÆúÆ® »ı¼ºÀÚ
+	 * ë””í´íŠ¸ ìƒì„±ì
 	 */
 	public Deck() {
 		drawDeck = new LinkedList<>();
@@ -58,8 +58,8 @@ public class Deck {
 	}
 
 	/**
-	 * µ¦¿¡¼­ Ä«µå 1ÀåÀ» »ÌÀ½
-	 * @return »ÌÀ» Ä«µå°¡ ÀÖ´Â °æ¿ì ±× Ä«µå¸¦ °¡Áø Optional °´Ã¼¸¦, ¾øÀ» °æ¿ì ºó °´Ã¼¸¦ ¹İÈ¯
+	 * ë±ì—ì„œ ì¹´ë“œ 1ì¥ì„ ë½‘ìŒ
+	 * @return ë½‘ì„ ì¹´ë“œê°€ ìˆëŠ” ê²½ìš° ê·¸ ì¹´ë“œë¥¼ ê°€ì§„ Optional ê°ì²´ë¥¼, ì—†ì„ ê²½ìš° ë¹ˆ ê°ì²´ë¥¼ ë°˜í™˜
 	 */
 	public Optional<Beans> draw() {
 		if (isDeckEmpty()) {
@@ -72,8 +72,8 @@ public class Deck {
 	}
 
 	/**
-	 * Ä«µå¸¦ ¹ö¸² ´õ¹Ì·Î ¹ö¸²
-	 * @param b ¹ö¸± Äá Ä«µå
+	 * ì¹´ë“œë¥¼ ë²„ë¦¼ ë”ë¯¸ë¡œ ë²„ë¦¼
+	 * @param b ë²„ë¦´ ì½© ì¹´ë“œ
 	 */
 	public void discard(Beans b) {
 		discardPile.add(b);
@@ -84,7 +84,7 @@ public class Deck {
 	}
 
 	/**
-	 * È¹µæ ´õ¹Ì¸¦ ¸®ÇÊ
+	 * íšë“ ë”ë¯¸ë¥¼ ë¦¬í•„
 	 */
 	public void refill() {
 		if (isDeckEmpty()) {

@@ -12,69 +12,69 @@ import game.cards.Beans;
 import game.cards.Deck;
 
 /**
- * °ÔÀÓ¿¡ Âü¿©ÇÏ´Â ÇÃ·¹ÀÌ¾î Å¬·¡½º
+ * ê²Œì„ì— ì°¸ì—¬í•˜ëŠ” í”Œë ˆì´ì–´ í´ë˜ìŠ¤
  * @author ycm
  * @version 1.0
  */
 public class Player {
 	/**
-	 * ID »ı¼º¿ë Å¬·¡½º ¸â¹ö
+	 * ID ìƒì„±ìš© í´ë˜ìŠ¤ ë©¤ë²„
 	 */
 	private static int order_generated = 0;
 	
 	private static Scanner sc = new Scanner(System.in);
 
 	/**
-	 * ÇöÀç µ· º¸À¯·®
+	 * í˜„ì¬ ëˆ ë³´ìœ ëŸ‰
 	 */
 	private int gold;
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾î ID
+	 * í”Œë ˆì´ì–´ ID
 	 */
 	private int id;
 	
 	/**
-	 * ¹çÀÇ »óÅÂ¸¦ ³ªÅ¸³»´Â 2~3ºñÆ® ¼ıÀÚ<br>
-	 * 1Àº ÇØ´çÇÏ´Â À§Ä¡ÀÇ ¹çÀÌ ºñ¾îÀÖÀ½À» ÀÇ¹Ì
+	 * ë°­ì˜ ìƒíƒœë¥¼ ë‚˜íƒ€ë‚´ëŠ” 2~3ë¹„íŠ¸ ìˆ«ì<br>
+	 * 1ì€ í•´ë‹¹í•˜ëŠ” ìœ„ì¹˜ì˜ ë°­ì´ ë¹„ì–´ìˆìŒì„ ì˜ë¯¸
 	 */
 	private int fieldStatus;
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾î ÀÌ¸§
+	 * í”Œë ˆì´ì–´ ì´ë¦„
 	 */
 	private String name;
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾î°¡ Âü¿©ÇÏ´Â °ÔÀÓ¿¡ »ç¿ëÇÏ´Â µ¦
+	 * í”Œë ˆì´ì–´ê°€ ì°¸ì—¬í•˜ëŠ” ê²Œì„ì— ì‚¬ìš©í•˜ëŠ” ë±
 	 */
 	private Deck deck;
 	
 	/**
-	 * °Å·¡ Å¬·¡½º
+	 * ê±°ë˜ í´ë˜ìŠ¤
 	 */
 	private Transaction transaction;
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾î°¡ º¸À¯ÇÑ ¹ç
+	 * í”Œë ˆì´ì–´ê°€ ë³´ìœ í•œ ë°­
 	 */
 	private List<Field> fields;
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾îÀÇ °ø°³µÈ Äá
+	 * í”Œë ˆì´ì–´ì˜ ê³µê°œëœ ì½©
 	 */
 	private List<Beans> openedBeans;
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾îÀÇ ÆĞ
+	 * í”Œë ˆì´ì–´ì˜ íŒ¨
 	 */
 	private Queue<Beans> hands;
 
 	/**
-	 * »ı¼ºÀÚ ¸Ş¼­µå
-	 * @param name ÇÃ·¹ÀÌ¾î ÀÌ¸§
-	 * @param deck ÇÃ·¹ÀÌ¾î°¡ Âü¿©ÇÏ´Â °ÔÀÓ¿¡ »ç¿ëÇÏ´Â µ¦
-	 * @param number °ÔÀÓ¿¡ Âü¿©ÇÏ´Â ÇÃ·¹ÀÌ¾î ¼ıÀÚ
+	 * ìƒì„±ì ë©”ì„œë“œ
+	 * @param name í”Œë ˆì´ì–´ ì´ë¦„
+	 * @param deck í”Œë ˆì´ì–´ê°€ ì°¸ì—¬í•˜ëŠ” ê²Œì„ì— ì‚¬ìš©í•˜ëŠ” ë±
+	 * @param number ê²Œì„ì— ì°¸ì—¬í•˜ëŠ” í”Œë ˆì´ì–´ ìˆ«ì
 	 */
 	public Player(String name, Deck deck, int number) {
 		this.name = name;
@@ -128,15 +128,15 @@ public class Player {
 	}
 
 	/**
-	 * °Å·¡ ³»¿ëÀ» ¹İÈ¯
-	 * @return ¼³Á¤ÇÑ °Å·¡ Å¬·¡½º
+	 * ê±°ë˜ ë‚´ìš©ì„ ë°˜í™˜
+	 * @return ì„¤ì •í•œ ê±°ë˜ í´ë˜ìŠ¤
 	 */
 	public Transaction getTransaction() {
 		return transaction;
 	}
 
 	/**
-	 * °Å·¡ ³»¿ëÀ» ¼³Á¤
+	 * ê±°ë˜ ë‚´ìš©ì„ ì„¤ì •
 	 */
 	public void setTransaction() {
 		int tempOffer;
@@ -201,16 +201,16 @@ public class Player {
 	}
 
 	/**
-	 * ÇÃ·¹ÀÌ¾îÀÇ °ø°³µÈ ÄáÀ» ¹İÈ¯
-	 * @return °ø°³µÈ Äá Ä«µå
+	 * í”Œë ˆì´ì–´ì˜ ê³µê°œëœ ì½©ì„ ë°˜í™˜
+	 * @return ê³µê°œëœ ì½© ì¹´ë“œ
 	 */
 	public List<Beans> getOpenedBeans() {
 		return openedBeans;
 	}
 
 	/**
-	 * ¹çÀÇ »óÅÂ¸¦ ¾÷µ¥ÀÌÆ®<br>
-	 * ÄáÀ» ½É°Å³ª ¼öÈ®ÇÑ µÚ ¹İµå½Ã ½ÇÇà
+	 * ë°­ì˜ ìƒíƒœë¥¼ ì—…ë°ì´íŠ¸<br>
+	 * ì½©ì„ ì‹¬ê±°ë‚˜ ìˆ˜í™•í•œ ë’¤ ë°˜ë“œì‹œ ì‹¤í–‰
 	 */
 	public void updateFieldStatus() {
 		fieldStatus = 0;
@@ -220,9 +220,9 @@ public class Player {
 	}
 
 	/**
-	 * Ä«µå nÀåÀ» »Ì¾Æ ÆĞ¿¡ Ãß°¡ÇÔ
-	 * @param n »ÌÀ» Ä«µå ¼ö
-	 * @return »ÌÀ» Ä«µå°¡ ÀÖ´Â °æ¿ì true, ¾øÀ» °æ¿ì false 
+	 * ì¹´ë“œ nì¥ì„ ë½‘ì•„ íŒ¨ì— ì¶”ê°€í•¨
+	 * @param n ë½‘ì„ ì¹´ë“œ ìˆ˜
+	 * @return ë½‘ì„ ì¹´ë“œê°€ ìˆëŠ” ê²½ìš° true, ì—†ì„ ê²½ìš° false 
 	 */
 	public boolean draw(int n) {
 		Optional<Beans> b;
@@ -245,8 +245,8 @@ public class Player {
 	}
 
 	/**
-	 * ÄáÀ» ½ÉÀ½
-	 * @param b ¹ç¿¡ ½ÉÀ» Äá
+	 * ì½©ì„ ì‹¬ìŒ
+	 * @param b ë°­ì— ì‹¬ì„ ì½©
 	 */
 	public void plant(Beans b) {
 		System.out.println("\n=======================================================");
@@ -277,7 +277,7 @@ public class Player {
 	}
 
 	/**
-	 * Äá ½É±â ´Ü°è
+	 * ì½© ì‹¬ê¸° ë‹¨ê³„
 	 */
 	public void plantPhase() {
 		String additional;
@@ -299,7 +299,7 @@ public class Player {
 	}
 
 	/**
-	 * °ø°³µÈ Äá ½É±â ´Ü°è
+	 * ê³µê°œëœ ì½© ì‹¬ê¸° ë‹¨ê³„
 	 */
 	public void plantOpenedBeans() {
 		int tempPlant;
@@ -322,7 +322,7 @@ public class Player {
 	}
 
 	/**
-	 * ¹çÀ» ¼±ÅÃÇÏ¿© ¼öÈ®
+	 * ë°­ì„ ì„ íƒí•˜ì—¬ ìˆ˜í™•
 	 */
 	public void harvest() {
 		System.out.println("\n=======================================================");
@@ -354,8 +354,8 @@ public class Player {
 	}
 
 	/**
-	 * °ÔÀÓ Á¾·á½Ã È£ÃâÇÏ´Â ¸Ş¼­µå<br>
-	 * ¸ğµç ¹çÀ» ¼öÈ®
+	 * ê²Œì„ ì¢…ë£Œì‹œ í˜¸ì¶œí•˜ëŠ” ë©”ì„œë“œ<br>
+	 * ëª¨ë“  ë°­ì„ ìˆ˜í™•
 	 */
 	public void gameSet() {
 		for (Field f : fields)

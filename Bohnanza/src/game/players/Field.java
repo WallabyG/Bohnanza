@@ -8,34 +8,34 @@ import game.cards.Beans;
 import game.cards.Deck;
 
 /**
- * ÇÃ·¹ÀÌ¾îÀÇ ¹ç Å¬·¡½º
+ * í”Œë ˆì´ì–´ì˜ ë°­ í´ë˜ìŠ¤
  * @author ycm
  * @version 1.0
  */
 public class Field {
 	/**
-	 * ¹ç¿¡ ½ÉÀº ÄáÀÇ Á¾·ù
+	 * ë°­ì— ì‹¬ì€ ì½©ì˜ ì¢…ë¥˜
 	 */
 	private int number;
 	
 	/**
-	 * ¹ç¿¡ ½ÉÀº Äá Ä«µåÀÇ ¼ö
+	 * ë°­ì— ì‹¬ì€ ì½© ì¹´ë“œì˜ ìˆ˜
 	 */
 	private int size;
 	
 	/**
-	 * ¹çÀÇ ID
+	 * ë°­ì˜ ID
 	 */
 	private int id;
 	
 	/**
-	 * ¹çÀ» ³ªÅ¸³»´Â ¸®½ºÆ®
+	 * ë°­ì„ ë‚˜íƒ€ë‚´ëŠ” ë¦¬ìŠ¤íŠ¸
 	 */
 	private List<Beans> field;
 	
 	/**
-	 * »ı¼ºÀÚ ¸Ş¼­µå
-	 * @param id ¹ç ID
+	 * ìƒì„±ì ë©”ì„œë“œ
+	 * @param id ë°­ ID
 	 */
 	public Field(int id){
 		field=new LinkedList<Beans>();
@@ -81,8 +81,8 @@ public class Field {
 	}
 	
 	/**
-	 * Äá ½É±â
-	 * @param b ½ÉÀ» Äá
+	 * ì½© ì‹¬ê¸°
+	 * @param b ì‹¬ì„ ì½©
 	 */
 	public void plant(Beans b) {
 		if(number==0 || number==b.getNumber()) {
@@ -94,9 +94,9 @@ public class Field {
 	}
 	
 	/**
-	 * Äá ¼öÈ®
-	 * @param deck °ÔÀÓ¿¡ »ç¿ëÇÏ´Â µ¦
-	 * @return Äá°ª
+	 * ì½© ìˆ˜í™•
+	 * @param deck ê²Œì„ì— ì‚¬ìš©í•˜ëŠ” ë±
+	 * @return ì½©ê°’
 	 */
 	public int harvest(Deck deck) {
 		if(isEmpty()) return 0;

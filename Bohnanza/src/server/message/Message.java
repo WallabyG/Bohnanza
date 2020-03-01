@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 /**
  * 
- * Å¬¶óÀÌ¾ğÆ®¿¡¼­ ¼­¹ö·Î ¼Û½ÅÇÏ´Â °´Ã¼
+ * í´ë¼ì´ì–¸íŠ¸ì—ì„œ ì„œë²„ë¡œ ì†¡ì‹ í•˜ëŠ” ê°ì²´
  * 
  * @author YJH
  * @version 1.0
@@ -15,27 +15,27 @@ public class Message implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	/**
-	 * ¸Ş½ÃÁö Å¸ÀÔ<br>
+	 * ë©”ì‹œì§€ íƒ€ì…<br>
 	 * <br>
-	 * ÄÉÀÌ½º º° Å¸ÀÔÀº {@link server.process.Process#processMessage(Message) processMessage}
+	 * ì¼€ì´ìŠ¤ ë³„ íƒ€ì…ì€ {@link server.process.Process#processMessage(Message) processMessage}
 	 */
 	int messageType;
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾î ÀÌ¸§
+	 * í”Œë ˆì´ì–´ ì´ë¦„
 	 */
 	String playerName;
 	
 	/**
-	 * ¸Ş½ÃÁö ³»¿ë
+	 * ë©”ì‹œì§€ ë‚´ìš©
 	 */
 	Object contents;
 	
 	/**
-	 * @param messageType ¸Ş½ÃÁö Å¸ÀÔ<br>
-	 * ÄÉÀÌ½º º° Å¸ÀÔÀº {@link server.process.Process#processMessage(Message) processMessage}
-	 * @param playerName ÇÃ·¹ÀÌ¾î ÀÌ¸§
-	 * @param contents ¸Ş½ÃÁö ³»¿ë
+	 * @param messageType ë©”ì‹œì§€ íƒ€ì…<br>
+	 * ì¼€ì´ìŠ¤ ë³„ íƒ€ì…ì€ {@link server.server.ServerReceiver#processMessage(Message) processMessage}
+	 * @param playerName í”Œë ˆì´ì–´ ì´ë¦„
+	 * @param contents ë©”ì‹œì§€ ë‚´ìš©
 	 */
 	public Message(int messageType, String playerName, Object contents) {
 		this.messageType = messageType;

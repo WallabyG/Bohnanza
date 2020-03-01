@@ -8,7 +8,7 @@ import game.game.Game;
 
 /**
  * 
- * ¿Â¶óÀÎ ¸ÅÄ¡ °ü·Ã ±â´É
+ * ì˜¨ë¼ì¸ ë§¤ì¹˜ ê´€ë ¨ ê¸°ëŠ¥
  * 
  * @author YJH
  * @version 1.0
@@ -17,41 +17,41 @@ import game.game.Game;
 public class OnlineMatch {
 
 	/**
-	 * ¿Â¶óÀÎ ¸ÅÄ¡ ÀÌ¸§ ¸®½ºÆ®
+	 * ì˜¨ë¼ì¸ ë§¤ì¹˜ ì´ë¦„ ë¦¬ìŠ¤íŠ¸
 	 */
 	private static final ArrayList<String> onlineMatchNameList = new ArrayList<>();
 	
 	/**
-	 * ¿Â¶óÀÎ ¸ÅÄ¡ ÀÌ¸§ - ºñ¹Ğ¹øÈ£ ¸Ê<br>
-	 * key  : ¿Â¶óÀÎ ¸ÅÄ¡ ÀÌ¸§<br>
-	 * value: ºñ¹Ğ¹øÈ£<br>
+	 * ì˜¨ë¼ì¸ ë§¤ì¹˜ ì´ë¦„ - ë¹„ë°€ë²ˆí˜¸ ë§µ<br>
+	 * key  : ì˜¨ë¼ì¸ ë§¤ì¹˜ ì´ë¦„<br>
+	 * value: ë¹„ë°€ë²ˆí˜¸<br>
 	 */
 	private static final Map<String, String> onlineMatchPWMap = new HashMap<>();
 	
 	/**
-	 * ¿Â¶óÀÎ ¸ÅÄ¡ ÀÌ¸§ - °ÔÀÓ °´Ã¼ ¸Ê<br>
-	 * key  : ¿Â¶óÀÎ ¸ÅÄ¡ ÀÌ¸§<br>
-	 * value: °ÔÀÓ °´Ã¼
+	 * ì˜¨ë¼ì¸ ë§¤ì¹˜ ì´ë¦„ - ê²Œì„ ê°ì²´ ë§µ<br>
+	 * key  : ì˜¨ë¼ì¸ ë§¤ì¹˜ ì´ë¦„<br>
+	 * value: ê²Œì„ ê°ì²´
 	 */
 	private static final Map<String, Game> onlineMatchMap = new HashMap<>();
 	
 	/**
-	 * ¸ÅÄ¡ ÀÌ¸§ÀÇ Áßº¹ ¿©ºÎ Ã¼Å©
+	 * ë§¤ì¹˜ ì´ë¦„ì˜ ì¤‘ë³µ ì—¬ë¶€ ì²´í¬
 	 * 
-	 * @param matchName ¸ÅÄ¡ ÀÌ¸§
-	 * @return ¸ÅÄ¡ ÀÌ¸§ÀÇ Áßº¹ ¿©ºÎ ¹İÈ¯
+	 * @param matchName ë§¤ì¹˜ ì´ë¦„
+	 * @return ë§¤ì¹˜ ì´ë¦„ì˜ ì¤‘ë³µ ì—¬ë¶€ ë°˜í™˜
 	 */
 	public static boolean checkMatchNameDuplicate(String matchName) {
 		return onlineMatchNameList.contains(matchName);
 	}
 	
 	/**
-	 * ¿Â¶óÀÎ ¸ÅÄ¡ »ı¼º
+	 * ì˜¨ë¼ì¸ ë§¤ì¹˜ ìƒì„±
 	 * 
-	 * @param playerName ÇÃ·¹ÀÌ¾î ÀÌ¸§
-	 * @param matchName ¸ÅÄ¡ ÀÌ¸§
-	 * @param matchPW ¸ÅÄ¡ ºñ¹Ğ¹øÈ£
-	 * @param playerNumber ÇÃ·¹ÀÌ¾î ¼ö
+	 * @param playerName í”Œë ˆì´ì–´ ì´ë¦„
+	 * @param matchName ë§¤ì¹˜ ì´ë¦„
+	 * @param matchPW ë§¤ì¹˜ ë¹„ë°€ë²ˆí˜¸
+	 * @param playerNumber í”Œë ˆì´ì–´ ìˆ˜
 	 */
 	public static void createOnlineMatch(String playerName, String matchName, String matchPW, int playerNumber) {
 		Game game = new Game(playerNumber);
@@ -62,18 +62,18 @@ public class OnlineMatch {
 	}
 	
 	/**
-	 * ¿Â¶óÀÎ ¸ÅÄ¡ Âü¿©
+	 * ì˜¨ë¼ì¸ ë§¤ì¹˜ ì°¸ì—¬
 	 * 
-	 * @param playerName ÇÃ·¹ÀÌ¾î ÀÌ¸§
-	 * @param matchName ¸ÅÄ¡ ÀÌ¸§
-	 * @param matchPW ¸ÅÄ¡ ºñ¹Ğ¹øÈ£
-	 * @return ¿Â¶óÀÎ ¸ÅÄ¡ Âü¿© °á°ú<br>
+	 * @param playerName í”Œë ˆì´ì–´ ì´ë¦„
+	 * @param matchName ë§¤ì¹˜ ì´ë¦„
+	 * @param matchPW ë§¤ì¹˜ ë¹„ë°€ë²ˆí˜¸
+	 * @return ì˜¨ë¼ì¸ ë§¤ì¹˜ ì°¸ì—¬ ê²°ê³¼<br>
 	 * <br>
-	 *  0 - ¸ÅÄ¡ Á¢¼Ó ¼º°ø<br>
-	 *  1 - ¸ÅÄ¡ ÀÌ¸§ ºÒÀÏÄ¡<br>
-	 *  2 - ¸ÅÄ¡ °¡µæ Âü<br>
-	 *  3 - ¸ÅÄ¡ ºñ¹Ğ¹øÈ£ ºÒÀÏÄ¡<br>
-	 * -1 - ¿À·ù
+	 *  0 - ë§¤ì¹˜ ì ‘ì† ì„±ê³µ<br>
+	 *  1 - ë§¤ì¹˜ ì´ë¦„ ë¶ˆì¼ì¹˜<br>
+	 *  2 - ë§¤ì¹˜ ê°€ë“ ì°¸<br>
+	 *  3 - ë§¤ì¹˜ ë¹„ë°€ë²ˆí˜¸ ë¶ˆì¼ì¹˜<br>
+	 * -1 - ì˜¤ë¥˜
 	 * 
 	 */
 	public static int joinOnlineMatch(String playerName, String matchName, String matchPW) {
@@ -95,10 +95,10 @@ public class OnlineMatch {
 	}
 	
 	/**
-	 * ¿Â¶óÀÎ ¸ÅÄ¡ ³ª°¡±â
+	 * ì˜¨ë¼ì¸ ë§¤ì¹˜ ë‚˜ê°€ê¸°
 	 * 
-	 * @param playerName ÇÃ·¹ÀÌ¾î ÀÌ¸§
-	 * @param matchName ¸ÅÄ¡ ÀÌ¸§
+	 * @param playerName í”Œë ˆì´ì–´ ì´ë¦„
+	 * @param matchName ë§¤ì¹˜ ì´ë¦„
 	 */
 	public static void exitOnlineMatch(String playerName, String matchName) {
 		

@@ -6,25 +6,25 @@ import java.util.List;
 import game.cards.Beans;
 
 /**
- * °Å·¡ ³»¿ë Å¬·¡½º
+ * ê±°ë˜ ë‚´ìš© í´ë˜ìŠ¤
  * @author ycm
  * @version 1.0
  */
 public class Transaction {
 	/**
-	 * °Å·¡ »ó´ë¿¡°Ô Á¦°øÇÏ´Â Äá ¸®½ºÆ®<br>
-	 * ÀÚ½ÅÀÌ º¸À¯ÇÑ Äá¸¸ ¼±ÅÃ °¡´É
+	 * ê±°ë˜ ìƒëŒ€ì—ê²Œ ì œê³µí•˜ëŠ” ì½© ë¦¬ìŠ¤íŠ¸<br>
+	 * ìì‹ ì´ ë³´ìœ í•œ ì½©ë§Œ ì„ íƒ ê°€ëŠ¥
 	 */
 	private List<Beans> offer;
 	
 	/**
-	 * °Å·¡ »ó´ë·ÎºÎÅÍ ¿øÇÏ´Â Äá ¸®½ºÆ®<br>
-	 * ÀÚ½ÅÀÌ º¸À¯ÇÏÁö ¾ÊÀº Äáµµ ¼±ÅÃ °¡´É
+	 * ê±°ë˜ ìƒëŒ€ë¡œë¶€í„° ì›í•˜ëŠ” ì½© ë¦¬ìŠ¤íŠ¸<br>
+	 * ìì‹ ì´ ë³´ìœ í•˜ì§€ ì•Šì€ ì½©ë„ ì„ íƒ ê°€ëŠ¥
 	 */
 	private List<Integer> demand;
 	
 	/**
-	 * »ı¼ºÀÚ ¸Ş¼­µå
+	 * ìƒì„±ì ë©”ì„œë“œ
 	 */
 	public Transaction() {
 		offer=new LinkedList<Beans>();
@@ -52,9 +52,9 @@ public class Transaction {
 	}
 
 	/**
-	 * ¼±ÅÃÇÑ ÄáÀ» Á¦°øÇÒ Äá ¸®½ºÆ®¿¡ Ãß°¡
-	 * @param b ¼±ÅÃÇÑ Äá
-	 * @return ÄáÀÇ Ãß°¡ ¿©ºÎ
+	 * ì„ íƒí•œ ì½©ì„ ì œê³µí•  ì½© ë¦¬ìŠ¤íŠ¸ì— ì¶”ê°€
+	 * @param b ì„ íƒí•œ ì½©
+	 * @return ì½©ì˜ ì¶”ê°€ ì—¬ë¶€
 	 */
 	public boolean addToOffer(Beans b) {
 		if(offer.contains(b)) return false;

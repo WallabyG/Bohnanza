@@ -14,8 +14,8 @@ import game.cards.Deck;
 import game.players.Player;
 
 /**
- * ¸ÅÄ¡ ÇÏ³ª¿¡ ´ëÀÀµÇ´Â Å¬·¡½º<br>
- * »ç¿ë ¹æ¹ı:<br>
+ * ë§¤ì¹˜ í•˜ë‚˜ì— ëŒ€ì‘ë˜ëŠ” í´ë˜ìŠ¤<br>
+ * ì‚¬ìš© ë°©ë²•:<br>
  * Game game=new Game(5);<br>
  * game.addPlayer("Name");<br>
  * game.play();
@@ -28,42 +28,42 @@ public class Game {
 	private static Scanner sc = new Scanner(System.in);
 
 	/**
-	 * ¸ÅÄ¡¿¡ Âü¿©ÇÑ ÇÃ·¹ÀÌ¾î ¸Ê
+	 * ë§¤ì¹˜ì— ì°¸ì—¬í•œ í”Œë ˆì´ì–´ ë§µ
 	 */
 	private Map<String, Player> players;
 
 	/**
-	 * ÅÏ ÁøÇà ¼ø¼­
+	 * í„´ ì§„í–‰ ìˆœì„œ
 	 */
 	private List<String> orders;
 
 	/**
-	 * ¸ÅÄ¡¿¡ »ç¿ëÇÒ µ¦
+	 * ë§¤ì¹˜ì— ì‚¬ìš©í•  ë±
 	 */
 	private Deck deck;
 
 	/**
-	 * ÇöÀç ÅÏÀ» ÁøÇàÇÏ´Â ÇÃ·¹ÀÌ¾î
+	 * í˜„ì¬ í„´ì„ ì§„í–‰í•˜ëŠ” í”Œë ˆì´ì–´
 	 */
 	private Player currentPlayer;
 
 	/**
-	 * ¸ÅÄ¡¿¡ Âü¿©ÇÏ´Â ÇÃ·¹ÀÌ¾î ¼ıÀÚ
+	 * ë§¤ì¹˜ì— ì°¸ì—¬í•˜ëŠ” í”Œë ˆì´ì–´ ìˆ«ì
 	 */
 	private int playerNum;
 
 	/**
-	 * °ÔÀÓÀÇ Á¾·á¸¦ ÆÇ´ÜÇÏ´Â ÇÃ·¡±×
+	 * ê²Œì„ì˜ ì¢…ë£Œë¥¼ íŒë‹¨í•˜ëŠ” í”Œë˜ê·¸
 	 */
 	private boolean gameEndFlag;
 
 	/**
-	 * ¸ÅÄ¡ ÀÌ¸§
+	 * ë§¤ì¹˜ ì´ë¦„
 	 */
 	private String matchName;
 
 	/**
-	 * ¸ÅÄ¡ ºñ¹Ğ¹øÈ£
+	 * ë§¤ì¹˜ ë¹„ë°€ë²ˆí˜¸
 	 */
 	private String matchPW;
 
@@ -84,9 +84,9 @@ public class Game {
 	}
 
 	/**
-	 * »ı¼ºÀÚ ¸Ş¼­µå(Å×½ºÆ®¸¦ À§ÇØ ÇÃ·¹ÀÌ¾î ÀÌ¸§Àº ÀÓÀÇ·Î ÀÛ¼º)
+	 * ìƒì„±ì ë©”ì„œë“œ(í…ŒìŠ¤íŠ¸ë¥¼ ìœ„í•´ í”Œë ˆì´ì–´ ì´ë¦„ì€ ì„ì˜ë¡œ ì‘ì„±)
 	 * 
-	 * @param playerNum °ÔÀÓ¿¡ Âü¿©ÇÏ´Â ÇÃ·¹ÀÌ¾î ¼ö
+	 * @param playerNum ê²Œì„ì— ì°¸ì—¬í•˜ëŠ” í”Œë ˆì´ì–´ ìˆ˜
 	 */
 	public Game(int playerNum) {
 		this.playerNum = playerNum;
@@ -102,18 +102,18 @@ public class Game {
 	}
 
 	/**
-	 * ³» Äá ½É±â ´Ü°è
+	 * ë‚´ ì½© ì‹¬ê¸° ë‹¨ê³„
 	 * 
-	 * @param p ÅÏÀ» ÁøÇàÇÏ´Â ÇÃ·¹ÀÌ¾î
+	 * @param p í„´ì„ ì§„í–‰í•˜ëŠ” í”Œë ˆì´ì–´
 	 */
 	public void plantPhase(Player p) {
 		p.plantPhase();
 	}
 
 	/**
-	 * °Å·¡ÇÏ±â ´Ü°è
+	 * ê±°ë˜í•˜ê¸° ë‹¨ê³„
 	 * 
-	 * @param p ÅÏÀ» ÁøÇàÇÏ´Â ÇÃ·¹ÀÌ¾î
+	 * @param p í„´ì„ ì§„í–‰í•˜ëŠ” í”Œë ˆì´ì–´
 	 */
 	public void tradePhase(Player p) {
 		Optional<Beans> b;
@@ -149,10 +149,10 @@ public class Game {
 	}
 
 	/**
-	 * ¼±ÅÃÇÑ µÎ ÇÃ·¹ÀÌ¾îÀÇ °Å·¡¸¦ ¼öÇà
+	 * ì„ íƒí•œ ë‘ í”Œë ˆì´ì–´ì˜ ê±°ë˜ë¥¼ ìˆ˜í–‰
 	 * 
-	 * @param p1 °Å·¡¿¡ Âü¿©ÇÏ´Â ÇÃ·¹ÀÌ¾î 1
-	 * @param p2 °Å·¡¿¡ Âü¿©ÇÏ´Â ÇÃ·¹ÀÌ¾î 2
+	 * @param p1 ê±°ë˜ì— ì°¸ì—¬í•˜ëŠ” í”Œë ˆì´ì–´ 1
+	 * @param p2 ê±°ë˜ì— ì°¸ì—¬í•˜ëŠ” í”Œë ˆì´ì–´ 2
 	 */
 	public void performTrade(Player p1, Player p2) {
 		for (Beans b : p1.getTransaction().getOffer()) {
@@ -172,9 +172,9 @@ public class Game {
 	}
 
 	/**
-	 * °ø°³µÈ Äá ½É±â ´Ü°è
+	 * ê³µê°œëœ ì½© ì‹¬ê¸° ë‹¨ê³„
 	 * 
-	 * @param p ÄáÀ» ½É´Â ÇÃ·¹ÀÌ¾î
+	 * @param p ì½©ì„ ì‹¬ëŠ” í”Œë ˆì´ì–´
 	 */
 	public void plantOpenedBeansPhase(Player p) {
 		for (String name : players.keySet())
@@ -182,37 +182,37 @@ public class Game {
 	}
 
 	/**
-	 * Äá º¸ÃæÇÏ±â ´Ü°è
+	 * ì½© ë³´ì¶©í•˜ê¸° ë‹¨ê³„
 	 * 
-	 * @param p ÅÏÀ» ÁøÇàÇÏ´Â ÇÃ·¹ÀÌ¾î
+	 * @param p í„´ì„ ì§„í–‰í•˜ëŠ” í”Œë ˆì´ì–´
 	 */
 	public void drawPhase(Player p) {
 		gameEndFlag = !p.draw(3);
 	}
 
 	/**
-	 * ¸ÅÄ¡ ¹æÀÇ Á¤¿øÀ» ¹İÈ¯
+	 * ë§¤ì¹˜ ë°©ì˜ ì •ì›ì„ ë°˜í™˜
 	 * 
-	 * @return ¹æÀÇ Á¤¿ø
+	 * @return ë°©ì˜ ì •ì›
 	 */
 	public int getPlayerNum() {
 		return playerNum;
 	}
 
 	/**
-	 * ÇöÀç Á¢¼ÓÇÑ ÀÎ¿ø ¼ö¸¦ ¹İÈ¯
+	 * í˜„ì¬ ì ‘ì†í•œ ì¸ì› ìˆ˜ë¥¼ ë°˜í™˜
 	 * 
-	 * @return ÇöÀç Á¢¼Ó ÀÎ¿ø ¼ö
+	 * @return í˜„ì¬ ì ‘ì† ì¸ì› ìˆ˜
 	 */
 	public int getCurrentUsers() {
 		return players.size();
 	}
 
 	/**
-	 * »õ·Î¿î ÇÃ·¹ÀÌ¾î¸¦ Ãß°¡
+	 * ìƒˆë¡œìš´ í”Œë ˆì´ì–´ë¥¼ ì¶”ê°€
 	 * 
-	 * @param name »õ·Î¿î ÇÃ·¹ÀÌ¾îÀÇ ÀÌ¸§
-	 * @return Ãß°¡ ¼º°ø ¿©ºÎ
+	 * @param name ìƒˆë¡œìš´ í”Œë ˆì´ì–´ì˜ ì´ë¦„
+	 * @return ì¶”ê°€ ì„±ê³µ ì—¬ë¶€
 	 */
 	public boolean addPlayer(String name) {
 		if (!isRoomFull()) {
@@ -225,16 +225,16 @@ public class Game {
 	}
 
 	/**
-	 * ¹æÀÌ °¡µæ Ã¡´ÂÁö ¾Ë·ÁÁÜ
+	 * ë°©ì´ ê°€ë“ ì°¼ëŠ”ì§€ ì•Œë ¤ì¤Œ
 	 * 
-	 * @return ¹æÀÌ °¡µæ Ã¡À» °æ¿ì true, ¾Æ´Ï¶ó¸é false
+	 * @return ë°©ì´ ê°€ë“ ì°¼ì„ ê²½ìš° true, ì•„ë‹ˆë¼ë©´ false
 	 */
 	public boolean isRoomFull() {
 		return playerNum == getCurrentUsers();
 	}
 
 	/**
-	 * ÇÃ·¹ÀÌ¾îµéÀÇ ¼ø¼­¸¦ ÀÓÀÇ·Î ¹Ù²Ş
+	 * í”Œë ˆì´ì–´ë“¤ì˜ ìˆœì„œë¥¼ ì„ì˜ë¡œ ë°”ê¿ˆ
 	 */
 	public void shuffleOrder() {
 		Collections.shuffle(orders);
@@ -249,7 +249,7 @@ public class Game {
 	}
 
 	/**
-	 * °ÔÀÓ ½ÃÀÛ
+	 * ê²Œì„ ì‹œì‘
 	 */
 	public void play() {
 		Iterator<String> itr = orders.iterator();

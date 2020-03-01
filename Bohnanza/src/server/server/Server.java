@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 /**
  * 
- * ¼­¹ö Å¬·¡½º
+ * ì„œë²„ í´ë˜ìŠ¤
  * 
  * @author YJH
  * @version 1.0
@@ -21,7 +21,7 @@ public class Server {
 	public static int portNumber;
 
 	/**
-	 * Å¬¶óÀÌ¾ğÆ® ½ºÆ®¸² ÀúÀå¿ë ÇØ½Ã¸Ê
+	 * í´ë¼ì´ì–¸íŠ¸ ìŠ¤íŠ¸ë¦¼ ì €ì¥ìš© í•´ì‹œë§µ
 	 */
 	HashMap<String, ObjectOutputStream> clients;
 

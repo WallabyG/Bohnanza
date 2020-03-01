@@ -1,43 +1,43 @@
 package game.cards;
 
 /**
- * °ÔÀÓ¿¡ »ç¿ëÇÏ´Â Äá Ä«µå Å¬·¡½º
+ * ê²Œì„ì— ì‚¬ìš©í•˜ëŠ” ì½© ì¹´ë“œ í´ë˜ìŠ¤
  * @author ycm
  * @version 1.0
  */
 public class Beans {
 	/**
-	 * ID »ı¼ºÀ» À§ÇÑ Å¬·¡½º ¸â¹ö
+	 * ID ìƒì„±ì„ ìœ„í•œ í´ë˜ìŠ¤ ë©¤ë²„
 	 */
 	private static int order_generated=0;
 	
 	/**
-	 * ÄáÀÇ °Å·¡ ¿©ºÎ
+	 * ì½©ì˜ ê±°ë˜ ì—¬ë¶€
 	 */
 	private boolean isTraded;
 	
 	/**
-	 * Äá Ä«µåÀÇ ID
+	 * ì½© ì¹´ë“œì˜ ID
 	 */
 	private int id;
 	
 	/**
-	 * Äá Ä«µåÀÇ Á¾·ù(Àå¼ö)
+	 * ì½© ì¹´ë“œì˜ ì¢…ë¥˜(ì¥ìˆ˜)
 	 */
 	private int number;
 	
 	/**
-	 * Äá°ª
+	 * ì½©ê°’
 	 */
 	private int[] beanometer;
 	
 	/**
-	 * Äá Ä«µå ÀÌ¹ÌÁö °æ·Î
+	 * ì½© ì¹´ë“œ ì´ë¯¸ì§€ ê²½ë¡œ
 	 */
 	private String imgPath;
 	
 	/**
-	 * »ı¼ºÀÚ ¸Ş¼­µå
+	 * ìƒì„±ì ë©”ì„œë“œ
 	 */
 	public Beans(){
 		this.id=order_generated++;
@@ -47,8 +47,8 @@ public class Beans {
 	}
 	
 	/**
-	 * ÄáÀÇ °Å·¡ ¿©ºÎ¸¦ ¹İÈ¯
-	 * @return ÄáÀÇ °Å·¡ ¿©ºÎ
+	 * ì½©ì˜ ê±°ë˜ ì—¬ë¶€ë¥¼ ë°˜í™˜
+	 * @return ì½©ì˜ ê±°ë˜ ì—¬ë¶€
 	 */
 	public boolean isTraded() {
 		return isTraded;
@@ -67,9 +67,9 @@ public class Beans {
 	}
 
 	/**
-	 * n¿¡ µû¶ó Äá Ä«µå¸¦ ¼±ÅÃ
-	 * @param n Äá Ä«µåÀÇ Á¾·ù(Àå¼ö)
-	 * @return ÇØ´çÇÏ´Â Äá ÀÎ½ºÅÏ½º
+	 * nì— ë”°ë¼ ì½© ì¹´ë“œë¥¼ ì„ íƒ
+	 * @param n ì½© ì¹´ë“œì˜ ì¢…ë¥˜(ì¥ìˆ˜)
+	 * @return í•´ë‹¹í•˜ëŠ” ì½© ì¸ìŠ¤í„´ìŠ¤
 	 */
 	public static Beans selectBeans(int n) {
 		Beans bean2return;

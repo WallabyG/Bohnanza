@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 /**
  * 
- * ·Î±×ÀÎ °ü·Ã ±â´É
+ * ë¡œê·¸ì¸ ê´€ë ¨ ê¸°ëŠ¥
  * 
  * @author YJH
  * @version 1.0
@@ -13,24 +13,24 @@ import java.util.ArrayList;
 public class Login {
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾î ÀÌ¸§ ¸®½ºÆ®
+	 * í”Œë ˆì´ì–´ ì´ë¦„ ë¦¬ìŠ¤íŠ¸
 	 */
 	private static final ArrayList<String> playerNameList = new ArrayList<>();
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾î ÀÌ¸§ÀÇ Áßº¹ ¿©ºÎ Ã¼Å©
+	 * í”Œë ˆì´ì–´ ì´ë¦„ì˜ ì¤‘ë³µ ì—¬ë¶€ ì²´í¬
 	 * 
-	 * @param playerName ÇÃ·¹ÀÌ¾î ÀÌ¸§
-	 * @return ÇÃ·¹ÀÌ¾î ÀÌ¸§ÀÇ Áßº¹ ¿©ºÎ ¹İÈ¯
+	 * @param playerName í”Œë ˆì´ì–´ ì´ë¦„
+	 * @return í”Œë ˆì´ì–´ ì´ë¦„ì˜ ì¤‘ë³µ ì—¬ë¶€ ë°˜í™˜
 	 */
 	public static boolean checkPlayerNameDuplicate(String playerName) {
 		return playerNameList.contains(playerName);
 	}
 	
 	/**
-	 * ÇÃ·¹ÀÌ¾î ÀÌ¸§ Ãß°¡
+	 * í”Œë ˆì´ì–´ ì´ë¦„ ì¶”ê°€
 	 * 
-	 * @param playerName ÇÃ·¹ÀÌ¾î ÀÌ¸§
+	 * @param playerName í”Œë ˆì´ì–´ ì´ë¦„
 	 */
 	public static void addPlayerName(String playerName) {
 		playerNameList.add(playerName);
