@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    >
+
+    <TextView
+        android:id="@+id/refillNumTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10sp"
+        android:text="1st\npile"
+        android:textSize="10sp"
+        android:textColor="#FF000000"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="draw"
+            android:textSize="8sp"
+            android:textColor="#FF000000"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/leftoverPileImageView"
+            android:layout_width="@dimen/card_default_width"
+            android:layout_height="@dimen/card_default_height"
+            android:src="@drawable/empty_card"
+            />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="discarded"
+            android:textSize="8sp"
+            android:textColor="#FF000000"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="5dp"
+            />
+
+        <ImageView
+            android:id="@+id/discardedPileImageView"
+            android:layout_width="@dimen/card_default_width"
+            android:layout_height="@dimen/card_default_height"
+            android:src="@drawable/empty_card"
+            />
+
+    </LinearLayout>
+
+</LinearLayout>

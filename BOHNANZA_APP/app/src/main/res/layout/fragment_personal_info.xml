@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical|right"
+    >
+
+    <LinearLayout
+        android:id="@+id/plantedCardLayout"
+        android:layout_width="100dp"
+        android:layout_height="@dimen/card_default_height"
+        android:orientation="horizontal"
+        android:layout_marginRight="20dp"
+        android:background="#FFFBEEE6"
+        />
+
+    <RelativeLayout
+        android:id="@+id/fieldLayout"
+        android:layout_width="120dp"
+        android:layout_height="80dp"
+        android:layout_marginRight="20dp"
+        android:padding="10dp"
+        android:background="#FFE8F8F5"
+        android:gravity="center"
+        >
+
+        <ImageView
+            android:id="@+id/firstFieldImageView"
+            android:layout_width="@dimen/card_default_width"
+            android:layout_height="@dimen/card_default_height"
+            android:src="@drawable/empty_card"
+            android:layout_alignParentLeft="true"
+            />
+
+        <ImageView
+            android:id="@+id/secondFieldImageView"
+            android:layout_width="@dimen/card_default_width"
+            android:layout_height="@dimen/card_default_height"
+            android:src="@drawable/empty_card"
+            android:layout_alignParentRight="true"
+            />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/cardHandLayout"
+        android:layout_width="200dp"
+        android:layout_height="@dimen/card_default_height"
+        android:orientation="horizontal"
+        android:background="#FFFEF5E7"
+        />
+
+</LinearLayout>
