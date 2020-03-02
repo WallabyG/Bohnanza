@@ -13,7 +13,8 @@ import server.message.Message;
  * @author ycm
  * @version 1.0
  */
-public class UpdateSender {
+public class UpdateSender extends Thread {
+
 	/**
 	 * 소켓
 	 */
@@ -34,12 +35,24 @@ public class UpdateSender {
 	 */
 	int messageType;
 
+	/**
+	 * 생성자 메서드
+	 * 
+	 * @param socket      소켓
+	 * @param messageType 보낼 정보에 해당하는 메시지타입
+	 * @param information 업데이트할 정보
+	 */
 	public UpdateSender(Socket socket, int messageType, Updatable information) {
 		this.socket = socket;
 		this.messageType = messageType;
 		this.information = information;
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());
+
+			System.out.println(ServerTime.getTime() + " Send Update Information to [" + socket.getInetAddress() + ":"
+					+ socket.getPort() + "]");
+
+			out.flush();
 		} catch (IOException e) {
 		}
 	}

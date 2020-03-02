@@ -27,4 +27,26 @@ public class GameInfo implements Updatable, java.io.Serializable{
 		this.currentPlayer=game.getCurrentPlayer();
 		this.playerNum=game.getPlayerNum();
 	}
+
+	public Map<String, Player> getPlayers() {
+		return players;
+	}
+
+	public List<String> getOrders() {
+		return orders;
+	}
+
+
+	public Deck getDeck() {
+		return deck;
+	}
+
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
+
+	public int getPlayerNum() {
+		return playerNum;
+	}
+
 }

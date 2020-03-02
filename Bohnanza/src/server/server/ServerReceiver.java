@@ -6,6 +6,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
+import game.game.Game;
+import game.game.Updatable;
 import server.message.Message;
 import server.process.Login;
 import server.process.OnlineMatch;
@@ -33,6 +35,10 @@ public class ServerReceiver extends Thread {
 	 * 오브젝트 반환용 스트림
 	 */
 	ObjectOutputStream out;
+	
+	Game game;
+	
+	OnlineMatch onlineMatch;
 
 	/**
 	 * @param socket 소켓
@@ -47,6 +53,13 @@ public class ServerReceiver extends Thread {
 		}
 	}
 
+	/**
+	 * 클라이언트의 정보를 업데이트
+	 */
+	public void update(int messageType, Updatable information) {
+		(new UpdateSender(socket, messageType, information)).start();
+	}
+	
 	/**
 	 * 메시지 처리<br>
 	 * <br>
@@ -105,6 +118,7 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 221:
+			// 온라인 매치 상태 업데이트 구현
 			break;
 		}
 
@@ -117,18 +131,21 @@ public class ServerReceiver extends Thread {
 		try {
 			while (in != null) {
 				message = (Message) in.readObject();
-				System.out.println(
-						"player name: " + message.getPlayerName() + " - message type: " + message.getMessageType());
+				System.out.println(ServerTime.getTime() + " player name: " + message.getPlayerName()
+						+ " - message type: " + message.getMessageType());
 				System.out.println();
 
 				Object returnObj = processMessage(message);
-				
+
 				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
+
+				out.flush();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
-			System.out.println("Disconnected from [" + socket.getInetAddress() + ":" + socket.getPort() + "]");
+			System.out.println(ServerTime.getTime() + " Disconnected from [" + socket.getInetAddress() + ":"
+					+ socket.getPort() + "]");
 		}
 	}
 }

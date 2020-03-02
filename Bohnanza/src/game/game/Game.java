@@ -104,6 +104,10 @@ public class Game implements Updatable, java.io.Serializable{
 	public void setMatchPW(String matchPW) {
 		this.matchPW = matchPW;
 	}
+	
+	public GameInfo getGameInfo() {
+		return new GameInfo(this);
+	}
 
 	/**
 	 * 생성자 메서드(테스트를 위해 플레이어 이름은 임의로 작성)

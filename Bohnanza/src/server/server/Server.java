@@ -38,11 +38,13 @@ public class Server {
 			serverSocket = new ServerSocket(portNumber);
 			System.out.println("[ BOHNANZA SERVER ]");
 			System.out.println();
+			System.out.println(ServerTime.getTime()+" Server Started");
 
 			while (true) {
 				System.out.println("Listening at port " + portNumber + " ...");
 				socket = serverSocket.accept();
-				System.out.println("Connected from [" + socket.getInetAddress() + ":" + socket.getPort() + "]");
+				System.out.println(ServerTime.getTime() + " Connected from [" + socket.getInetAddress() + ":"
+						+ socket.getPort() + "]");
 				ServerReceiver thread = new ServerReceiver(socket);
 				thread.start();
 			}
