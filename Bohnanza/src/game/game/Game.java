@@ -24,8 +24,10 @@ import game.players.Player;
  * @version 1.0
  * 
  */
-public class Game {
+public class Game implements Updatable, java.io.Serializable{
 	private static Scanner sc = new Scanner(System.in);
+	
+	private static final long serialVersionUID=1L;
 
 	/**
 	 * 매치에 참여한 플레이어 맵
@@ -66,6 +68,26 @@ public class Game {
 	 * 매치 비밀번호
 	 */
 	private String matchPW;
+	
+	public Map<String, Player> getPlayers() {
+		return players;
+	}
+
+	public List<String> getOrders() {
+		return orders;
+	}
+
+	public Deck getDeck() {
+		return deck;
+	}
+
+	public boolean getGameEndFlag() {
+		return gameEndFlag;
+	}
+	
+	public Player getCurrentPlayer() {
+		return currentPlayer;
+	}
 
 	public String getMatchName() {
 		return matchName;
@@ -238,14 +260,6 @@ public class Game {
 	 */
 	public void shuffleOrder() {
 		Collections.shuffle(orders);
-	}
-
-	public boolean getGameEndFlag() {
-		return gameEndFlag;
-	}
-	
-	public Player getCurrentPlayer() {
-		return currentPlayer;
 	}
 
 	/**

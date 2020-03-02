@@ -122,7 +122,8 @@ public class ServerReceiver extends Thread {
 				System.out.println();
 
 				Object returnObj = processMessage(message);
-				out.writeObject(returnObj);
+				
+				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

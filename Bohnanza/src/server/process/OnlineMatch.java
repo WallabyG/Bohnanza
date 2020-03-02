@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import game.game.Game;
+import game.game.Updatable;
 
 /**
  * 
@@ -14,7 +15,7 @@ import game.game.Game;
  * @version 1.0
  *
  */
-public class OnlineMatch {
+public class OnlineMatch implements Updatable{
 
 	/**
 	 * 온라인 매치 이름 리스트

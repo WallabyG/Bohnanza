@@ -5,7 +5,10 @@ package game.cards;
  * @author ycm
  * @version 1.0
  */
-public class Beans {
+public class Beans implements java.io.Serializable{
+	
+	private static final long serialVersionUID=1L;
+	
 	/**
 	 * ID 생성을 위한 클래스 멤버
 	 */

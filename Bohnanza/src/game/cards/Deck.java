@@ -10,7 +10,9 @@ import java.util.Optional;
  * @author ycm
  * @version 1.0
  */
-public class Deck {
+public class Deck implements java.io.Serializable{
+	private static final long serialVersionUID=1L;
+	
 	/**
 	 * 최대 리필 횟수 == 2
 	 */

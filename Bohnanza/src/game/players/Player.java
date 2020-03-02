@@ -16,7 +16,9 @@ import game.cards.Deck;
  * @author ycm
  * @version 1.0
  */
-public class Player {
+public class Player implements java.io.Serializable{
+	private static final long serialVersionUID=1L;
+	
 	/**
 	 * ID 생성용 클래스 멤버
 	 */

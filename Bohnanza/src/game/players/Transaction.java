@@ -10,7 +10,9 @@ import game.cards.Beans;
  * @author ycm
  * @version 1.0
  */
-public class Transaction {
+public class Transaction implements java.io.Serializable{
+	private static final long serialVersionUID=1L;
+	
 	/**
 	 * 거래 상대에게 제공하는 콩 리스트<br>
 	 * 자신이 보유한 콩만 선택 가능

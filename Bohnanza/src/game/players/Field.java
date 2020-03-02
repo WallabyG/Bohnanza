@@ -12,7 +12,9 @@ import game.cards.Deck;
  * @author ycm
  * @version 1.0
  */
-public class Field {
+public class Field implements java.io.Serializable{
+	private static final long serialVersionUID=1L;
+	
 	/**
 	 * 밭에 심은 콩의 종류
 	 */
