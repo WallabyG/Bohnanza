@@ -11,11 +11,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.bohnanza.BaseActivity;
 import com.example.bohnanza.OkAlertDialog;
 import com.example.bohnanza.R;
-import com.example.bohnanza.client.ClientTask;
+import com.example.bohnanza.client.ClientSender;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import server.message.Message;
 
@@ -27,7 +29,7 @@ import server.message.Message;
  * @version 1.0
  *
  */
-public class NewOnlineMatchOptionActivity extends AppCompatActivity {
+public class NewOnlineMatchOptionActivity extends BaseActivity {
 
     /**
      * 가능한 플레이어 수
@@ -130,28 +132,30 @@ public class NewOnlineMatchOptionActivity extends AppCompatActivity {
 
     public void onCreateMatchButtonClicked(View v) {
         // Match name duplication check
-        (new ClientTask() {
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                boolean isDuplicated = (boolean) returnObj;
+        (new ClientSender(new Message(201, playerName, matchName))).execute();
+    }
 
-                if (isDuplicated) {
-                    OkAlertDialog.show(NewOnlineMatchOptionActivity.this, "Match with same name exists.");
-                } else {
-                    // Send message to server
-                    (new ClientTask()).execute(new Message(202, playerName, null));
+    /**
+     * 매치 이름 중복 여부 적용
+     *
+     * @param isDuplicated 매치 이름 중복 여부
+     */
+    public void applyMatchNameDuplicate(boolean isDuplicated) {
+        if (isDuplicated) {
+            OkAlertDialog.show(NewOnlineMatchOptionActivity.this, "Match with same name exists.");
+        } else {
+            // Send message to server
+            (new ClientSender(new Message(202, playerName, new ArrayList<>(Arrays.asList(matchName, matchPW, playerNumber))))).execute();
 
-                    // Start CreateOnlineMatchActivity
-                    Intent intent = new Intent(getApplicationContext(), CreateOnlineMatchActivity.class);
-                    intent.putExtra("player name", playerName);
-                    intent.putExtra("match name", matchName);
-                    intent.putExtra("match PW", matchPW);
-                    intent.putExtra("player number", playerNumber);
+            // Start CreateOnlineMatchActivity
+            Intent intent = new Intent(getApplicationContext(), CreateOnlineMatchActivity.class);
+            intent.putExtra("player name", playerName);
+            intent.putExtra("match name", matchName);
+            intent.putExtra("match PW", matchPW);
+            intent.putExtra("player number", playerNumber);
 
-                    startActivity(intent);
-                }
-            }
-        }).execute(new Message(201, playerName, matchName));
+            startActivity(intent);
+        }
     }
 
     /**

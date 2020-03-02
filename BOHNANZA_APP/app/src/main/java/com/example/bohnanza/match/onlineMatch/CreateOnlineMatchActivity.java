@@ -1,16 +1,16 @@
 package com.example.bohnanza.match.onlineMatch;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.example.bohnanza.BaseActivity;
 import com.example.bohnanza.R;
-import com.example.bohnanza.client.ClientTask;
+import com.example.bohnanza.client.ClientSender;
 
 import server.message.Message;
 
@@ -22,7 +22,7 @@ import server.message.Message;
  * @version 1.0
  *
  */
-public class CreateOnlineMatchActivity extends AppCompatActivity {
+public class CreateOnlineMatchActivity extends BaseActivity {
 
     /**
      * 매치 이름이 보여지는 텍스트 뷰
@@ -59,11 +59,6 @@ public class CreateOnlineMatchActivity extends AppCompatActivity {
      */
     int playerNumber;
 
-    /**
-     * 현재 접속한 플레이어 수
-     */
-    int currentPlayerNumber;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,7 +92,7 @@ public class CreateOnlineMatchActivity extends AppCompatActivity {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
-                (new ClientTask()).execute(new Message(203, playerName, matchName));
+                (new ClientSender(new Message(203, playerName, matchName))).execute();
 
                 finish();
             }

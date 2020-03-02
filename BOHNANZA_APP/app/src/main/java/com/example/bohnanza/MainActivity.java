@@ -1,17 +1,16 @@
 package com.example.bohnanza;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+
+import com.example.bohnanza.client.Client;
 import com.example.bohnanza.match.onlineMatch.OnlineMatchOptionActivity;
 
 /**
@@ -22,7 +21,7 @@ import com.example.bohnanza.match.onlineMatch.OnlineMatchOptionActivity;
  * @version 1.0
  *
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     public static final int REQUEST_CODE_LOGIN = 101;
     public static final int REQUEST_CODE_ONLINE_MATCH = 102;
@@ -46,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         playerNameTextView = findViewById(R.id.playerNameTextView);
+
+        // Start communication
+        (new Client(this)).start();
 
         // Load player name
         loadPlayerName();

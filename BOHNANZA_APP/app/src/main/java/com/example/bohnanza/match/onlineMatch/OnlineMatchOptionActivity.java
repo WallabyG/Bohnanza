@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.example.bohnanza.BaseActivity;
 import com.example.bohnanza.R;
 
 /**
@@ -19,7 +18,7 @@ import com.example.bohnanza.R;
  * @version 1.0
  *
  */
-public class OnlineMatchOptionActivity extends AppCompatActivity {
+public class OnlineMatchOptionActivity extends BaseActivity {
 
     /**
      * 플레이어 이름
