@@ -92,6 +92,7 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 203:
+			OnlineMatch.deleteOnlineMatch((String) message.getContents());
 			break;
 
 		case 211:

@@ -65,6 +65,12 @@ public class OnlineMatch {
 		onlineMatchMap.put(matchName, game);
 	}
 	
+	public static void deleteOnlineMatch(String matchName) {
+		onlineMatchNameList.remove(matchName);
+		onlineMatchPWMap.remove(matchName);
+		onlineMatchMap.remove(matchName);
+	}
+	
 	/**
 	 * 온라인 매치 참여
 	 * 
