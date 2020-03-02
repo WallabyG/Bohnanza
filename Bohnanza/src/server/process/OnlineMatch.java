@@ -53,7 +53,11 @@ public class OnlineMatch {
 	 * @param matchPW 매치 비밀번호
 	 * @param playerNumber 플레이어 수
 	 */
-	public static void createOnlineMatch(String playerName, String matchName, String matchPW, int playerNumber) {
+	public static void createOnlineMatch(String playerName, ArrayList<Object> matchInfo) {
+		String matchName = (String) matchInfo.get(0);
+		String matchPW = (String) matchInfo.get(1);
+		int playerNumber = (int) matchInfo.get(2);
+		
 		Game game = new Game(playerNumber);
 		
 		onlineMatchNameList.add(matchName);
