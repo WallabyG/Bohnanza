@@ -139,8 +139,6 @@ public class ServerReceiver extends Thread {
 				Object returnObj = processMessage(message);
 
 				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
-
-				out.flush();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
