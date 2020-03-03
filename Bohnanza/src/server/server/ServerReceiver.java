@@ -59,9 +59,6 @@ public class ServerReceiver extends Thread {
 	 * <br>
 	 * 메시지 타입<br>
 	 * <br>
-	 * 0 - 서버에 접속<br>
-	 * 001 - 클라이언트의 스트림을 서버에 등록<br>
-	 * <br>
 	 * 1 - 로그인<br>
 	 * 101 - 플레이어 이름 중복 체크<br>
 	 * 102 - 플레이어 이름 추가<br>
@@ -83,7 +80,6 @@ public class ServerReceiver extends Thread {
 		OnlineMatch match;
 
 		switch (message.getMessageType()) {
-		case 1:
 
 		case 101:
 			return Login.checkPlayerNameDuplicate((String) message.getContents());
@@ -134,18 +130,10 @@ public class ServerReceiver extends Thread {
 				message = (Message) in.readObject();
 				System.out.println(ServerTime.getTime() + " player name: " + message.getPlayerName()
 						+ " - message type: " + message.getMessageType());
-				System.out.println();
 
 				Object returnObj = processMessage(message);
-				
-				System.out.println("I have object to return!");
-				
-				if(out!=null) {
-					out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
-					System.out.println(ServerTime.getTime()+" Write Message to "+message.getPlayerName());
-				}
-				else
-					System.out.println("Where is my outputStream?");
+
+				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
