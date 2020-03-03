@@ -137,8 +137,15 @@ public class ServerReceiver extends Thread {
 				System.out.println();
 
 				Object returnObj = processMessage(message);
-
-				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
+				
+				System.out.println("I have object to return!");
+				
+				if(out!=null) {
+					out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
+					System.out.println(ServerTime.getTime()+" Write Message to "+message.getPlayerName());
+				}
+				else
+					System.out.println("Where is my outputStream?");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
