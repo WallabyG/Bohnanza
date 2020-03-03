@@ -22,7 +22,7 @@ public class Server {
 	MatchSystem matchSystem;
 
 	Server() {
-		matchSystem=new MatchSystem();
+		matchSystem = new MatchSystem();
 	}
 
 	public void start() {
@@ -33,7 +33,7 @@ public class Server {
 			serverSocket = new ServerSocket(portNumber);
 			System.out.println("[ BOHNANZA SERVER ]");
 			System.out.println();
-			System.out.println(ServerTime.getTime()+" Server Started");
+			System.out.println(ServerTime.getTime() + " Server Started");
 
 			while (true) {
 				System.out.println("Listening at port " + portNumber + " ...");

@@ -83,11 +83,11 @@ public class MatchSystem implements Updatable {
 		onlineMatchNameList.add(matchName);
 		onlineMatchPWMap.put(matchName, matchPW);
 		onlineMatchMap.put(matchName, match);
-		
-		System.out.println(ServerTime.getTime()+" Created Online Match ["+matchName+":"+matchPW+"]");
+
+		System.out.println(ServerTime.getTime() + " Created Online Match [" + matchName + ":" + matchPW + "]");
 	}
 
-	public void deleteOnlineMatch(String matchName) {
+	public synchronized void deleteOnlineMatch(String matchName) {
 		onlineMatchNameList.remove(matchName);
 		onlineMatchPWMap.remove(matchName);
 		onlineMatchMap.remove(matchName);
@@ -119,7 +119,7 @@ public class MatchSystem implements Updatable {
 			}
 
 			playerMatchMap.put(playerName, matchName);
-			System.out.println(ServerTime.getTime()+" "+playerName+" Joined Match ["+matchName+"]");
+			System.out.println(ServerTime.getTime() + " " + playerName + " Joined Match [" + matchName + "]");
 
 			return 0;
 		} else if (!onlineMatchNameList.contains(matchName)) {
@@ -142,10 +142,10 @@ public class MatchSystem implements Updatable {
 			OnlineMatch match = onlineMatchMap.get(matchName);
 			match.deletePlayer(playerName);
 			playerMatchMap.remove(playerName);
-			System.out.println(ServerTime.getTime()+" Deleted Online Match ["+matchName+"]");
+			System.out.println(ServerTime.getTime() + " Deleted Online Match [" + matchName + "]");
 		}
 	}
-	
+
 	public synchronized OnlineMatch getMatchbyPlayer(String playerName) {
 		return onlineMatchMap.get(playerMatchMap.get(playerName));
 	}

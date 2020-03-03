@@ -35,5 +35,4 @@ public class Login {
 	public static void addPlayerName(String playerName) {
 		playerNameList.add(playerName);
 	}
-	
 }

@@ -34,17 +34,18 @@ public class ServerReceiver extends Thread {
 	 * 오브젝트 반환용 스트림
 	 */
 	ObjectOutputStream out;
-	
+
 	MatchSystem matchSystem;
 
 	/**
 	 * 생성자 메서드
+	 * 
 	 * @param matchSystem 서버의 매치시스템
-	 * @param socket 소켓
+	 * @param socket      소켓
 	 */
 	public ServerReceiver(MatchSystem matchSystem, Socket socket) {
 		super();
-		this.matchSystem=matchSystem;
+		this.matchSystem = matchSystem;
 		this.socket = socket;
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
@@ -52,7 +53,7 @@ public class ServerReceiver extends Thread {
 		} catch (IOException e) {
 		}
 	}
-	
+
 	/**
 	 * 메시지 처리<br>
 	 * <br>
@@ -80,7 +81,7 @@ public class ServerReceiver extends Thread {
 	@SuppressWarnings("unchecked")
 	private Object processMessage(Message message) {
 		OnlineMatch match;
-		
+
 		switch (message.getMessageType()) {
 		case 1:
 
@@ -103,14 +104,15 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 211:
-			matchSystem.joinOnlineMatch(message.getPlayerName(), (ArrayList<Object>)message.getContents(), socket);
-			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			// 구현 잘못 됨 수정 필요 : 접속 여부를 반환
+			matchSystem.joinOnlineMatch(message.getPlayerName(), (ArrayList<Object>) message.getContents(), socket);
+			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 			match.update(211);
 			break;
 
 		case 212:
-			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
-			(new UpdateSender(socket,212,match.getInfo())).start();
+			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
+			(new UpdateSender(socket, 212, match.getInfo())).start();
 			break;
 
 		case 213:
