@@ -6,18 +6,32 @@ import java.io.ObjectOutputStream;
 
 import server.message.Message;
 
-class ClientSender extends AsyncTask<Message, Void, Void> {
+/**
+ *
+ * 클라이언트 통신 - 송신 기능
+ *
+ * @author YJH
+ * @version 1.0
+ *
+ */
+public class ClientSender extends AsyncTask<Void, Void, Void> {
 
-    ObjectOutputStream outStream;
+    /**
+     * 송신할 메시지
+     */
+    private Message message;
 
-    public ClientSender(ObjectOutputStream outStream) {
-        this.outStream = outStream;
+    private ObjectOutputStream outStream;
+
+    public ClientSender(Message message) {
+        this.message = message;
+        this.outStream = Client.outStream;
     }
 
     @Override
-    protected Void doInBackground(Message... messages) {
+    protected Void doInBackground(Void... voids) {
         try {
-            outStream.writeObject(messages[0]);
+            outStream.writeObject(message);
             outStream.flush();
         } catch (Exception e) {
             e.printStackTrace();
@@ -25,4 +39,5 @@ class ClientSender extends AsyncTask<Message, Void, Void> {
 
         return null;
     }
+
 }

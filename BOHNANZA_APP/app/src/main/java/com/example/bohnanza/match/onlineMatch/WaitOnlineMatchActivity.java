@@ -1,16 +1,16 @@
 package com.example.bohnanza.match.onlineMatch;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
+
+import com.example.bohnanza.BaseActivity;
 import com.example.bohnanza.R;
-import com.example.bohnanza.client.ClientTask;
+import com.example.bohnanza.client.ClientSender;
 
 import java.util.ArrayList;
 
@@ -24,7 +24,7 @@ import server.message.Message;
  * @version 1.0
  *
  */
-public class WaitOnlineMatchActivity extends AppCompatActivity {
+public class WaitOnlineMatchActivity extends BaseActivity {
 
     /**
      * 매치 이름이 보여지는 텍스트 뷰
@@ -51,11 +51,6 @@ public class WaitOnlineMatchActivity extends AppCompatActivity {
      */
     int playerNumber;
 
-    /**
-     * 현재 접속한 플레이어 수
-     */
-    int currentPlayerNumber;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,18 +64,23 @@ public class WaitOnlineMatchActivity extends AppCompatActivity {
         playerName = intent.getStringExtra("player name");
         matchName = intent.getStringExtra("match name");
 
-        // Set match information TextView
+        // Set match name TextView
         matchNameTextView.setText(matchName);
 
-        (new ClientTask() {
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                playerNumber = (int) ((ArrayList) returnObj).get(0);
-                currentPlayerNumber = (int) ((ArrayList) returnObj).get(1);
+        // Request player number information
+        (new ClientSender(new Message(212, playerName, matchName))).execute();
+    }
 
-                currentPlayerNumberTextView.setText(currentPlayerNumber + " / " + playerNumber);
-            }
-        }).execute(new Message(212, playerName, matchName));
+    /**
+     * 현재 접속한 플레이어 수 적용
+     *
+     * @param playerNumberInfo [플레이어 수, 현재 접속한 플레이어 수]
+     */
+    public void applyPlayerNumberInfo(ArrayList<Integer> playerNumberInfo) {
+        this.playerNumber = playerNumberInfo.get(0);
+        int currentPlayerNumber = playerNumberInfo.get(1);
+
+        currentPlayerNumberTextView.setText(currentPlayerNumber + " / " + playerNumber);
     }
 
     /**
@@ -93,7 +93,7 @@ public class WaitOnlineMatchActivity extends AppCompatActivity {
         builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int whichButton) {
-                (new ClientTask()).execute(new Message(213, playerName, matchName));
+                (new ClientSender(new Message(213, playerName, matchName))).execute();
 
                 finish();
             }

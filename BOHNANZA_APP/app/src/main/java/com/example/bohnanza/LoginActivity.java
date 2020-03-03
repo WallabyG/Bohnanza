@@ -1,7 +1,5 @@
 package com.example.bohnanza;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.example.bohnanza.client.ClientTask;
+import com.example.bohnanza.client.ClientSender;
 
 import server.message.Message;
 
@@ -25,7 +23,7 @@ import server.message.Message;
  * @version 1.0
  *
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     /**
      * 플레이어 이름을 입력받는 에디트 텍스트
@@ -75,28 +73,29 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 // Player name duplication check
-                Message message = new Message(101, "player logged in", playerName);
-
-                (new ClientTask() {
-                    @Override
-                    protected void onPostExecute(Void aVoid) {
-                        boolean isDuplicated = (boolean) returnObj;
-                        String playerName = playerNameEditText.getText().toString();
-
-                        if (playerName == null || playerName.trim().isEmpty()) {
-                            loginButton.setEnabled(false);
-                            noticeTextView.setText(null);
-                        } else if (isDuplicated) {
-                            loginButton.setEnabled(false);
-                            noticeTextView.setText("This ID already exists.");
-                        } else {
-                            loginButton.setEnabled(true);
-                            noticeTextView.setText(null);
-                        }
-                    }
-                }).execute(message);
+                (new ClientSender(new Message(101, "player logged in", playerName))).execute();
             }
         });
+    }
+
+    /**
+     * 플레이어 이름 중복 여부 적용
+     *
+     * @param isDuplicated 플레이어 이름 중복 여부
+     */
+    public void applyPlayerNameDuplicate(boolean isDuplicated) {
+        String playerName = playerNameEditText.getText().toString();
+
+        if (playerName == null || playerName.trim().isEmpty()) {
+            loginButton.setEnabled(false);
+            noticeTextView.setText(null);
+        } else if (isDuplicated) {
+            loginButton.setEnabled(false);
+            noticeTextView.setText("This ID already exists.");
+        } else {
+            loginButton.setEnabled(true);
+            noticeTextView.setText(null);
+        }
     }
 
     public void onLoginButtonClicked(View v) {
@@ -109,9 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         editor.commit();
 
         // Send message to server
-        Message message = new Message(102, playerName, null);
-
-        (new ClientTask()).execute(message);
+        (new ClientSender(new Message(102, playerName, null))).execute();
 
         // Send player name to main activity
         Intent intent = new Intent();

@@ -1,7 +1,5 @@
 package com.example.bohnanza.match.onlineMatch;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Point;
@@ -14,9 +12,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.bohnanza.R;
+import com.example.bohnanza.BaseActivity;
 import com.example.bohnanza.OkAlertDialog;
-import com.example.bohnanza.client.ClientTask;
+import com.example.bohnanza.R;
+import com.example.bohnanza.client.ClientSender;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,7 +30,7 @@ import server.message.Message;
  * @version 1.0
  *
  */
-public class JoinOnlineMatchOptionActivity extends AppCompatActivity {
+public class JoinOnlineMatchOptionActivity extends BaseActivity {
 
     /**
      * 매치 이름을 입력받는 에디트 텍스트
@@ -111,38 +110,38 @@ public class JoinOnlineMatchOptionActivity extends AppCompatActivity {
 
     public void onJoinMatchButtonClicked(View v) {
         // Match information validation check
-        Message message = new Message(211, playerName, new ArrayList<>(Arrays.asList(matchName, matchPW)));
+        (new ClientSender(new Message(211, playerName, new ArrayList<>(Arrays.asList(matchName, matchPW))))).execute();
+    }
 
-        (new ClientTask() {
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                int state = (int) returnObj;
+    /**
+     * 매치 정보 유효 여부 적용
+     *
+     * @param state 매치 정보 유효 여부
+     */
+    public void applyMatchInfoValid(int state) {
+        // Match join success
+        if (state == 0) {
+            Intent intent = new Intent(getApplicationContext(), WaitOnlineMatchActivity.class);
+            intent.putExtra("player name", playerName);
+            intent.putExtra("match name", matchName);
 
-                // Match join success
-                if (state == 0) {
-                    Intent intent = new Intent(getApplicationContext(), WaitOnlineMatchActivity.class);
-                    intent.putExtra("player name", playerName);
-                    intent.putExtra("match name", matchName);
+            startActivity(intent);
+        }
 
-                    startActivity(intent);
-                }
+        // Match name mismatch
+        else if (state == 1) {
+            OkAlertDialog.show(JoinOnlineMatchOptionActivity.this, "The match does not exist.");
+        }
 
-                // Match name mismatch
-                else if (state == 1) {
-                    OkAlertDialog.show(JoinOnlineMatchOptionActivity.this, "The match does not exist.");
-                }
+        // Match full
+        else if (state == 2) {
+            OkAlertDialog.show(JoinOnlineMatchOptionActivity.this, "The match is full.");
+        }
 
-                // Match full
-                else if (state == 2) {
-                    OkAlertDialog.show(JoinOnlineMatchOptionActivity.this, "The match is full.");
-                }
-
-                // Match PW mismatch
-                else if (state == 3) {
-                    OkAlertDialog.show(JoinOnlineMatchOptionActivity.this, "The password does not match.");
-                }
-            }
-        }).execute(message);
+        // Match PW mismatch
+        else if (state == 3) {
+            OkAlertDialog.show(JoinOnlineMatchOptionActivity.this, "The password does not match.");
+        }
     }
 
     /**

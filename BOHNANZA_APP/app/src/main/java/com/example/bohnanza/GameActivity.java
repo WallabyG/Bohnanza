@@ -1,7 +1,5 @@
 package com.example.bohnanza;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
 /**
@@ -12,7 +10,7 @@ import android.os.Bundle;
  * @version 1.0
  *
  */
-public class GameScreenActivity extends AppCompatActivity {
+public class GameActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
