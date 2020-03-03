@@ -49,6 +49,7 @@ public class UpdateSender extends Thread {
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -62,6 +63,7 @@ public class UpdateSender extends Thread {
 				out.flush();
 			}
 		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

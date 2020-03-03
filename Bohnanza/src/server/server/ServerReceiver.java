@@ -1,6 +1,5 @@
 package server.server;
 
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -50,7 +49,8 @@ public class ServerReceiver extends Thread {
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
-		} catch (IOException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -143,6 +143,7 @@ public class ServerReceiver extends Thread {
 				out.flush();
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			System.out.println(ServerTime.getTime() + " Disconnected from [" + socket.getInetAddress() + ":"
 					+ socket.getPort() + "]");

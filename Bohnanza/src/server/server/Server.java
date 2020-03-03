@@ -32,9 +32,9 @@ public class Server {
 			System.out.println("[ BOHNANZA SERVER ]");
 			System.out.println();
 			System.out.println(ServerTime.getTime() + " Server Started");
+			System.out.println("Listening at port " + portNumber + " ...");
 
 			while (true) {
-				System.out.println("Listening at port " + portNumber + " ...");
 				socket = serverSocket.accept();
 				System.out.println(ServerTime.getTime() + " Connected from [" + socket.getInetAddress() + ":"
 						+ socket.getPort() + "]");
