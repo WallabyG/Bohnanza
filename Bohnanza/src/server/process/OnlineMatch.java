@@ -1,118 +1,90 @@
 package server.process;
 
-import java.util.ArrayList;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 
 import game.game.Game;
 import game.game.Updatable;
+import server.server.UpdateSender;
 
 /**
- * 
- * 온라인 매치 관련 기능
- * 
- * @author YJH
+ * 온라인 매치 클래스
+ * @author ycm
  * @version 1.0
- *
  */
-public class OnlineMatch implements Updatable{
+public class OnlineMatch {
 
 	/**
-	 * 온라인 매치 이름 리스트
+	 * 온라인 매치에 사용할 게임 클래스
 	 */
-	private static final ArrayList<String> onlineMatchNameList = new ArrayList<>();
-	
+	private Game game;
+
 	/**
-	 * 온라인 매치 이름 - 비밀번호 맵<br>
-	 * key  : 온라인 매치 이름<br>
-	 * value: 비밀번호<br>
+	 * 온라인 매치에 참여하는 플레이어 이름 - 소켓 맵
 	 */
-	private static final Map<String, String> onlineMatchPWMap = new HashMap<>();
-	
+	private Map<String,Socket> players;
+
 	/**
-	 * 온라인 매치 이름 - 게임 객체 맵<br>
-	 * key  : 온라인 매치 이름<br>
-	 * value: 게임 객체
+	 * 방의 정원
 	 */
-	private static final Map<String, Game> onlineMatchMap = new HashMap<>();
-	
+	private int capacity;
+
 	/**
-	 * 매치 이름의 중복 여부 체크
-	 * 
-	 * @param matchName 매치 이름
-	 * @return 매치 이름의 중복 여부 반환
+	 * 현재 접속 인원 수
 	 */
-	public static boolean checkMatchNameDuplicate(String matchName) {
-		return onlineMatchNameList.contains(matchName);
+	private int currentPlayers;
+
+	public MatchInfo getInfo() {
+		return new MatchInfo(currentPlayers, capacity);
 	}
-	
-	/**
-	 * 온라인 매치 생성
-	 * 
-	 * @param playerName 플레이어 이름
-	 * @param matchName 매치 이름
-	 * @param matchPW 매치 비밀번호
-	 * @param playerNumber 플레이어 수
-	 */
-	public static void createOnlineMatch(String playerName, ArrayList<Object> matchInfo) {
-		String matchName = (String) matchInfo.get(0);
-		String matchPW = (String) matchInfo.get(1);
-		int playerNumber = (int) matchInfo.get(2);
-		
-		Game game = new Game(playerNumber);
-		
-		onlineMatchNameList.add(matchName);
-		onlineMatchPWMap.put(matchName, matchPW);
-		onlineMatchMap.put(matchName, game);
+
+	OnlineMatch(int capacity) {
+		this.capacity = capacity;
+		this.game = new Game(this.capacity);
+		players = new HashMap<>();
 	}
-	
-	public static void deleteOnlineMatch(String matchName) {
-		onlineMatchNameList.remove(matchName);
-		onlineMatchPWMap.remove(matchName);
-		onlineMatchMap.remove(matchName);
-	}
-	
+
 	/**
-	 * 온라인 매치 참여
-	 * 
-	 * @param playerName 플레이어 이름
-	 * @param matchName 매치 이름
-	 * @param matchPW 매치 비밀번호
-	 * @return 온라인 매치 참여 결과<br>
-	 * <br>
-	 *  0 - 매치 접속 성공<br>
-	 *  1 - 매치 이름 불일치<br>
-	 *  2 - 매치 가득 참<br>
-	 *  3 - 매치 비밀번호 불일치<br>
-	 * -1 - 오류
-	 * 
+	 * 플레이어를 추가
+	 * @param playerName 추가할 플레이어의 이름
+	 * @return 플레이어 추가 성공 여부
 	 */
-	public static int joinOnlineMatch(String playerName, String matchName, String matchPW) {
-		if (onlineMatchNameList.contains(matchName) && matchPW == onlineMatchPWMap.get(matchName)) {
-			Game game = onlineMatchMap.get(matchName);
-			
-			if (!game.addPlayer(playerName)) {
-				return 2;
+	public synchronized boolean addPlayer(String playerName, Socket socket) {
+		if (!players.containsKey(playerName)) {
+			if (game.addPlayer(playerName)) {
+				players.put(playerName, socket);
+				return true;
 			}
-			
-			return 0;
-		} else if (!onlineMatchNameList.contains(matchName)) {
-			return 1;
-		} else if (onlineMatchNameList.contains(matchName) && matchPW != onlineMatchPWMap.get(matchName)) {
-			return 3;
 		}
-		
-		return -1;
+		return false;
 	}
 	
 	/**
-	 * 온라인 매치 나가기
-	 * 
-	 * @param playerName 플레이어 이름
-	 * @param matchName 매치 이름
+	 * 플레이어를 삭제
+	 * @param playerName 삭제할 플레이어의 이름
 	 */
-	public static void exitOnlineMatch(String playerName, String matchName) {
-		
+	public synchronized void deletePlayer(String playerName) {
+		game.deletePlayer(playerName);
+		players.remove(playerName);
 	}
 	
+	/**
+	 * 클라이언트의 정보를 업데이트
+	 */
+	public synchronized void update(int messageType) {
+		Updatable information;
+		switch(messageType) {
+		case 211:
+			information=this.getInfo();
+			break;
+		case 301:
+			information=this.game.getInfo();
+			break;
+		default:
+			return;
+		}
+		for(String name: players.keySet())
+			(new UpdateSender(players.get(name), messageType, information)).start();
+	}
 }

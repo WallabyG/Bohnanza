@@ -6,10 +6,9 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
 
-import game.game.Game;
-import game.game.Updatable;
 import server.message.Message;
 import server.process.Login;
+import server.process.MatchSystem;
 import server.process.OnlineMatch;
 
 /**
@@ -36,28 +35,22 @@ public class ServerReceiver extends Thread {
 	 */
 	ObjectOutputStream out;
 	
-	Game game;
-	
-	OnlineMatch onlineMatch;
+	MatchSystem matchSystem;
 
 	/**
+	 * 생성자 메서드
+	 * @param matchSystem 서버의 매치시스템
 	 * @param socket 소켓
 	 */
-	public ServerReceiver(Socket socket) {
+	public ServerReceiver(MatchSystem matchSystem, Socket socket) {
 		super();
+		this.matchSystem=matchSystem;
 		this.socket = socket;
 		try {
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
 		}
-	}
-
-	/**
-	 * 클라이언트의 정보를 업데이트
-	 */
-	public void update(int messageType, Updatable information) {
-		(new UpdateSender(socket, messageType, information)).start();
 	}
 	
 	/**
@@ -82,11 +75,12 @@ public class ServerReceiver extends Thread {
 	 * 221 - 온라인 매치 상태 업데이트
 	 * 
 	 * @param message 전송된 메시지
-	 * @return 반환할 메시지
+	 * @return 반환할 오브젝트
 	 */
 	@SuppressWarnings("unchecked")
-	public static Object processMessage(Message message) {
-
+	private Object processMessage(Message message) {
+		OnlineMatch match;
+		
 		switch (message.getMessageType()) {
 		case 1:
 
@@ -98,20 +92,25 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 201:
-			return OnlineMatch.checkMatchNameDuplicate((String) message.getContents());
+			return matchSystem.checkMatchNameDuplicate((String) message.getContents());
 
 		case 202:
-			OnlineMatch.createOnlineMatch(message.getPlayerName(), (ArrayList<Object>) message.getContents());
+			matchSystem.createOnlineMatch(message.getPlayerName(), (ArrayList<Object>) message.getContents());
 			break;
 
 		case 203:
-			OnlineMatch.deleteOnlineMatch((String) message.getContents());
+			matchSystem.deleteOnlineMatch((String) message.getContents());
 			break;
 
 		case 211:
+			matchSystem.joinOnlineMatch(message.getPlayerName(), (ArrayList<Object>)message.getContents(), socket);
+			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			match.update(211);
 			break;
 
 		case 212:
+			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			(new UpdateSender(socket,212,match.getInfo())).start();
 			break;
 
 		case 213:
@@ -142,7 +141,6 @@ public class ServerReceiver extends Thread {
 				out.flush();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
 			System.out.println(ServerTime.getTime() + " Disconnected from [" + socket.getInetAddress() + ":"
 					+ socket.getPort() + "]");

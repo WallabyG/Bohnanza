@@ -1,10 +1,9 @@
 package server.server;
 
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Collections;
-import java.util.HashMap;
+
+import server.process.MatchSystem;
 
 /**
  * 
@@ -20,14 +19,10 @@ public class Server {
 
 	public static int portNumber;
 
-	/**
-	 * 클라이언트 스트림 저장용 해시맵
-	 */
-	HashMap<String, ObjectOutputStream> clients;
+	MatchSystem matchSystem;
 
 	Server() {
-		clients = new HashMap<String, ObjectOutputStream>();
-		Collections.synchronizedMap(clients);
+		matchSystem=new MatchSystem();
 	}
 
 	public void start() {
@@ -45,7 +40,7 @@ public class Server {
 				socket = serverSocket.accept();
 				System.out.println(ServerTime.getTime() + " Connected from [" + socket.getInetAddress() + ":"
 						+ socket.getPort() + "]");
-				ServerReceiver thread = new ServerReceiver(socket);
+				ServerReceiver thread = new ServerReceiver(matchSystem, socket);
 				thread.start();
 			}
 		} catch (Exception e) {

@@ -48,19 +48,19 @@ public class UpdateSender extends Thread {
 		this.information = information;
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());
-
-			System.out.println(ServerTime.getTime() + " Send Update Information to [" + socket.getInetAddress() + ":"
-					+ socket.getPort() + "]");
-
-			out.flush();
 		} catch (IOException e) {
 		}
 	}
 
 	public void run() {
 		try {
-			if (out != null)
+			if (out != null) {
 				out.writeObject(new Message(messageType, "UPDATE", information));
+				System.out.println(ServerTime.getTime() + " Send Update Information to [" + socket.getInetAddress()
+						+ ":" + socket.getPort() + "]");
+
+				out.flush();
+			}
 		} catch (IOException e) {
 		}
 	}

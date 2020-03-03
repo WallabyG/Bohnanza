@@ -105,12 +105,12 @@ public class Game implements Updatable, java.io.Serializable{
 		this.matchPW = matchPW;
 	}
 	
-	public GameInfo getGameInfo() {
+	public GameInfo getInfo() {
 		return new GameInfo(this);
 	}
 
 	/**
-	 * 생성자 메서드(테스트를 위해 플레이어 이름은 임의로 작성)
+	 * 생성자 메서드
 	 * 
 	 * @param playerNum 게임에 참여하는 플레이어 수
 	 */
@@ -118,13 +118,8 @@ public class Game implements Updatable, java.io.Serializable{
 		this.playerNum = playerNum;
 		this.gameEndFlag = false;
 		this.deck = new Deck();
-		players = new HashMap<String, Player>();
-		for (int i = 0; i < this.playerNum; i++)
-			players.put(i + "", new Player(i + "", deck, this.playerNum));
-		orders = new ArrayList<String>(players.keySet());
-		shuffleOrder();
-		for (String name : players.keySet())
-			players.get(name).draw(5);
+		players = new HashMap<>();
+		orders = new ArrayList<>();
 	}
 
 	/**
@@ -244,7 +239,6 @@ public class Game implements Updatable, java.io.Serializable{
 		if (!isRoomFull()) {
 			players.put(name, new Player(name, deck, playerNum));
 			orders.add(name);
-			shuffleOrder();
 			return true;
 		}
 		return false;
@@ -258,6 +252,15 @@ public class Game implements Updatable, java.io.Serializable{
 	public boolean isRoomFull() {
 		return playerNum == getCurrentUsers();
 	}
+	
+	/**
+	 * 참가하고 있는 플레이어를 삭제
+	 * @param playerName 퇴장할 플레이어 이름
+	 */
+	public void deletePlayer(String playerName) {
+		players.remove(playerName);
+		orders.remove(playerName);
+	}
 
 	/**
 	 * 플레이어들의 순서를 임의로 바꿈
@@ -270,6 +273,9 @@ public class Game implements Updatable, java.io.Serializable{
 	 * 게임 시작
 	 */
 	public void play() {
+		shuffleOrder();
+		for (String name : orders)
+			players.get(name).draw(5);
 		Iterator<String> itr = orders.iterator();
 		while (!gameEndFlag) {
 			if (itr.hasNext()) {
