@@ -15,8 +15,6 @@ import server.process.MatchSystem;
  */
 public class Server {
 
-	public static final int testPortNumber = 55555;
-
 	public static int portNumber;
 
 	MatchSystem matchSystem;
@@ -52,7 +50,8 @@ public class Server {
 		try {
 			portNumber = Integer.parseInt(args[0]);
 		} catch (Exception e) {
-			portNumber = testPortNumber;
+			System.out.println("USAGE : java server.server.Server [PortNumber]");
+			System.exit(0);
 		}
 
 		(new Server()).start();
