@@ -92,10 +92,11 @@ public class ServerReceiver extends Thread {
 
 		case 202:
 			matchSystem.createOnlineMatch(message.getPlayerName(), (ArrayList<Object>) message.getContents());
+			matchSystem.joinOnlineMatch(message.getPlayerName(), (ArrayList<Object>) message.getContents(), socket);
 			break;
 
 		case 203:
-			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 			match.update(203);
 			matchSystem.deleteOnlineMatch((String) message.getContents());
 			break;
@@ -110,7 +111,7 @@ public class ServerReceiver extends Thread {
 			return match.getCurrentPlayers();
 
 		case 213:
-			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 			matchSystem.exitOnlineMatch(message.getPlayerName());
 			match.update(213);
 			break;

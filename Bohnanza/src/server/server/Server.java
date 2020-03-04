@@ -31,7 +31,7 @@ public class Server {
 			serverSocket = new ServerSocket(portNumber);
 			System.out.println("[ BOHNANZA SERVER ]");
 			System.out.println(ServerTime.getTime() + " Server Started");
-			System.out.println(ServerTime.getTime() + "Listening at port " + portNumber);
+			System.out.println(ServerTime.getTime() + " Listening at port " + portNumber);
 
 			while (true) {
 				socket = serverSocket.accept();

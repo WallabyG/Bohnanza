@@ -147,7 +147,8 @@ public class MatchSystem {
 			OnlineMatch match = getMatchbyPlayer(playerName);
 			match.deletePlayer(playerName);
 			playerMatchMap.remove(playerName);
-			System.out.println(ServerTime.getTime() + " " + playerName + " Exited Online Match [" + match.getName() + "]");
+			System.out.println(
+					ServerTime.getTime() + " " + playerName + " Exited Online Match [" + match.getName() + "]");
 		}
 	}
 
