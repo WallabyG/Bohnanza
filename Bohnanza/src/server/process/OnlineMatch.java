@@ -94,13 +94,13 @@ public class OnlineMatch {
 			information = 0;
 			sendMessageType = 203;
 			break;
-		case 211:
+		case 212:
 		case 213:
 		case 221:
 			information = getCurrentPlayers();
 			sendMessageType = 221;
 			break;
-		case 3:
+		case 301:
 			information = this.game.getInfo();
 			sendMessageType = 301;
 			break;
