@@ -116,8 +116,7 @@ public class MatchSystem {
 	public synchronized int joinOnlineMatch(String playerName, ArrayList<Object> matchInfo, Socket socket) {
 		String matchName = (String) matchInfo.get(0);
 		String matchPW = (String) matchInfo.get(1);
-		System.out.println("MatchInfo contains matchName : "+matchName+", matchPW : "+matchPW);
-		if (onlineMatchMap.containsKey(matchName) && matchPW == onlineMatchPWMap.get(matchName)) {
+		if (onlineMatchMap.containsKey(matchName) && matchPW.equals(onlineMatchPWMap.get(matchName))) {
 			OnlineMatch match = onlineMatchMap.get(matchName);
 
 			if (!match.addPlayer(playerName, socket)) {
@@ -130,7 +129,7 @@ public class MatchSystem {
 			return 0;
 		} else if (!onlineMatchMap.containsKey(matchName)) {
 			return 1;
-		} else if (matchPW != onlineMatchPWMap.get(matchName)) {
+		} else if (!matchPW.equals(onlineMatchPWMap.get(matchName))) {
 			return 3;
 		}
 
