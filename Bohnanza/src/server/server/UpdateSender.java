@@ -2,7 +2,6 @@ package server.server;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 
 import server.message.Message;
 
@@ -13,11 +12,6 @@ import server.message.Message;
  * @version 1.0
  */
 public class UpdateSender extends Thread {
-
-	/**
-	 * 소켓
-	 */
-	Socket socket;
 
 	/**
 	 * 오브젝트 반환용 스트림
@@ -41,22 +35,16 @@ public class UpdateSender extends Thread {
 	 * @param messageType 보낼 정보에 해당하는 메시지타입
 	 * @param information 업데이트할 정보
 	 */
-	public UpdateSender(Socket socket, int messageType, Object information) {
-		this.socket = socket;
+	public UpdateSender(ObjectOutputStream out, int messageType, Object information) {
+		this.out = out;
 		this.messageType = messageType;
 		this.information = information;
-		try {
-			out = new ObjectOutputStream(socket.getOutputStream());
-		} catch (IOException e) {
-		}
 	}
 
 	public void run() {
 		try {
 			if (out != null) {
 				out.writeObject(new Message(messageType, "UPDATE", information));
-				System.out.println(ServerTime.getTime() + " Send Update Information to [" + socket.getInetAddress()
-						+ ":" + socket.getPort() + "]");
 			}
 		} catch (IOException e) {
 		}

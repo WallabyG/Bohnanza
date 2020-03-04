@@ -1,12 +1,13 @@
 package server.process;
 
-import java.net.Socket;
+import java.io.ObjectOutputStream;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
 import game.game.Game;
+import server.server.ServerTime;
 import server.server.UpdateSender;
 
 /**
@@ -25,7 +26,7 @@ public class OnlineMatch {
 	/**
 	 * 온라인 매치에 참여하는 플레이어 이름 - 소켓 맵
 	 */
-	private Map<String, Socket> players;
+	private Map<String, ObjectOutputStream> players;
 
 	/**
 	 * 매치 이름
@@ -63,10 +64,10 @@ public class OnlineMatch {
 	 * @param playerName 추가할 플레이어의 이름
 	 * @return 플레이어 추가 성공 여부
 	 */
-	public synchronized boolean addPlayer(String playerName, Socket socket) {
+	public synchronized boolean addPlayer(String playerName, ObjectOutputStream out) {
 		if (!players.containsKey(playerName)) {
 			if (game.addPlayer(playerName)) {
-				players.put(playerName, socket);
+				players.put(playerName, out);
 				return true;
 			}
 		}
@@ -109,5 +110,6 @@ public class OnlineMatch {
 		}
 		for (String name : players.keySet())
 			(new UpdateSender(players.get(name), sendMessageType, information)).start();
+		System.out.println(ServerTime.getTime() + " Update Information of Match [" + name + "]");
 	}
 }

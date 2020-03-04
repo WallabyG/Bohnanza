@@ -1,6 +1,6 @@
 package server.process;
 
-import java.net.Socket;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -113,13 +113,13 @@ public class MatchSystem {
 	 *         -1 - 오류
 	 * 
 	 */
-	public synchronized int joinOnlineMatch(String playerName, ArrayList<Object> matchInfo, Socket socket) {
+	public synchronized int joinOnlineMatch(String playerName, ArrayList<Object> matchInfo, ObjectOutputStream out) {
 		String matchName = (String) matchInfo.get(0);
 		String matchPW = (String) matchInfo.get(1);
 		if (onlineMatchMap.containsKey(matchName) && matchPW.equals(onlineMatchPWMap.get(matchName))) {
 			OnlineMatch match = onlineMatchMap.get(matchName);
 
-			if (!match.addPlayer(playerName, socket)) {
+			if (!match.addPlayer(playerName, out)) {
 				return 2;
 			}
 
