@@ -30,9 +30,8 @@ public class Server {
 		try {
 			serverSocket = new ServerSocket(portNumber);
 			System.out.println("[ BOHNANZA SERVER ]");
-			System.out.println();
 			System.out.println(ServerTime.getTime() + " Server Started");
-			System.out.println("Listening at port " + portNumber + " ...");
+			System.out.println(ServerTime.getTime() + "Listening at port " + portNumber);
 
 			while (true) {
 				socket = serverSocket.accept();
@@ -42,7 +41,6 @@ public class Server {
 				thread.start();
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 

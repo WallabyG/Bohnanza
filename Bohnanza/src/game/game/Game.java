@@ -24,7 +24,7 @@ import game.players.Player;
  * @version 1.0
  * 
  */
-public class Game implements Updatable, java.io.Serializable{
+public class Game implements java.io.Serializable{
 	private static Scanner sc = new Scanner(System.in);
 	
 	private static final long serialVersionUID=1L;

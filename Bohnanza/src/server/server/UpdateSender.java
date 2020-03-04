@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-import game.game.Updatable;
 import server.message.Message;
 
 /**
@@ -28,7 +27,7 @@ public class UpdateSender extends Thread {
 	/**
 	 * 업데이트할 정보
 	 */
-	Updatable information;
+	Object information;
 
 	/**
 	 * 메시지 타입
@@ -42,14 +41,13 @@ public class UpdateSender extends Thread {
 	 * @param messageType 보낼 정보에 해당하는 메시지타입
 	 * @param information 업데이트할 정보
 	 */
-	public UpdateSender(Socket socket, int messageType, Updatable information) {
+	public UpdateSender(Socket socket, int messageType, Object information) {
 		this.socket = socket;
 		this.messageType = messageType;
 		this.information = information;
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -61,7 +59,6 @@ public class UpdateSender extends Thread {
 						+ ":" + socket.getPort() + "]");
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 }

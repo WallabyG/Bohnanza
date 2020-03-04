@@ -50,7 +50,6 @@ public class ServerReceiver extends Thread {
 			in = new ObjectInputStream(socket.getInputStream());
 			out = new ObjectOutputStream(socket.getOutputStream());
 		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -67,8 +66,8 @@ public class ServerReceiver extends Thread {
 	 * 201 - 매치 이름 중복 체크<br>
 	 * 202 - 온라인 매치 생성<br>
 	 * 203 - 온라인 매치 삭제<br>
-	 * 211 - 온라인 매치 접속<br>
-	 * 212 - 온라인 매치 정보 요청<br>
+	 * 211 - 온라인 매치 접속 가능 확인<br>
+	 * 212 - 온라인 매치 접속 요청<br>
 	 * 213 - 온라인 매치 나가기<br>
 	 * 221 - 온라인 매치 상태 업데이트
 	 * 
@@ -96,26 +95,29 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 203:
+			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			match.update(203);
 			matchSystem.deleteOnlineMatch((String) message.getContents());
 			break;
 
 		case 211:
-			// 구현 잘못 됨 수정 필요 : 접속 여부를 반환
-			matchSystem.joinOnlineMatch(message.getPlayerName(), (ArrayList<Object>) message.getContents(), socket);
-			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
-			match.update(211);
-			break;
+			return matchSystem.joinOnlineMatch(message.getPlayerName(), (ArrayList<Object>) message.getContents(),
+					socket);
 
 		case 212:
 			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
-			(new UpdateSender(socket, 212, match.getInfo())).start();
-			break;
+			match.update(212);
+			return match.getCurrentPlayers();
 
 		case 213:
+			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			matchSystem.exitOnlineMatch(message.getPlayerName());
+			match.update(213);
 			break;
 
 		case 221:
-			// 온라인 매치 상태 업데이트 구현
+			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
+			match.update(221);
 			break;
 		}
 
@@ -136,7 +138,6 @@ public class ServerReceiver extends Thread {
 				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
 		} finally {
 			System.out.println(ServerTime.getTime() + " Disconnected from [" + socket.getInetAddress() + ":"
 					+ socket.getPort() + "]");

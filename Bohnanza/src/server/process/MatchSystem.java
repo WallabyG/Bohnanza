@@ -2,11 +2,10 @@ package server.process;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import game.game.Updatable;
 import server.server.ServerTime;
 
 /**
@@ -17,12 +16,7 @@ import server.server.ServerTime;
  * @version 1.0
  *
  */
-public class MatchSystem implements Updatable {
-
-	/**
-	 * 온라인 매치 이름 리스트
-	 */
-	private List<String> onlineMatchNameList;
+public class MatchSystem {
 
 	/**
 	 * 온라인 매치 이름 - 비밀번호 맵<br>
@@ -49,10 +43,12 @@ public class MatchSystem implements Updatable {
 	 * 생성자 메서드
 	 */
 	public MatchSystem() {
-		onlineMatchNameList = new ArrayList<>();
 		onlineMatchPWMap = new HashMap<>();
+		Collections.synchronizedMap(onlineMatchPWMap);
 		onlineMatchMap = new HashMap<>();
+		Collections.synchronizedMap(onlineMatchMap);
 		playerMatchMap = new HashMap<>();
+		Collections.synchronizedMap(playerMatchMap);
 	}
 
 	/**
@@ -62,7 +58,7 @@ public class MatchSystem implements Updatable {
 	 * @return 매치 이름의 중복 여부 반환
 	 */
 	public synchronized boolean checkMatchNameDuplicate(String matchName) {
-		return onlineMatchNameList.contains(matchName);
+		return onlineMatchMap.containsKey(matchName);
 	}
 
 	/**
@@ -78,19 +74,28 @@ public class MatchSystem implements Updatable {
 		String matchPW = (String) matchInfo.get(1);
 		int capacity = (int) matchInfo.get(2);
 
-		OnlineMatch match = new OnlineMatch(capacity);
+		OnlineMatch match = new OnlineMatch(matchName, capacity);
 
-		onlineMatchNameList.add(matchName);
 		onlineMatchPWMap.put(matchName, matchPW);
 		onlineMatchMap.put(matchName, match);
 
 		System.out.println(ServerTime.getTime() + " Created Online Match [" + matchName + ":" + matchPW + "]");
 	}
 
+	/**
+	 * 온라인 매치 삭제
+	 * 
+	 * @param matchName 삭제할 매치 이름
+	 */
 	public synchronized void deleteOnlineMatch(String matchName) {
-		onlineMatchNameList.remove(matchName);
-		onlineMatchPWMap.remove(matchName);
-		onlineMatchMap.remove(matchName);
+		if (onlineMatchMap.containsKey(matchName)) {
+			OnlineMatch match = onlineMatchMap.get(matchName);
+			for (String playerName : match.getPlayerSet())
+				exitOnlineMatch(playerName);
+			onlineMatchPWMap.remove(matchName);
+			onlineMatchMap.remove(matchName);
+			System.out.println(ServerTime.getTime() + " Deleted Online Match [" + matchName + "]");
+		}
 	}
 
 	/**
@@ -111,7 +116,7 @@ public class MatchSystem implements Updatable {
 	public synchronized int joinOnlineMatch(String playerName, ArrayList<Object> matchInfo, Socket socket) {
 		String matchName = (String) matchInfo.get(0);
 		String matchPW = (String) matchInfo.get(1);
-		if (onlineMatchNameList.contains(matchName) && matchPW == onlineMatchPWMap.get(matchName)) {
+		if (onlineMatchMap.containsKey(matchName) && matchPW == onlineMatchPWMap.get(matchName)) {
 			OnlineMatch match = onlineMatchMap.get(matchName);
 
 			if (!match.addPlayer(playerName, socket)) {
@@ -122,7 +127,7 @@ public class MatchSystem implements Updatable {
 			System.out.println(ServerTime.getTime() + " " + playerName + " Joined Match [" + matchName + "]");
 
 			return 0;
-		} else if (!onlineMatchNameList.contains(matchName)) {
+		} else if (!onlineMatchMap.containsKey(matchName)) {
 			return 1;
 		} else if (matchPW != onlineMatchPWMap.get(matchName)) {
 			return 3;
@@ -137,12 +142,12 @@ public class MatchSystem implements Updatable {
 	 * @param playerName 플레이어 이름
 	 * @param matchName  매치 이름
 	 */
-	public synchronized void exitOnlineMatch(String playerName, String matchName) {
-		if (onlineMatchNameList.contains(matchName)) {
-			OnlineMatch match = onlineMatchMap.get(matchName);
+	public synchronized void exitOnlineMatch(String playerName) {
+		if (playerMatchMap.containsKey(playerName)) {
+			OnlineMatch match = getMatchbyPlayer(playerName);
 			match.deletePlayer(playerName);
 			playerMatchMap.remove(playerName);
-			System.out.println(ServerTime.getTime() + " Deleted Online Match [" + matchName + "]");
+			System.out.println(ServerTime.getTime() + " " + playerName + " Exited Online Match [" + match.getName() + "]");
 		}
 	}
 

@@ -11,7 +11,7 @@ import game.players.Player;
  * @author ycm
  * @version 1.0
  */
-public class GameInfo implements Updatable, java.io.Serializable{
+public class GameInfo implements java.io.Serializable{
 	private static final long serialVersionUID=1L;
 	
 	private Map<String, Player> players;
