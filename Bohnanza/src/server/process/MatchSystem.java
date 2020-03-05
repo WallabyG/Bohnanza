@@ -88,15 +88,18 @@ public class MatchSystem {
 	 * @param matchName 삭제할 매치 이름
 	 */
 	public synchronized void deleteOnlineMatch(String matchName) {
-		System.out.println(matchName);
-		System.out.println(onlineMatchMap.containsKey(matchName));
 		if (onlineMatchMap.containsKey(matchName)) {
 			OnlineMatch match = onlineMatchMap.get(matchName);
+			System.out.println("1");
 			for (String playerName : match.getPlayerSet())
 				exitOnlineMatch(playerName);
+			System.out.println("2");
 			onlineMatchPWMap.remove(matchName);
+			System.out.println("3");
 			onlineMatchMap.remove(matchName);
+			System.out.println("4");
 			System.out.println(ServerTime.getTime() + " Deleted Online Match [" + matchName + "]");
+			System.out.println("5");
 		}
 	}
 
