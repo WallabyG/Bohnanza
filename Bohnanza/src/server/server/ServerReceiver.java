@@ -117,13 +117,19 @@ public class ServerReceiver extends Thread {
 
 		return null;
 	}
-	
+
 	private void serverSideProcess(Message message) {
 		OnlineMatch match;
-		switch(message.getMessageType()) {
+		System.out.println("Server side process working");
+		switch (message.getMessageType()) {
 		case 203:
-			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
-			matchSystem.deleteOnlineMatch(match.getName());
+			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
+			if (match != null) {
+				System.out.println(match.getName());
+				for (String name : match.getPlayerSet())
+					System.out.println(name);
+				matchSystem.deleteOnlineMatch(match.getName());
+			}
 			break;
 		default:
 			break;
@@ -149,7 +155,7 @@ public class ServerReceiver extends Thread {
 
 				if (match != null)
 					match.update(message.getMessageType());
-				
+
 				serverSideProcess(message);
 			}
 		} catch (Exception e) {
