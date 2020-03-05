@@ -65,11 +65,9 @@ public class OnlineMatch {
 	 * @return 플레이어 추가 성공 여부
 	 */
 	public synchronized boolean addPlayer(String playerName, ObjectOutputStream out) {
-		if (!players.containsKey(playerName)) {
-			if (game.addPlayer(playerName)) {
-				players.put(playerName, out);
-				return true;
-			}
+		if (game.addPlayer(playerName)) {
+			players.put(playerName, out);
+			return true;
 		}
 		return false;
 	}
