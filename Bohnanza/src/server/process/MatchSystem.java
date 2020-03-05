@@ -91,8 +91,10 @@ public class MatchSystem {
 		if (onlineMatchMap.containsKey(matchName)) {
 			OnlineMatch match = onlineMatchMap.get(matchName);
 			System.out.println("1");
-			for (String playerName : match.getPlayerSet())
+			for (String playerName : match.getPlayerSet()) {
+				System.out.println(playerName);
 				exitOnlineMatch(playerName);
+			}
 			System.out.println("2");
 			onlineMatchPWMap.remove(matchName);
 			System.out.println("3");
@@ -147,14 +149,10 @@ public class MatchSystem {
 	 * @param matchName  매치 이름
 	 */
 	public void exitOnlineMatch(String playerName) {
-		System.out.println("-1");
 		if (playerMatchMap.containsKey(playerName)) {
 			OnlineMatch match = getMatchbyPlayer(playerName);
-			System.out.println("-2");
 			match.deletePlayer(playerName);
-			System.out.println("-3");
 			playerMatchMap.remove(playerName);
-			System.out.println("-4");
 			System.out.println(
 					ServerTime.getTime() + " " + playerName + " Exited Online Match [" + match.getName() + "]");
 		}
