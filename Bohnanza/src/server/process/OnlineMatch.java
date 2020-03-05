@@ -1,10 +1,11 @@
 package server.process;
 
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import game.game.Game;
 import server.server.ServerTime;
@@ -50,8 +51,8 @@ public class OnlineMatch {
 		return name;
 	}
 
-	public Set<String> getPlayerSet() {
-		return players.keySet();
+	public List<String> getPlayerList() {
+		return new ArrayList<>(players.keySet());
 	}
 
 	public int getCurrentPlayers() {

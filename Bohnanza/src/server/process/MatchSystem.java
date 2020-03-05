@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import server.server.ServerTime;
 
@@ -92,11 +91,8 @@ public class MatchSystem {
 		if (onlineMatchMap.containsKey(matchName)) {
 			OnlineMatch match = onlineMatchMap.get(matchName);
 			System.out.println("1");
-			Set<String> playerSet=match.getPlayerSet();
-			for (String playerName : playerSet) {
-				System.out.println(playerSet);
+			for (String playerName : match.getPlayerList()) {
 				exitOnlineMatch(playerName);
-				System.out.println(playerSet);
 			}
 			System.out.println("2");
 			onlineMatchPWMap.remove(matchName);
