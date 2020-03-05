@@ -76,6 +76,7 @@ public class ServerReceiver extends Thread {
 	 */
 	@SuppressWarnings("unchecked")
 	private Object processMessage(Message message) {
+				
 		OnlineMatch match;
 
 		switch (message.getMessageType()) {
@@ -96,8 +97,6 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 203:
-			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
-			match.update(203);
 			matchSystem.deleteOnlineMatch((String) message.getContents());
 			break;
 
@@ -106,18 +105,14 @@ public class ServerReceiver extends Thread {
 
 		case 212:
 			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
-			match.update(212);
 			return match.getCurrentPlayers();
 
 		case 213:
-			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 			matchSystem.exitOnlineMatch(message.getPlayerName());
-			match.update(213);
 			break;
 
 		case 221:
 			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
-			match.update(221);
 			break;
 		}
 
@@ -127,6 +122,7 @@ public class ServerReceiver extends Thread {
 	@Override
 	public void run() {
 		Message message;
+		OnlineMatch match;
 		try {
 			while (in != null) {
 				message = (Message) in.readObject();
@@ -136,6 +132,11 @@ public class ServerReceiver extends Thread {
 				Object returnObj = processMessage(message);
 
 				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
+				
+				match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+				
+				if(match!=null)
+					match.update(message.getMessageType());
 			}
 		} catch (Exception e) {
 		} finally {
