@@ -94,8 +94,9 @@ public class MatchSystem {
 			System.out.println("1");
 			Set<String> playerSet=match.getPlayerSet();
 			for (String playerName : playerSet) {
-				System.out.println(playerName);
+				System.out.println(playerSet);
 				exitOnlineMatch(playerName);
+				System.out.println(playerSet);
 			}
 			System.out.println("2");
 			onlineMatchPWMap.remove(matchName);
