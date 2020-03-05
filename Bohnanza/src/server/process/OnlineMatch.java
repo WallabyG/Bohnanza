@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import game.game.Game;
+import game.game.GameInfo;
 import server.server.ServerTime;
 import server.server.UpdateSender;
 
@@ -54,6 +55,11 @@ public class OnlineMatch {
 	public List<String> getPlayerList() {
 		return new ArrayList<>(players.keySet());
 	}
+	
+	public GameInfo getGameInfo() {
+		return game.getInfo();
+	}
+
 
 	public int getCurrentPlayers() {
 		return players.size();
@@ -99,10 +105,6 @@ public class OnlineMatch {
 		case 221:
 			information = getCurrentPlayers();
 			sendMessageType = 221;
-			break;
-		case 301:
-			information = this.game.getInfo();
-			sendMessageType = 301;
 			break;
 		default:
 			return;

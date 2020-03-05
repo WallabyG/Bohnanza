@@ -69,7 +69,10 @@ public class ServerReceiver extends Thread {
 	 * 211 - 온라인 매치 접속 가능 확인<br>
 	 * 212 - 온라인 매치 접속 요청<br>
 	 * 213 - 온라인 매치 나가기<br>
-	 * 221 - 온라인 매치 상태 업데이트
+	 * 221 - 온라인 매치 상태 업데이트<br>
+	 * <br>
+	 * 3 - 게임 관련 정보<br>
+	 * 301 - 턴 순서 요청<br>
 	 * 
 	 * @param message 전송된 메시지
 	 * @return 반환할 오브젝트
@@ -111,8 +114,11 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 221:
-			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 			break;
+			
+		case 301:
+			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			return match.getGameInfo();
 		}
 
 		return null;
