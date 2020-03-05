@@ -76,7 +76,7 @@ public class ServerReceiver extends Thread {
 	 */
 	@SuppressWarnings("unchecked")
 	private Object processMessage(Message message) {
-				
+
 		OnlineMatch match;
 
 		switch (message.getMessageType()) {
@@ -97,7 +97,6 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 203:
-			matchSystem.deleteOnlineMatch((String) message.getContents());
 			break;
 
 		case 211:
@@ -118,6 +117,18 @@ public class ServerReceiver extends Thread {
 
 		return null;
 	}
+	
+	private void serverSideProcess(Message message) {
+		OnlineMatch match;
+		switch(message.getMessageType()) {
+		case 203:
+			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+			matchSystem.deleteOnlineMatch(match.getName());
+			break;
+		default:
+			break;
+		}
+	}
 
 	@Override
 	public void run() {
@@ -128,15 +139,18 @@ public class ServerReceiver extends Thread {
 				message = (Message) in.readObject();
 				System.out.println(ServerTime.getTime() + " player name: " + message.getPlayerName()
 						+ " - message type: " + message.getMessageType());
-				
-				match=matchSystem.getMatchbyPlayer(message.getPlayerName());
+
+				match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 
 				Object returnObj = processMessage(message);
 
-				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
-				
-				if(match!=null)
+				if (returnObj != null)
+					out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
+
+				if (match != null)
 					match.update(message.getMessageType());
+				
+				serverSideProcess(message);
 			}
 		} catch (Exception e) {
 		} finally {
