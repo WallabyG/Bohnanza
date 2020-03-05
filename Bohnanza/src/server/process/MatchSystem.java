@@ -91,6 +91,7 @@ public class MatchSystem {
 		if (onlineMatchMap.containsKey(matchName)) {
 			OnlineMatch match = onlineMatchMap.get(matchName);
 			System.out.println("1");
+			System.out.println(match.getPlayerSet());
 			for (String playerName : match.getPlayerSet()) {
 				System.out.println(playerName);
 				exitOnlineMatch(playerName);
