@@ -57,7 +57,7 @@ public class MatchSystem {
 	 * @param matchName 매치 이름
 	 * @return 매치 이름의 중복 여부 반환
 	 */
-	public synchronized boolean checkMatchNameDuplicate(String matchName) {
+	public boolean checkMatchNameDuplicate(String matchName) {
 		return onlineMatchMap.containsKey(matchName);
 	}
 
@@ -69,7 +69,7 @@ public class MatchSystem {
 	 * @param matchPW      매치 비밀번호
 	 * @param playerNumber 플레이어 수
 	 */
-	public synchronized void createOnlineMatch(String playerName, ArrayList<Object> matchInfo) {
+	public void createOnlineMatch(String playerName, ArrayList<Object> matchInfo) {
 		String matchName = (String) matchInfo.get(0);
 		String matchPW = (String) matchInfo.get(1);
 		int capacity = (int) matchInfo.get(2);
@@ -87,19 +87,14 @@ public class MatchSystem {
 	 * 
 	 * @param matchName 삭제할 매치 이름
 	 */
-	public synchronized void deleteOnlineMatch(String matchName) {
+	public void deleteOnlineMatch(String matchName) {
 		if (onlineMatchMap.containsKey(matchName)) {
 			OnlineMatch match = onlineMatchMap.get(matchName);
-			System.out.println("1");
 			for (String playerName : match.getPlayerSet())
 				exitOnlineMatch(playerName);
-			System.out.println("2");
 			onlineMatchPWMap.remove(matchName);
-			System.out.println("3");
 			onlineMatchMap.remove(matchName);
-			System.out.println("4");
 			System.out.println(ServerTime.getTime() + " Deleted Online Match [" + matchName + "]");
-			System.out.println("5");
 		}
 	}
 
@@ -118,7 +113,7 @@ public class MatchSystem {
 	 *         -1 - 오류
 	 * 
 	 */
-	public synchronized int joinOnlineMatch(String playerName, ArrayList<Object> matchInfo, ObjectOutputStream out) {
+	public int joinOnlineMatch(String playerName, ArrayList<Object> matchInfo, ObjectOutputStream out) {
 		String matchName = (String) matchInfo.get(0);
 		String matchPW = (String) matchInfo.get(1);
 		if (onlineMatchMap.containsKey(matchName) && matchPW.equals(onlineMatchPWMap.get(matchName))) {
@@ -147,7 +142,7 @@ public class MatchSystem {
 	 * @param playerName 플레이어 이름
 	 * @param matchName  매치 이름
 	 */
-	public synchronized void exitOnlineMatch(String playerName) {
+	public void exitOnlineMatch(String playerName) {
 		if (playerMatchMap.containsKey(playerName)) {
 			OnlineMatch match = getMatchbyPlayer(playerName);
 			match.deletePlayer(playerName);
@@ -157,7 +152,7 @@ public class MatchSystem {
 		}
 	}
 
-	public synchronized OnlineMatch getMatchbyPlayer(String playerName) {
+	public OnlineMatch getMatchbyPlayer(String playerName) {
 		return onlineMatchMap.get(playerMatchMap.get(playerName));
 	}
 }

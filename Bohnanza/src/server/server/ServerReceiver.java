@@ -124,8 +124,6 @@ public class ServerReceiver extends Thread {
 		case 203:
 			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 			if (match != null) {
-				System.out.println(match.getName());
-				System.out.println();
 				matchSystem.deleteOnlineMatch(match.getName());
 			}
 			break;
