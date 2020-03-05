@@ -29,6 +29,7 @@ public class Server {
 
 		try {
 			serverSocket = new ServerSocket(portNumber);
+			System.out.println();
 			System.out.println("[ BOHNANZA SERVER ]");
 			System.out.println(ServerTime.getTime() + " Server Started");
 			System.out.println(ServerTime.getTime() + " Listening at port " + portNumber);

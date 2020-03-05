@@ -128,12 +128,12 @@ public class ServerReceiver extends Thread {
 				message = (Message) in.readObject();
 				System.out.println(ServerTime.getTime() + " player name: " + message.getPlayerName()
 						+ " - message type: " + message.getMessageType());
+				
+				match=matchSystem.getMatchbyPlayer(message.getPlayerName());
 
 				Object returnObj = processMessage(message);
 
 				out.writeObject(new Message(message.getMessageType(), "SERVER", returnObj));
-				
-				match=matchSystem.getMatchbyPlayer(message.getPlayerName());
 				
 				if(match!=null)
 					match.update(message.getMessageType());
