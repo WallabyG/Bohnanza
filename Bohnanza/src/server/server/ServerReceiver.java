@@ -137,8 +137,10 @@ public class ServerReceiver extends Thread {
 			break;
 		case 212:
 			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
-			if (match != null)
-				match.update(301);
+			if (match != null) {
+				if (match.isFull())
+					match.update(301);
+			}
 			break;
 		default:
 			break;

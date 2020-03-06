@@ -64,6 +64,10 @@ public class OnlineMatch {
 		return players.size();
 	}
 
+	public boolean isFull() {
+		return getCurrentPlayers() == capacity;
+	}
+
 	/**
 	 * 플레이어를 추가
 	 * 
