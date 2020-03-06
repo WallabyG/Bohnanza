@@ -55,11 +55,10 @@ public class OnlineMatch {
 	public List<String> getPlayerList() {
 		return new ArrayList<>(players.keySet());
 	}
-	
+
 	public GameInfo getGameInfo() {
 		return game.getInfo();
 	}
-
 
 	public int getCurrentPlayers() {
 		return players.size();
@@ -105,6 +104,10 @@ public class OnlineMatch {
 		case 221:
 			information = getCurrentPlayers();
 			sendMessageType = 221;
+			break;
+		case 301:
+			information = getGameInfo();
+			sendMessageType = 301;
 			break;
 		default:
 			return;

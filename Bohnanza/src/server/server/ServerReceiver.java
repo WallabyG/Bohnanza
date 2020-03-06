@@ -115,10 +115,12 @@ public class ServerReceiver extends Thread {
 
 		case 221:
 			break;
-			
+
 		case 301:
-			match=matchSystem.getMatchbyPlayer(message.getPlayerName());
-			return match.getGameInfo();
+			break;
+
+		default:
+			break;
 		}
 
 		return null;
@@ -132,6 +134,11 @@ public class ServerReceiver extends Thread {
 			if (match != null) {
 				matchSystem.deleteOnlineMatch(match.getName());
 			}
+			break;
+		case 212:
+			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
+			if (match != null)
+				match.update(301);
 			break;
 		default:
 			break;
