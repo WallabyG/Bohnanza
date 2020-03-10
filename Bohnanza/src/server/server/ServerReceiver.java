@@ -137,13 +137,6 @@ public class ServerReceiver extends Thread {
 				matchSystem.deleteOnlineMatch(match.getName());
 			}
 			break;
-		case 212:
-			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
-			if (match != null) {
-				if (match.isFull())
-					match.update(301);
-			}
-			break;
 		default:
 			break;
 		}
