@@ -272,10 +272,17 @@ public class Game implements java.io.Serializable{
 	/**
 	 * 게임 시작
 	 */
-	public void play() {
+	public void start() {
 		shuffleOrder();
-		for (String name : orders)
+		for(String name: orders)
 			players.get(name).draw(5);
+//		play();
+	}
+	
+	/**
+	 * 게임 진행
+	 */
+	public void play() {
 		Iterator<String> itr = orders.iterator();
 		while (!gameEndFlag) {
 			if (itr.hasNext()) {
@@ -300,8 +307,4 @@ public class Game implements java.io.Serializable{
 		}
 	}
 
-	public static void main(String[] args) {
-		Game game = new Game(4);
-		game.play();
-	}
 }
