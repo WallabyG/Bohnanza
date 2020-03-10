@@ -68,10 +68,6 @@ public class OnlineMatch {
 		return getCurrentPlayers() == capacity;
 	}
 
-	public void start() {
-		game.start();
-	}
-	
 	/**
 	 * 플레이어를 추가
 	 * 

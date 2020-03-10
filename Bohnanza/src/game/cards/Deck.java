@@ -39,7 +39,7 @@ public class Deck implements java.io.Serializable{
 	public Deck() {
 		drawDeck = new LinkedList<>();
 		discardPile = new LinkedList<>();
-		for (int i = 6; i <= 20; i += 2) {
+		for (int i = 6; i <= 14; i += 2) {
 			for (int j = 0; j < i; j++)
 				drawDeck.add(Beans.selectBeans(i));
 		}

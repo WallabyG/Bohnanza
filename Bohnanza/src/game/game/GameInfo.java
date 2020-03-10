@@ -2,9 +2,7 @@ package game.game;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
-import game.cards.Beans;
 import game.cards.Deck;
 import game.players.Player;
 
@@ -38,6 +36,7 @@ public class GameInfo implements java.io.Serializable{
 		return orders;
 	}
 
+
 	public Deck getDeck() {
 		return deck;
 	}
@@ -48,12 +47,6 @@ public class GameInfo implements java.io.Serializable{
 
 	public int getPlayerNum() {
 		return playerNum;
-	}
-	
-	public Queue<Beans> getHands(String name){
-		if(players.containsKey(name))
-			return players.get(name).getHands();
-		return null;
 	}
 
 }
