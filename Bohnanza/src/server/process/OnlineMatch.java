@@ -110,7 +110,7 @@ public class OnlineMatch {
 			sendMessageType = 221;
 			break;
 		case 301:
-			information = getGameInfo();
+			information = null;
 			sendMessageType = 301;
 			break;
 		default:
