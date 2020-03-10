@@ -71,7 +71,7 @@ public class OnlineMatch {
 	public void start() {
 		game.start();
 	}
-
+	
 	/**
 	 * 플레이어를 추가
 	 * 
@@ -110,13 +110,8 @@ public class OnlineMatch {
 		case 212:
 		case 213:
 		case 221:
-			if (isFull()) {
-				information = getGameInfo();
-				sendMessageType = 301;
-			} else {
-				information = getCurrentPlayers();
-				sendMessageType = 221;
-			}
+			information = getCurrentPlayers();
+			sendMessageType = 221;
 			break;
 		case 301:
 			information = getGameInfo();
