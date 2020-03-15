@@ -12,6 +12,7 @@ import java.util.Scanner;
 import game.cards.Beans;
 import game.cards.Deck;
 import game.players.Player;
+import server.message.Message;
 
 /**
  * 매치 하나에 대응되는 클래스<br>
@@ -24,10 +25,8 @@ import game.players.Player;
  * @version 1.0
  * 
  */
-public class Game implements java.io.Serializable{
+public class Game {
 	private static Scanner sc = new Scanner(System.in);
-	
-	private static final long serialVersionUID=1L;
 
 	/**
 	 * 매치에 참여한 플레이어 맵
@@ -68,7 +67,7 @@ public class Game implements java.io.Serializable{
 	 * 매치 비밀번호
 	 */
 	private String matchPW;
-	
+
 	public Map<String, Player> getPlayers() {
 		return players;
 	}
@@ -84,7 +83,7 @@ public class Game implements java.io.Serializable{
 	public boolean getGameEndFlag() {
 		return gameEndFlag;
 	}
-	
+
 	public Player getCurrentPlayer() {
 		return currentPlayer;
 	}
@@ -104,7 +103,7 @@ public class Game implements java.io.Serializable{
 	public void setMatchPW(String matchPW) {
 		this.matchPW = matchPW;
 	}
-	
+
 	public GameInfo getInfo() {
 		return new GameInfo(this);
 	}
@@ -252,9 +251,10 @@ public class Game implements java.io.Serializable{
 	public boolean isRoomFull() {
 		return playerNum == getCurrentUsers();
 	}
-	
+
 	/**
 	 * 참가하고 있는 플레이어를 삭제
+	 * 
 	 * @param playerName 퇴장할 플레이어 이름
 	 */
 	public void deletePlayer(String playerName) {
@@ -267,6 +267,28 @@ public class Game implements java.io.Serializable{
 	 */
 	public void shuffleOrder() {
 		Collections.shuffle(orders);
+	}
+
+	public boolean processInput(Message message) {
+		String playerName = message.getPlayerName();
+		if (players.containsKey(playerName)) {
+			Player player = players.get(playerName);
+			switch (message.getMessageType()) {
+			case 401:
+				if (player.plant((Integer) message.getContents())) {
+					return true;
+				}
+				break;
+			case 402:
+				if (player.harvest((String) message.getContents())) {
+					return true;
+				}
+				break;
+			default:
+				break;
+			}
+		}
+		return false;
 	}
 
 	/**

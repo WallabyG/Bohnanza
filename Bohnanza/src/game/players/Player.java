@@ -13,60 +13,61 @@ import game.cards.Deck;
 
 /**
  * 게임에 참여하는 플레이어 클래스
+ * 
  * @author ycm
  * @version 1.0
  */
-public class Player implements java.io.Serializable{
-	private static final long serialVersionUID=1L;
-	
+public class Player implements java.io.Serializable {
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * ID 생성용 클래스 멤버
 	 */
 	private static int order_generated = 0;
-	
+
 	private static Scanner sc = new Scanner(System.in);
 
 	/**
 	 * 현재 돈 보유량
 	 */
 	private int gold;
-	
+
 	/**
 	 * 플레이어 ID
 	 */
 	private int id;
-	
+
 	/**
 	 * 밭의 상태를 나타내는 2~3비트 숫자<br>
 	 * 1은 해당하는 위치의 밭이 비어있음을 의미
 	 */
 	private int fieldStatus;
-	
+
 	/**
 	 * 플레이어 이름
 	 */
 	private String name;
-	
+
 	/**
 	 * 플레이어가 참여하는 게임에 사용하는 덱
 	 */
 	private Deck deck;
-	
+
 	/**
 	 * 거래 클래스
 	 */
 	private Transaction transaction;
-	
+
 	/**
 	 * 플레이어가 보유한 밭
 	 */
 	private List<Field> fields;
-	
+
 	/**
 	 * 플레이어의 공개된 콩
 	 */
 	private List<Beans> openedBeans;
-	
+
 	/**
 	 * 플레이어의 패
 	 */
@@ -74,8 +75,9 @@ public class Player implements java.io.Serializable{
 
 	/**
 	 * 생성자 메서드
-	 * @param name 플레이어 이름
-	 * @param deck 플레이어가 참여하는 게임에 사용하는 덱
+	 * 
+	 * @param name   플레이어 이름
+	 * @param deck   플레이어가 참여하는 게임에 사용하는 덱
 	 * @param number 게임에 참여하는 플레이어 숫자
 	 */
 	public Player(String name, Deck deck, int number) {
@@ -88,7 +90,7 @@ public class Player implements java.io.Serializable{
 		this.transaction = new Transaction();
 		this.fields = new ArrayList<Field>();
 		for (int i = 0; i < numberOfField; i++)
-			fields.add(new Field(i));
+			fields.add(new Field(name, i));
 		this.updateFieldStatus();
 		this.openedBeans = new LinkedList<Beans>();
 		this.hands = new LinkedList<Beans>();
@@ -118,10 +120,11 @@ public class Player implements java.io.Serializable{
 		return hands;
 	}
 
-	public void setHands(Queue<Beans> hands) {
-		this.hands = hands;
+	public List<Field> getFields() {
+		return fields;
 	}
 
+	@Override
 	public String toString() {
 		String str2return = name + "(" + gold + "G) | ";
 		for (Field f : fields)
@@ -131,6 +134,7 @@ public class Player implements java.io.Serializable{
 
 	/**
 	 * 거래 내용을 반환
+	 * 
 	 * @return 설정한 거래 클래스
 	 */
 	public Transaction getTransaction() {
@@ -204,6 +208,7 @@ public class Player implements java.io.Serializable{
 
 	/**
 	 * 플레이어의 공개된 콩을 반환
+	 * 
 	 * @return 공개된 콩 카드
 	 */
 	public List<Beans> getOpenedBeans() {
@@ -223,8 +228,9 @@ public class Player implements java.io.Serializable{
 
 	/**
 	 * 카드 n장을 뽑아 패에 추가함
+	 * 
 	 * @param n 뽑을 카드 수
-	 * @return 뽑을 카드가 있는 경우 true, 없을 경우 false 
+	 * @return 뽑을 카드가 있는 경우 true, 없을 경우 false
 	 */
 	public boolean draw(int n) {
 		Optional<Beans> b;
@@ -248,6 +254,7 @@ public class Player implements java.io.Serializable{
 
 	/**
 	 * 콩을 심음
+	 * 
 	 * @param b 밭에 심을 콩
 	 */
 	public void plant(Beans b) {
@@ -276,6 +283,16 @@ public class Player implements java.io.Serializable{
 		System.out.println();
 		System.out.println(this);
 		this.updateFieldStatus();
+	}
+
+	public boolean plant(int id) {
+		Beans bean = openedBeans.stream().filter(b -> b.getId() == id).reduce(null, (b1, b2) -> b1 != null ? b1 : b2);
+		if (bean != null) {
+			plant(bean);
+			this.updateFieldStatus();
+			return true;
+		}
+		return false;
 	}
 
 	/**
@@ -329,30 +346,39 @@ public class Player implements java.io.Serializable{
 	public void harvest() {
 		System.out.println("\n=======================================================");
 		System.out.println("Harvest Phase : " + this);
-		int tempHarvest;
 		while (true) {
 			System.out.println("\n  ---------------------------------------------------");
 
-			List<Integer> candidates = fields.stream().filter(f -> f.getSize() > 1).mapToInt(f -> f.getId())
-					.collect(() -> new ArrayList<>(), (c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
+			List<Field> candidates = fields.stream().filter(f -> f.getSize() > 1).collect(() -> new ArrayList<>(),
+					(c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
 			if (candidates.isEmpty())
-				candidates = fields.stream().filter(f -> f.getSize() > 0).mapToInt(f -> f.getId())
-						.collect(() -> new ArrayList<>(), (c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
+				candidates = fields.stream().filter(f -> f.getSize() > 0).collect(() -> new ArrayList<>(),
+						(c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
 
 			System.out.print("You can harvest | ");
-			for (int i : candidates)
-				System.out.print(fields.get(i) + " ");
+			for (Field f : candidates)
+				System.out.print(f + " ");
 			System.out.println();
 
-			tempHarvest = sc.nextInt();
-			if (tempHarvest < 0)
-				break;
-			if (candidates.contains(tempHarvest))
-				gold += fields.get(tempHarvest).harvest(deck);
-			else
-				System.err.println("Invalid Field Number");
+//			tempHarvest = sc.nextInt();
+//			if (tempHarvest < 0)
+//				break;
+//			if (candidates.contains(name + tempHarvest))
+//				gold += fields.get(tempHarvest).harvest(deck);
+//			else
+//				System.err.println("Invalid Field Number");
 			this.updateFieldStatus();
 		}
+	}
+
+	public boolean harvest(String id) {
+		Field field = fields.stream().filter(f -> f.getId().equals(id)).reduce(null, (f1, f2) -> f1 != null ? f1 : f2);
+		if (field != null) {
+			gold += field.harvest(deck);
+			this.updateFieldStatus();
+			return true;
+		}
+		return false;
 	}
 
 	/**

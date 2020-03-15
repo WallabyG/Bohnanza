@@ -9,6 +9,7 @@ import java.util.Map;
 
 import game.game.Game;
 import game.game.GameInfo;
+import server.message.Message;
 import server.server.ServerTime;
 import server.server.UpdateSender;
 
@@ -66,6 +67,12 @@ public class OnlineMatch {
 
 	public boolean isFull() {
 		return getCurrentPlayers() == capacity;
+	}
+
+	public synchronized void processInput(Message message) {
+		if (game.processInput(message)) {
+			update(401);
+		}
 	}
 
 	/**

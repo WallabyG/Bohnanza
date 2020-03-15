@@ -132,7 +132,7 @@ public class Beans implements java.io.Serializable{
 	
 	@Override
 	public boolean equals(Object obj) {
-		return this.id==((Beans)obj).id;
+		return this.id==((Beans)obj).getId();
 	}
 	
 	@Override
