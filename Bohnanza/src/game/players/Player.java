@@ -38,12 +38,6 @@ public class Player implements java.io.Serializable {
 	private int id;
 
 	/**
-	 * 밭의 상태를 나타내는 2~3비트 숫자<br>
-	 * 1은 해당하는 위치의 밭이 비어있음을 의미
-	 */
-	private int fieldStatus;
-
-	/**
 	 * 플레이어 이름
 	 */
 	private String name;
@@ -85,13 +79,11 @@ public class Player implements java.io.Serializable {
 		int numberOfField = number > 3 ? 2 : 3;
 		this.gold = 0;
 		this.id = ++order_generated;
-		this.fieldStatus = 0;
 		this.deck = deck;
 		this.transaction = new Transaction();
 		this.fields = new ArrayList<Field>();
 		for (int i = 0; i < numberOfField; i++)
 			fields.add(new Field(name, i));
-		this.updateFieldStatus();
 		this.openedBeans = new LinkedList<Beans>();
 		this.hands = new LinkedList<Beans>();
 	}
@@ -216,17 +208,6 @@ public class Player implements java.io.Serializable {
 	}
 
 	/**
-	 * 밭의 상태를 업데이트<br>
-	 * 콩을 심거나 수확한 뒤 반드시 실행
-	 */
-	public void updateFieldStatus() {
-		fieldStatus = 0;
-		for (Field f : fields) {
-			fieldStatus = fieldStatus * 2 + (f.isEmpty() ? 1 : 0);
-		}
-	}
-
-	/**
 	 * 카드 n장을 뽑아 패에 추가함
 	 * 
 	 * @param n 뽑을 카드 수
@@ -256,65 +237,59 @@ public class Player implements java.io.Serializable {
 	 * 콩을 심음
 	 * 
 	 * @param b 밭에 심을 콩
+	 * @return true(성공) false(실패 : 수확 필요)
 	 */
-	public void plant(Beans b) {
-		System.out.println("\n=======================================================");
-		System.out.println("Plant Phase");
-		System.out.println();
-		System.out.println(this);
-		System.out.println("You have to plant " + b);
-		while (fieldStatus == 0) {
-			boolean overlapFlag = fields.stream().map(f -> f.getNumber()).anyMatch(n -> n == b.getNumber());
-			if (overlapFlag)
-				break;
-			this.harvest();
+	public boolean plant(Beans b) {
+		List<Field> tempFields;
+		tempFields = fields.stream().filter(f -> f.getNumber() == b.getNumber())
+				.collect(() -> new ArrayList<Field>(), (c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
+		if(tempFields.isEmpty()) {
+			tempFields=fields.stream().filter(f -> f.isEmpty())
+					.collect(() -> new ArrayList<Field>(), (c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
 		}
-		Field field;
-		try {
-			field = fields.stream().filter(f -> f.getNumber() == b.getNumber())
-					.collect(() -> new ArrayList<Field>(), (c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2))
-					.get(0);
-		} catch (IndexOutOfBoundsException e) {
-			field = fields.stream().filter(f -> f.isEmpty())
-					.collect(() -> new ArrayList<Field>(), (c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2))
-					.get(0);
-		}
-		field.plant(b);
-		System.out.println();
-		System.out.println(this);
-		this.updateFieldStatus();
-	}
-
-	public boolean plant(int id) {
-		Beans bean = openedBeans.stream().filter(b -> b.getId() == id).reduce(null, (b1, b2) -> b1 != null ? b1 : b2);
-		if (bean != null) {
-			plant(bean);
-			this.updateFieldStatus();
-			return true;
-		}
-		return false;
+		if(tempFields.isEmpty())
+			return false;
+		tempFields.get(0).plant(b);
+		return true;
 	}
 
 	/**
-	 * 콩 심기 단계
+	 * id에 해당하는 콩을 심음
+	 * 
+	 * @param id 심을 콩의 id
+	 * @return 403(성공) 413(실패 : 수확 필요)
 	 */
-	public void plantPhase() {
-		String additional;
-		if (!hands.isEmpty())
-			plant(hands.poll());
-		System.out.println(hands);
-		while (true) {
-			System.out.print("Plant another bean : ");
-			additional = sc.nextLine();
-			if (additional.toLowerCase().equals("y")) {
-				if (!hands.isEmpty())
-					plant(hands.poll());
-				else
-					System.out.println("Your hand is Empty!");
-				break;
-			} else if (additional.toLowerCase().contentEquals("n"))
-				break;
+	public int plantOpenedBeans(int id) {
+		Beans bean = openedBeans.stream().filter(b -> b.getId() == id).reduce(null, (b1, b2) -> b1 != null ? b1 : b2);
+		if (bean != null) {
+			if (plant(bean))
+				return 403;
 		}
+		return 413;
+	}
+
+	/**
+	 * 첫번째 콩 심기(필수)
+	 * 
+	 * @return 401(성공) 411(실패 : 수확 필요)
+	 */
+	public int plantFirstBean() {
+		if (!hands.isEmpty())
+			if (!plant(hands.poll()))
+				return 411;
+		return 401;
+	}
+
+	/**
+	 * 추가 콩 심기
+	 * 
+	 * @return 402(성공) 412(실패 : 수확 필요)
+	 */
+	public int plantAdditionalBean() {
+		if (!hands.isEmpty())
+			if (!plant(hands.poll()))
+				return 412;
+		return 402;
 	}
 
 	/**
@@ -344,8 +319,6 @@ public class Player implements java.io.Serializable {
 	 * 밭을 선택하여 수확
 	 */
 	public void harvest() {
-		System.out.println("\n=======================================================");
-		System.out.println("Harvest Phase : " + this);
 		while (true) {
 			System.out.println("\n  ---------------------------------------------------");
 
@@ -367,15 +340,18 @@ public class Player implements java.io.Serializable {
 //				gold += fields.get(tempHarvest).harvest(deck);
 //			else
 //				System.err.println("Invalid Field Number");
-			this.updateFieldStatus();
 		}
 	}
 
+	/**
+	 * id에 해당되는 밭을 수확
+	 * @param id 수확할 밭의 id
+	 * @return true(성공) false(실패 : 재요청)
+	 */
 	public boolean harvest(String id) {
 		Field field = fields.stream().filter(f -> f.getId().equals(id)).reduce(null, (f1, f2) -> f1 != null ? f1 : f2);
 		if (field != null) {
 			gold += field.harvest(deck);
-			this.updateFieldStatus();
 			return true;
 		}
 		return false;

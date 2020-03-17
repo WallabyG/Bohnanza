@@ -21,14 +21,14 @@ public class GameInfo implements java.io.Serializable {
 	private List<String> orders;
 	private Deck deck;
 	private int currentPlayerIndex;
-	private int playerNum;
+	private int capacity;
 
 	GameInfo(Game game) {
 		this.players = game.getPlayers();
 		this.orders = game.getOrders();
 		this.deck = game.getDeck();
 		this.currentPlayerIndex = game.getCurrentPlayerIndex();
-		this.playerNum = game.getPlayerNum();
+		this.capacity = game.getCapacity();
 	}
 
 	public Map<String, Player> getPlayers() {
@@ -41,9 +41,9 @@ public class GameInfo implements java.io.Serializable {
 		}
 		return null;
 	}
-	
-	public Queue<Beans> getHands(String name){
-		if(players.containsKey(name)) {
+
+	public Queue<Beans> getHands(String name) {
+		if (players.containsKey(name)) {
 			return players.get(name).getHands();
 		}
 		return null;
@@ -61,8 +61,8 @@ public class GameInfo implements java.io.Serializable {
 		return currentPlayerIndex;
 	}
 
-	public int getPlayerNum() {
-		return playerNum;
+	public int getCapacity() {
+		return capacity;
 	}
 
 }

@@ -56,7 +56,7 @@ public class Game extends Thread {
 	/**
 	 * 매치에 참여하는 플레이어 숫자
 	 */
-	private int playerNum;
+	private int capacity;
 
 	/**
 	 * 게임의 종료를 판단하는 플래그
@@ -88,6 +88,14 @@ public class Game extends Thread {
 		return currentPlayerIndex;
 	}
 
+	public Player getCurrentPlayer() {
+		return players.get(orders.get(currentPlayerIndex));
+	}
+
+	public boolean isOpenedBeansEmpty() {
+		return !players.entrySet().stream().anyMatch(p -> !((Player) p).getOpenedBeans().isEmpty());
+	}
+
 	public GameInfo getInfo() {
 		return new GameInfo(this);
 	}
@@ -99,21 +107,12 @@ public class Game extends Thread {
 	 */
 	public Game(OnlineMatch match) {
 		this.match = match;
-		this.playerNum = match.getCapacity();
+		this.capacity = match.getCapacity();
 		this.gameEndFlag = false;
 		this.deck = new Deck();
 		players = new HashMap<>();
 		orders = new ArrayList<>();
 		message = null;
-	}
-
-	/**
-	 * 내 콩 심기 단계
-	 * 
-	 * @param p 턴을 진행하는 플레이어
-	 */
-	public void plantPhase(Player p) {
-		p.plantPhase();
 	}
 
 	/**
@@ -178,31 +177,12 @@ public class Game extends Thread {
 	}
 
 	/**
-	 * 공개된 콩 심기 단계
-	 * 
-	 * @param p 콩을 심는 플레이어
-	 */
-	public void plantOpenedBeansPhase(Player p) {
-		for (String name : players.keySet())
-			players.get(name).plantOpenedBeans();
-	}
-
-	/**
-	 * 콩 보충하기 단계
-	 * 
-	 * @param p 턴을 진행하는 플레이어
-	 */
-	public void drawPhase(Player p) {
-		gameEndFlag = !p.draw(3);
-	}
-
-	/**
 	 * 매치 방의 정원을 반환
 	 * 
 	 * @return 방의 정원
 	 */
-	public int getPlayerNum() {
-		return playerNum;
+	public int getCapacity() {
+		return capacity;
 	}
 
 	/**
@@ -222,7 +202,7 @@ public class Game extends Thread {
 	 */
 	public boolean addPlayer(String name) {
 		if (!isRoomFull()) {
-			players.put(name, new Player(name, deck, playerNum));
+			players.put(name, new Player(name, deck, capacity));
 			orders.add(name);
 			return true;
 		}
@@ -235,7 +215,7 @@ public class Game extends Thread {
 	 * @return 방이 가득 찼을 경우 true, 아니라면 false
 	 */
 	public boolean isRoomFull() {
-		return playerNum == getCurrentUsers();
+		return capacity == getCurrentUsers();
 	}
 
 	/**
@@ -260,19 +240,42 @@ public class Game extends Thread {
 		notifyAll();
 	}
 
+	/**
+	 * 입력 처리 메서드
+	 * @param message 입력 메시지
+	 * @return 각 경우에 해당하는 업데이트 메시지 타입
+	 */
 	public int processInput(Message message) {
 		String playerName = message.getPlayerName();
 		if (players.containsKey(playerName)) {
 			Player player = players.get(playerName);
 			switch (message.getMessageType()) {
 			case 401:
-				if (player.plant((Integer) message.getContents())) {
-					return 401;
-				}
-				break;
+				return player.plantFirstBean();
 			case 402:
-				if (player.harvest((String) message.getContents())) {
-					return 402;
+				return player.plantAdditionalBean();
+			case 403:
+				return player.plantOpenedBeans((Integer) message.getContents());
+			case 411:
+			case 412:
+			case 413:
+				player.harvest((String) message.getContents());
+				return message.getMessageType();
+			case 421:
+				Optional<Beans> b;
+				for (int i = 0; i < 2; i++) {
+					b = deck.draw();
+					if (b.isPresent())
+						player.getOpenedBeans().add(b.get());
+					else
+						gameEndFlag = true;
+				}
+				return 421;
+			case 441:
+				if (isOpenedBeansEmpty()) {
+					gameEndFlag = !getCurrentPlayer().draw(3);
+					currentPlayerIndex = (currentPlayerIndex + 1) % capacity;
+					return 441;
 				}
 				break;
 			default:
@@ -282,8 +285,30 @@ public class Game extends Thread {
 		return 0;
 	}
 
-	public void updateByType(int messageType) {
+	/**
+	 * 타입에 따른 업데이트 메서드
+	 * @param message 입력 메시지
+	 * @param messageType 업데이트 메시지 타입
+	 */
+	public void updateByType(Message message, int messageType) {
 		switch (messageType) {
+		case 401:
+		case 402:
+		case 403:
+			update(messageType);
+			break;
+		case 411:
+		case 412:
+		case 413:
+			update(451);
+			updateIndividual(message.getPlayerName(), messageType);
+			break;
+		case 421:
+			update(421);
+			break;
+		case 441:
+			update(messageType);
+			break;
 		default:
 			break;
 		}
@@ -297,37 +322,6 @@ public class Game extends Thread {
 		match.updateIndividual(name, messageType);
 	}
 
-	/**
-	 * 게임 시작
-	 */
-//	public void play() {
-//		shuffleOrder();
-//		for (String name : orders)
-//			players.get(name).draw(5);
-//		Iterator<String> itr = orders.iterator();
-//		while (!gameEndFlag) {
-//			if (itr.hasNext()) {
-//				String name = itr.next();
-//				currentPlayer = players.get(name);
-//				System.out.println("\n=======================================================");
-//				System.out.println("Refilled : " + deck.getRefillNum() + " | Card Left : " + deck.getLeftCardNumber()
-//						+ " | Card Discarded : " + deck.getDiscardedNumber());
-//				plantPhase(currentPlayer);
-//				tradePhase(currentPlayer);
-//				plantOpenedBeansPhase(currentPlayer);
-//				drawPhase(currentPlayer);
-//			} else {
-//				itr = orders.iterator();
-//			}
-//		}
-//		System.out.println("\n=======================================================");
-//		System.out.println("Game Over");
-//		for (String name : orders) {
-//			players.get(name).gameSet();
-//			System.out.println(players.get(name));
-//		}
-//	}
-
 	public synchronized void run() {
 		shuffleOrder();
 		for (String name : orders)
@@ -337,7 +331,7 @@ public class Game extends Thread {
 				wait();
 			} catch (InterruptedException e) {
 			}
-			updateByType(processInput(message));
+			updateByType(message, processInput(message));
 		}
 		for (String name : orders)
 			players.get(name).gameSet();

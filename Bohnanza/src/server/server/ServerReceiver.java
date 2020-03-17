@@ -74,6 +74,16 @@ public class ServerReceiver extends Thread {
 	 * 3 - 게임 관련 정보<br>
 	 * 301 - 턴 순서 요청<br>
 	 * 
+	 * 4 - 게임 진행 시 입력 메시지<br>
+	 * 401 - 첫 콩 심기 요청<br>
+	 * 402 - 추가 콩 심기 요청<br>
+	 * 403 - 공개된 콩 심기 요청<br>
+	 * 411 - 첫 콩 심기에서 호출된 수확 요청<br>
+	 * 412 - 추가 콩 심기에서 호출된 수확 요청<br>
+	 * 413 - 공개된 콩 심기에서 호출된 수확 요청<br>
+	 * 421 - 공개된 콩 추가 요청 (거래 전 2장 공개)<br>
+	 * 441 - 턴 종료 요청<br>
+	 * 
 	 * @param message 전송된 메시지
 	 * @return 반환할 오브젝트
 	 */
@@ -117,6 +127,18 @@ public class ServerReceiver extends Thread {
 			break;
 
 		case 301:
+			break;
+
+		case 401:
+		case 402:
+		case 403:
+		case 411:
+		case 412:
+		case 413:
+		case 421:
+		case 441:
+			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
+			match.processInput(message);
 			break;
 
 		default:
