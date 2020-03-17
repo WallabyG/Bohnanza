@@ -27,7 +27,7 @@ public class OnlineMatch {
 	private Game game;
 
 	/**
-	 * 온라인 매치에 참여하는 플레이어 이름 - 소켓 맵
+	 * 온라인 매치에 참여하는 플레이어 이름 - OOP 맵
 	 */
 	private Map<String, ObjectOutputStream> players;
 
@@ -41,16 +41,20 @@ public class OnlineMatch {
 	 */
 	private int capacity;
 
-	OnlineMatch(String name, int capacity) {
+	public OnlineMatch(String name, int capacity) {
 		this.name = name;
 		this.capacity = capacity;
-		this.game = new Game(this.capacity);
+		this.game = new Game(this);
 		players = new HashMap<>();
 		Collections.synchronizedMap(players);
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public int getCapacity() {
+		return capacity;
 	}
 
 	public List<String> getPlayerList() {
@@ -70,9 +74,12 @@ public class OnlineMatch {
 	}
 
 	public synchronized void processInput(Message message) {
-		if (game.processInput(message)) {
-			update(401);
-		}
+		game.setMessage(message);
+	}
+
+	public void start() {
+		game.start();
+		System.out.println(ServerTime.getTime() + " Match [" + name + "] started");
 	}
 
 	/**
@@ -100,9 +107,23 @@ public class OnlineMatch {
 	}
 
 	/**
-	 * 클라이언트의 정보를 업데이트
+	 * 매치에 참여한 모든 클라이언트의 정보를 업데이트
+	 * 
+	 * @param messageType 업데이트 메시지 타입
 	 */
 	public synchronized void update(int messageType) {
+		for (String name : players.keySet())
+			updateIndividual(name, messageType);
+		System.out.println(ServerTime.getTime() + " Update Information of Match [" + name + "]");
+	}
+
+	/**
+	 * 클라이언트의 정보를 업데이트
+	 * 
+	 * @param name        업데이트를 전송할 클라이언트의 이름
+	 * @param messageType 업데이트 메시지 타입
+	 */
+	public synchronized void updateIndividual(String name, int messageType) {
 		int sendMessageType = 0;
 		Object information;
 		switch (messageType) {
@@ -117,14 +138,12 @@ public class OnlineMatch {
 			sendMessageType = 221;
 			break;
 		case 301:
-			information = null;
+			information = game.getInfo();
 			sendMessageType = 301;
 			break;
 		default:
 			return;
 		}
-		for (String name : players.keySet())
-			(new UpdateSender(players.get(name), sendMessageType, information)).start();
-		System.out.println(ServerTime.getTime() + " Update Information of Match [" + name + "]");
+		(new UpdateSender(players.get(name), sendMessageType, information)).start();
 	}
 }

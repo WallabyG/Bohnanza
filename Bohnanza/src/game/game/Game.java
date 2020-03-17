@@ -3,7 +3,6 @@ package game.game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -13,6 +12,7 @@ import game.cards.Beans;
 import game.cards.Deck;
 import game.players.Player;
 import server.message.Message;
+import server.process.OnlineMatch;
 
 /**
  * 매치 하나에 대응되는 클래스<br>
@@ -25,8 +25,13 @@ import server.message.Message;
  * @version 1.0
  * 
  */
-public class Game {
+public class Game extends Thread {
 	private static Scanner sc = new Scanner(System.in);
+
+	/**
+	 * 입력 전달용 메시지
+	 */
+	private Message message;
 
 	/**
 	 * 매치에 참여한 플레이어 맵
@@ -46,7 +51,7 @@ public class Game {
 	/**
 	 * 현재 턴을 진행하는 플레이어
 	 */
-	private Player currentPlayer;
+	private int currentPlayerIndex;
 
 	/**
 	 * 매치에 참여하는 플레이어 숫자
@@ -56,17 +61,12 @@ public class Game {
 	/**
 	 * 게임의 종료를 판단하는 플래그
 	 */
-	private boolean gameEndFlag;
+	private volatile boolean gameEndFlag;
 
 	/**
-	 * 매치 이름
+	 * 게임에 대응되는 온라인매치 객체
 	 */
-	private String matchName;
-
-	/**
-	 * 매치 비밀번호
-	 */
-	private String matchPW;
+	OnlineMatch match;
 
 	public Map<String, Player> getPlayers() {
 		return players;
@@ -84,24 +84,8 @@ public class Game {
 		return gameEndFlag;
 	}
 
-	public Player getCurrentPlayer() {
-		return currentPlayer;
-	}
-
-	public String getMatchName() {
-		return matchName;
-	}
-
-	public void setMatchName(String matchName) {
-		this.matchName = matchName;
-	}
-
-	public String getMatchPW() {
-		return matchPW;
-	}
-
-	public void setMatchPW(String matchPW) {
-		this.matchPW = matchPW;
+	public int getCurrentPlayerIndex() {
+		return currentPlayerIndex;
 	}
 
 	public GameInfo getInfo() {
@@ -113,12 +97,14 @@ public class Game {
 	 * 
 	 * @param playerNum 게임에 참여하는 플레이어 수
 	 */
-	public Game(int playerNum) {
-		this.playerNum = playerNum;
+	public Game(OnlineMatch match) {
+		this.match = match;
+		this.playerNum = match.getCapacity();
 		this.gameEndFlag = false;
 		this.deck = new Deck();
 		players = new HashMap<>();
 		orders = new ArrayList<>();
+		message = null;
 	}
 
 	/**
@@ -269,61 +255,92 @@ public class Game {
 		Collections.shuffle(orders);
 	}
 
-	public boolean processInput(Message message) {
+	public synchronized void setMessage(Message message) {
+		this.message = message;
+		notifyAll();
+	}
+
+	public int processInput(Message message) {
 		String playerName = message.getPlayerName();
 		if (players.containsKey(playerName)) {
 			Player player = players.get(playerName);
 			switch (message.getMessageType()) {
 			case 401:
 				if (player.plant((Integer) message.getContents())) {
-					return true;
+					return 401;
 				}
 				break;
 			case 402:
 				if (player.harvest((String) message.getContents())) {
-					return true;
+					return 402;
 				}
 				break;
 			default:
 				break;
 			}
 		}
-		return false;
+		return 0;
+	}
+
+	public void updateByType(int messageType) {
+		switch (messageType) {
+		default:
+			break;
+		}
+	}
+
+	public void update(int messageType) {
+		match.update(messageType);
+	}
+
+	public void updateIndividual(String name, int messageType) {
+		match.updateIndividual(name, messageType);
 	}
 
 	/**
 	 * 게임 시작
 	 */
-	public void play() {
+//	public void play() {
+//		shuffleOrder();
+//		for (String name : orders)
+//			players.get(name).draw(5);
+//		Iterator<String> itr = orders.iterator();
+//		while (!gameEndFlag) {
+//			if (itr.hasNext()) {
+//				String name = itr.next();
+//				currentPlayer = players.get(name);
+//				System.out.println("\n=======================================================");
+//				System.out.println("Refilled : " + deck.getRefillNum() + " | Card Left : " + deck.getLeftCardNumber()
+//						+ " | Card Discarded : " + deck.getDiscardedNumber());
+//				plantPhase(currentPlayer);
+//				tradePhase(currentPlayer);
+//				plantOpenedBeansPhase(currentPlayer);
+//				drawPhase(currentPlayer);
+//			} else {
+//				itr = orders.iterator();
+//			}
+//		}
+//		System.out.println("\n=======================================================");
+//		System.out.println("Game Over");
+//		for (String name : orders) {
+//			players.get(name).gameSet();
+//			System.out.println(players.get(name));
+//		}
+//	}
+
+	public synchronized void run() {
 		shuffleOrder();
 		for (String name : orders)
 			players.get(name).draw(5);
-		Iterator<String> itr = orders.iterator();
 		while (!gameEndFlag) {
-			if (itr.hasNext()) {
-				String name = itr.next();
-				currentPlayer = players.get(name);
-				System.out.println("\n=======================================================");
-				System.out.println("Refilled : " + deck.getRefillNum() + " | Card Left : " + deck.getLeftCardNumber()
-						+ " | Card Discarded : " + deck.getDiscardedNumber());
-				plantPhase(currentPlayer);
-				tradePhase(currentPlayer);
-				plantOpenedBeansPhase(currentPlayer);
-				drawPhase(currentPlayer);
-			} else {
-				itr = orders.iterator();
+			try {
+				wait();
+			} catch (InterruptedException e) {
 			}
+			updateByType(processInput(message));
 		}
-		System.out.println("\n=======================================================");
-		System.out.println("Game Over");
-		for (String name : orders) {
+		for (String name : orders)
 			players.get(name).gameSet();
-			System.out.println(players.get(name));
-		}
 	}
 
-	public static void main(String[] args) {
-		Game game = new Game(4);
-		game.play();
-	}
 }

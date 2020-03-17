@@ -138,8 +138,10 @@ public class ServerReceiver extends Thread {
 		case 212:
 			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 			if (match != null) {
-				if (match.isFull())
+				if (match.isFull()) {
+					match.start();
 					match.update(301);
+				}
 			}
 		default:
 			break;
@@ -153,8 +155,8 @@ public class ServerReceiver extends Thread {
 		try {
 			while (in != null) {
 				message = (Message) in.readObject();
-				System.out.println(ServerTime.getTime() + " player name: " + message.getPlayerName()
-						+ " - message type: " + message.getMessageType());
+				System.out.println(ServerTime.getTime() + " " + message.getPlayerName() + " sent message("
+						+ message.getMessageType() + ")");
 
 				match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 
