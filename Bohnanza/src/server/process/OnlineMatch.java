@@ -141,6 +141,18 @@ public class OnlineMatch {
 			information = game.getInfo();
 			sendMessageType = 301;
 			break;
+		case 401:
+		case 402:
+		case 403:
+		case 411:
+		case 412:
+		case 413:
+		case 421:
+		case 441:
+		case 451:
+			information = game.getInfo();
+			sendMessageType = messageType;
+			break;
 		default:
 			return;
 		}

@@ -242,6 +242,7 @@ public class Game extends Thread {
 
 	/**
 	 * 입력 처리 메서드
+	 * 
 	 * @param message 입력 메시지
 	 * @return 각 경우에 해당하는 업데이트 메시지 타입
 	 */
@@ -287,7 +288,8 @@ public class Game extends Thread {
 
 	/**
 	 * 타입에 따른 업데이트 메서드
-	 * @param message 입력 메시지
+	 * 
+	 * @param message     입력 메시지
 	 * @param messageType 업데이트 메시지 타입
 	 */
 	public void updateByType(Message message, int messageType) {
@@ -295,8 +297,6 @@ public class Game extends Thread {
 		case 401:
 		case 402:
 		case 403:
-			update(messageType);
-			break;
 		case 411:
 		case 412:
 		case 413:
