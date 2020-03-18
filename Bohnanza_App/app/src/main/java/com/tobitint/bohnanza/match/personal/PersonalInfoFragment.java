@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -64,28 +65,35 @@ public class PersonalInfoFragment extends Fragment {
 
         int cardWidth = dp2px(40);
         int cardHeight = dp2px(60);
-        int cardMargin = computeMargin();
+        int cardDefaultMargin = computeCardDefaultMargin();
+        int cardMargin = cardDefaultMargin * (handsNum - 1);
 
         ListIterator<Beans> iterator = ((LinkedList) hands).listIterator(hands.size());
 
         while (iterator.hasPrevious()) {
             Beans bean = iterator.previous();
 
+            addCardToPlayerHand(bean, cardWidth, cardHeight, cardMargin);
 
+            cardMargin -= cardDefaultMargin;
         }
-
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                dp2px(40),
-                dp2px(60));
-
-
     }
 
-    private int computeMargin() {
+    private int computeCardDefaultMargin() {
         return -10;
     }
 
-    private void add
+    private void addCardToPlayerHand(Beans bean, int width, int height, int margin) {
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(width, height);
+        params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+        params.leftMargin = margin;
+
+        PlayerHandCardView card = new PlayerHandCardView(getContext());
+        card.setBeanImage(bean.getNumber());
+        card.setLayoutParams(params);
+
+        playerHand.addView(card);
+    }
 
     private int dp2px(int dp) {
         return Math.round(dp * dm.density);

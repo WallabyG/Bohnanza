@@ -17,10 +17,17 @@ import java.util.Stack;
 public class InfoApplication extends Application {
 
     /**
-     * 각 콩의 이미지 파일을 저장하는 맵
+     * 각 콩의 이미지를 저장하는 맵
      */
-    private static final HashMap<Integer, Integer> beanImageMap = new HashMap<Integer, Integer>() {{
-        put(1, 1);
+    private static final HashMap<Integer, Integer> beanImageIdMap = new HashMap<Integer, Integer>() {{
+        put(6, R.drawable.empty_card);
+        put(8, R.drawable.empty_card);
+        put(10, R.drawable.empty_card);
+        put(12, R.drawable.empty_card);
+        put(14, R.drawable.empty_card);
+        put(16, R.drawable.empty_card);
+        put(18, R.drawable.empty_card);
+        put(20, R.drawable.empty_card);
     }};
 
     /**
@@ -36,6 +43,10 @@ public class InfoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    public int getBeanImageId(int beanNumber) {
+        return beanImageIdMap.get(beanNumber);
     }
 
     public void pushCurrentActivity(Activity currentActivity) {

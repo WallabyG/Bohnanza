@@ -3,7 +3,7 @@ package com.tobitint.bohnanza.match.personal;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 
@@ -17,7 +17,7 @@ import com.tobitint.bohnanza.R;
  * @version 1.0
  *
  */
-public class PlayerHandView extends LinearLayout {
+public class PlayerHandView extends RelativeLayout {
 
     public PlayerHandView(Context context) {
         super(context);

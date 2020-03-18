@@ -71,8 +71,6 @@ public class GameActivity extends BaseActivity {
     }
 
     private void init() {
-
-
         // Get player name
         playerName = ((InfoApplication) getApplicationContext()).getPlayerName();
 
@@ -100,7 +98,7 @@ public class GameActivity extends BaseActivity {
     }
 
     private void initPersonalInfoFragment(Player player) {
-
+        personalInfoFragment.initPlayerHand(player.getHands());
     }
 
     private void initPlayerInfoFragment(Player player) {
