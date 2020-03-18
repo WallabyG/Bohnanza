@@ -3,16 +3,14 @@ package game.game;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
 
 import game.cards.Beans;
 import game.cards.Deck;
 import game.players.Player;
 import server.message.Message;
+import server.process.OnlineMatch;
 
 /**
  * 매치 하나에 대응되는 클래스<br>
@@ -25,8 +23,12 @@ import server.message.Message;
  * @version 1.0
  * 
  */
-public class Game {
-	private static Scanner sc = new Scanner(System.in);
+public class Game extends Thread {
+
+	/**
+	 * 입력 전달용 메시지
+	 */
+	private Message message;
 
 	/**
 	 * 매치에 참여한 플레이어 맵
@@ -46,27 +48,22 @@ public class Game {
 	/**
 	 * 현재 턴을 진행하는 플레이어
 	 */
-	private Player currentPlayer;
+	private int currentPlayerIndex;
 
 	/**
 	 * 매치에 참여하는 플레이어 숫자
 	 */
-	private int playerNum;
+	private int capacity;
 
 	/**
 	 * 게임의 종료를 판단하는 플래그
 	 */
-	private boolean gameEndFlag;
+	private volatile boolean gameEndFlag;
 
 	/**
-	 * 매치 이름
+	 * 게임에 대응되는 온라인매치 객체
 	 */
-	private String matchName;
-
-	/**
-	 * 매치 비밀번호
-	 */
-	private String matchPW;
+	OnlineMatch match;
 
 	public Map<String, Player> getPlayers() {
 		return players;
@@ -84,24 +81,20 @@ public class Game {
 		return gameEndFlag;
 	}
 
+	public int getCurrentPlayerIndex() {
+		return currentPlayerIndex;
+	}
+
 	public Player getCurrentPlayer() {
-		return currentPlayer;
+		return players.get(orders.get(currentPlayerIndex));
 	}
 
-	public String getMatchName() {
-		return matchName;
+	public boolean isOpenedBeansEmpty() {
+		return !players.entrySet().stream().anyMatch(p -> !((Player) p).getOpenedBeans().isEmpty());
 	}
 
-	public void setMatchName(String matchName) {
-		this.matchName = matchName;
-	}
-
-	public String getMatchPW() {
-		return matchPW;
-	}
-
-	public void setMatchPW(String matchPW) {
-		this.matchPW = matchPW;
+	public boolean isTradePhaseEnded() {
+		return players.entrySet().stream().allMatch(p -> ((Player) p).getEndTradeFlag());
 	}
 
 	public GameInfo getInfo() {
@@ -113,59 +106,73 @@ public class Game {
 	 * 
 	 * @param playerNum 게임에 참여하는 플레이어 수
 	 */
-	public Game(int playerNum) {
-		this.playerNum = playerNum;
+	public Game(OnlineMatch match) {
+		this.match = match;
+		this.capacity = match.getCapacity();
 		this.gameEndFlag = false;
 		this.deck = new Deck();
 		players = new HashMap<>();
 		orders = new ArrayList<>();
+		message = null;
 	}
 
 	/**
-	 * 내 콩 심기 단계
+	 * 매치 방의 정원을 반환
 	 * 
-	 * @param p 턴을 진행하는 플레이어
+	 * @return 방의 정원
 	 */
-	public void plantPhase(Player p) {
-		p.plantPhase();
+	public int getCapacity() {
+		return capacity;
 	}
 
 	/**
-	 * 거래하기 단계
+	 * 현재 접속한 인원 수를 반환
 	 * 
-	 * @param p 턴을 진행하는 플레이어
+	 * @return 현재 접속 인원 수
 	 */
-	public void tradePhase(Player p) {
-		Optional<Beans> b;
-		for (int i = 0; i < 2; i++) {
-			b = deck.draw();
-			if (b.isPresent())
-				p.getOpenedBeans().add(b.get());
-			else
-				gameEndFlag = true;
+	public int getCurrentUsers() {
+		return players.size();
+	}
+
+	/**
+	 * 새로운 플레이어를 추가
+	 * 
+	 * @param name 새로운 플레이어의 이름
+	 * @return 추가 성공 여부
+	 */
+	public boolean addPlayer(String name) {
+		if (!isRoomFull()) {
+			players.put(name, new Player(name, deck, capacity));
+			orders.add(name);
+			return true;
 		}
+		return false;
+	}
 
-		System.out.println("\n=======================================================");
-		System.out.print("Opened Beans : ");
-		System.out.println(p.getOpenedBeans());
-		for (String name : orders)
-			players.get(name).setTransaction();
+	/**
+	 * 방이 가득 찼는지 알려줌
+	 * 
+	 * @return 방이 가득 찼을 경우 true, 아니라면 false
+	 */
+	public boolean isRoomFull() {
+		return capacity == getCurrentUsers();
+	}
 
-		for (String name : players.keySet())
-			System.out.println("\n" + players.get(name) + "\n" + players.get(name).getTransaction());
+	/**
+	 * 참가하고 있는 플레이어를 삭제
+	 * 
+	 * @param playerName 퇴장할 플레이어 이름
+	 */
+	public void deletePlayer(String playerName) {
+		players.remove(playerName);
+		orders.remove(playerName);
+	}
 
-		while (true) {
-			System.out.print("You want to trade with : ");
-			String tempTrade = sc.nextLine();
-			if (players.containsKey(tempTrade)) {
-				if (players.get(tempTrade).getId() != p.getId()) {
-					performTrade(p, players.get(tempTrade));
-					break;
-				}
-			} else if (tempTrade.toLowerCase().equals("q"))
-				break;
-			System.err.println("Invalid Trade Index");
-		}
+	/**
+	 * 플레이어들의 순서를 임의로 바꿈
+	 */
+	public void shuffleOrder() {
+		Collections.shuffle(orders);
 	}
 
 	/**
@@ -191,139 +198,149 @@ public class Game {
 		p2.getTransaction().getOffer().clear();
 	}
 
+	public synchronized void setMessage(Message message) {
+		this.message = message;
+		notifyAll();
+	}
+
 	/**
-	 * 공개된 콩 심기 단계
+	 * 입력 처리 메서드
 	 * 
-	 * @param p 콩을 심는 플레이어
+	 * @param message 입력 메시지
+	 * @return 각 경우에 해당하는 업데이트 메시지 타입
 	 */
-	public void plantOpenedBeansPhase(Player p) {
-		for (String name : players.keySet())
-			players.get(name).plantOpenedBeans();
-	}
-
-	/**
-	 * 콩 보충하기 단계
-	 * 
-	 * @param p 턴을 진행하는 플레이어
-	 */
-	public void drawPhase(Player p) {
-		gameEndFlag = !p.draw(3);
-	}
-
-	/**
-	 * 매치 방의 정원을 반환
-	 * 
-	 * @return 방의 정원
-	 */
-	public int getPlayerNum() {
-		return playerNum;
-	}
-
-	/**
-	 * 현재 접속한 인원 수를 반환
-	 * 
-	 * @return 현재 접속 인원 수
-	 */
-	public int getCurrentUsers() {
-		return players.size();
-	}
-
-	/**
-	 * 새로운 플레이어를 추가
-	 * 
-	 * @param name 새로운 플레이어의 이름
-	 * @return 추가 성공 여부
-	 */
-	public boolean addPlayer(String name) {
-		if (!isRoomFull()) {
-			players.put(name, new Player(name, deck, playerNum));
-			orders.add(name);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * 방이 가득 찼는지 알려줌
-	 * 
-	 * @return 방이 가득 찼을 경우 true, 아니라면 false
-	 */
-	public boolean isRoomFull() {
-		return playerNum == getCurrentUsers();
-	}
-
-	/**
-	 * 참가하고 있는 플레이어를 삭제
-	 * 
-	 * @param playerName 퇴장할 플레이어 이름
-	 */
-	public void deletePlayer(String playerName) {
-		players.remove(playerName);
-		orders.remove(playerName);
-	}
-
-	/**
-	 * 플레이어들의 순서를 임의로 바꿈
-	 */
-	public void shuffleOrder() {
-		Collections.shuffle(orders);
-	}
-
-	public boolean processInput(Message message) {
+	public int processInput(Message message) {
 		String playerName = message.getPlayerName();
 		if (players.containsKey(playerName)) {
 			Player player = players.get(playerName);
 			switch (message.getMessageType()) {
 			case 401:
-				if (player.plant((Integer) message.getContents())) {
-					return true;
-				}
-				break;
+				return player.plantFirstBean();
 			case 402:
-				if (player.harvest((String) message.getContents())) {
-					return true;
+				return player.plantAdditionalBean();
+			case 403:
+				return player.plantOpenedBeans((Integer) message.getContents());
+			case 411:
+			case 412:
+			case 413:
+				player.harvest((String) message.getContents());
+				return message.getMessageType();
+			case 421:
+				Beans b;
+				for (int i = 0; i < 2; i++) {
+					b = deck.draw();
+					if (b != null)
+						player.getOpenedBeans().add(b);
+					else
+						gameEndFlag = true;
+				}
+				for (String name : orders)
+					players.get(name).setEndTradeFlag(false);
+				return 421;
+			case 431:
+				return player.addOffer((Integer) message.getContents());
+			case 432:
+				return player.removeOffer((Integer) message.getContents());
+			case 433:
+				player.addDemand((Integer) message.getContents());
+				return 433;
+			case 434:
+				player.removeDemand((Integer) message.getContents());
+				return 434;
+			case 435:
+				return 435;
+			case 436:
+				performTrade(player, players.get((String) message.getContents()));
+				return 436;
+			case 437:
+				return 437;
+			case 438:
+				player.setEndTradeFlag(true);
+				if (isTradePhaseEnded())
+					return 438;
+			case 441:
+				if (isOpenedBeansEmpty()) {
+					gameEndFlag = !getCurrentPlayer().draw(3);
+					currentPlayerIndex = (currentPlayerIndex + 1) % capacity;
+					return 441;
 				}
 				break;
 			default:
 				break;
 			}
 		}
-		return false;
+		return 0;
 	}
 
 	/**
-	 * 게임 시작
+	 * 타입에 따른 업데이트 메서드
+	 * 
+	 * @param message     입력 메시지
+	 * @param messageType 업데이트 메시지 타입
 	 */
-	public void play() {
-		shuffleOrder();
-		for (String name : orders)
-			players.get(name).draw(5);
-		Iterator<String> itr = orders.iterator();
-		while (!gameEndFlag) {
-			if (itr.hasNext()) {
-				String name = itr.next();
-				currentPlayer = players.get(name);
-				System.out.println("\n=======================================================");
-				System.out.println("Refilled : " + deck.getRefillNum() + " | Card Left : " + deck.getLeftCardNumber()
-						+ " | Card Discarded : " + deck.getDiscardedNumber());
-				plantPhase(currentPlayer);
-				tradePhase(currentPlayer);
-				plantOpenedBeansPhase(currentPlayer);
-				drawPhase(currentPlayer);
-			} else {
-				itr = orders.iterator();
-			}
-		}
-		System.out.println("\n=======================================================");
-		System.out.println("Game Over");
-		for (String name : orders) {
-			players.get(name).gameSet();
-			System.out.println(players.get(name));
+	public void updateByType(Message message, int messageType) {
+		switch (messageType) {
+		case 401:
+		case 402:
+		case 403:
+		case 411:
+		case 412:
+		case 413:
+			update(451);
+			updateIndividual(message.getPlayerName(), messageType);
+			break;
+		case 421:
+			update(421);
+			break;
+		case 431:
+		case 432:
+		case 433:
+		case 434:
+			update(451);
+			break;
+		case 435:
+			updateIndividual((String) message.getContents(), messageType);
+			break;
+		case 436:
+			updateIndividual(message.getPlayerName(), messageType);
+			updateIndividual((String) message.getContents(), messageType);
+			update(451);
+			break;
+		case 437:
+			updateIndividual((String) message.getContents(), messageType);
+			break;
+		case 438:
+			update(messageType);
+			break;
+		case 441:
+			update(messageType);
+			break;
+		default:
+			break;
 		}
 	}
 
-	public static void main(String[] args) {
-		Game game = new Game(4);
-		game.play();
+	public void update(int messageType) {
+		match.update(messageType);
 	}
+
+	public void updateIndividual(String name, int messageType) {
+		match.updateIndividual(name, messageType);
+	}
+
+	public synchronized void run() {
+		shuffleOrder();
+		for (String name : orders)
+			players.get(name).draw(5);
+		while (!gameEndFlag) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+			}
+			updateByType(message, processInput(message));
+		}
+		for (String name : orders)
+			players.get(name).gameSet();
+	}
+
 }

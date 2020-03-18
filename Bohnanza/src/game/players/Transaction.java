@@ -37,16 +37,8 @@ public class Transaction implements java.io.Serializable{
 		return offer;
 	}
 
-	public void setOffer(List<Beans> offer) {
-		this.offer = offer;
-	}
-
 	public List<Integer> getDemand() {
 		return demand;
-	}
-
-	public void setDemand(List<Integer> demand) {
-		this.demand = demand;
 	}
 	
 	public String toString() {

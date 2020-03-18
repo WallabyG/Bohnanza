@@ -3,7 +3,6 @@ package game.cards;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 게임에 사용하는 덱 클래스
@@ -61,16 +60,16 @@ public class Deck implements java.io.Serializable{
 
 	/**
 	 * 덱에서 카드 1장을 뽑음
-	 * @return 뽑을 카드가 있는 경우 그 카드를 가진 Optional 객체를, 없을 경우 빈 객체를 반환
+	 * @return 뽑을 카드가 있는 경우 그 카드를, 없는 경우 null을 반환
 	 */
-	public Optional<Beans> draw() {
+	public Beans draw() {
 		if (isDeckEmpty()) {
 			if (refillNum < MAX_REFILL_NUM)
 				refill();
 			else
-				return Optional.empty();
+				return null;
 		}
-		return Optional.ofNullable(drawDeck.remove(0));
+		return drawDeck.remove(0);
 	}
 
 	/**
