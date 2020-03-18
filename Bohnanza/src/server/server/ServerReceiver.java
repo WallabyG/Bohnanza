@@ -82,6 +82,14 @@ public class ServerReceiver extends Thread {
 	 * 412 - 추가 콩 심기에서 호출된 수확 요청<br>
 	 * 413 - 공개된 콩 심기에서 호출된 수확 요청<br>
 	 * 421 - 공개된 콩 추가 요청 (거래 전 2장 공개)<br>
+	 * 431 - 거래의 Offer에 콩을 추가<br>
+	 * 432 - 거래의 Offer에서 콩을 제거<br>
+	 * 433 - 거래의 Demand에 번호를 추가<br>
+	 * 434 - 거래의 Demand에서 번호를 제거<br>
+	 * 435 - 거래 요청<br>
+	 * 436 - 거래 수락<br>
+	 * 437 - 거래 거절<br>
+	 * 438 - 거래 종료<br>
 	 * 441 - 턴 종료 요청<br>
 	 * 
 	 * @param message 전송된 메시지
@@ -136,6 +144,14 @@ public class ServerReceiver extends Thread {
 		case 412:
 		case 413:
 		case 421:
+		case 431:
+		case 432:
+		case 433:
+		case 434:
+		case 435:
+		case 436:
+		case 437:
+		case 438:
 		case 441:
 			match = matchSystem.getMatchbyPlayer(message.getPlayerName());
 			match.processInput(message);

@@ -5,8 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
-import java.util.Scanner;
 
 import game.cards.Beans;
 import game.cards.Deck;
@@ -26,7 +24,6 @@ import server.process.OnlineMatch;
  * 
  */
 public class Game extends Thread {
-	private static Scanner sc = new Scanner(System.in);
 
 	/**
 	 * 입력 전달용 메시지
@@ -96,6 +93,10 @@ public class Game extends Thread {
 		return !players.entrySet().stream().anyMatch(p -> !((Player) p).getOpenedBeans().isEmpty());
 	}
 
+	public boolean isTradePhaseEnded() {
+		return players.entrySet().stream().allMatch(p -> ((Player) p).getEndTradeFlag());
+	}
+
 	public GameInfo getInfo() {
 		return new GameInfo(this);
 	}
@@ -113,67 +114,6 @@ public class Game extends Thread {
 		players = new HashMap<>();
 		orders = new ArrayList<>();
 		message = null;
-	}
-
-	/**
-	 * 거래하기 단계
-	 * 
-	 * @param p 턴을 진행하는 플레이어
-	 */
-	public void tradePhase(Player p) {
-		Optional<Beans> b;
-		for (int i = 0; i < 2; i++) {
-			b = deck.draw();
-			if (b.isPresent())
-				p.getOpenedBeans().add(b.get());
-			else
-				gameEndFlag = true;
-		}
-
-		System.out.println("\n=======================================================");
-		System.out.print("Opened Beans : ");
-		System.out.println(p.getOpenedBeans());
-		for (String name : orders)
-			players.get(name).setTransaction();
-
-		for (String name : players.keySet())
-			System.out.println("\n" + players.get(name) + "\n" + players.get(name).getTransaction());
-
-		while (true) {
-			System.out.print("You want to trade with : ");
-			String tempTrade = sc.nextLine();
-			if (players.containsKey(tempTrade)) {
-				if (players.get(tempTrade).getId() != p.getId()) {
-					performTrade(p, players.get(tempTrade));
-					break;
-				}
-			} else if (tempTrade.toLowerCase().equals("q"))
-				break;
-			System.err.println("Invalid Trade Index");
-		}
-	}
-
-	/**
-	 * 선택한 두 플레이어의 거래를 수행
-	 * 
-	 * @param p1 거래에 참여하는 플레이어 1
-	 * @param p2 거래에 참여하는 플레이어 2
-	 */
-	public void performTrade(Player p1, Player p2) {
-		for (Beans b : p1.getTransaction().getOffer()) {
-			p1.getHands().remove(b);
-			p1.getOpenedBeans().remove(b);
-			b.setTraded(true);
-		}
-		for (Beans b : p2.getTransaction().getOffer()) {
-			p2.getHands().remove(b);
-			p2.getOpenedBeans().remove(b);
-			b.setTraded(true);
-		}
-		p1.getOpenedBeans().addAll(p2.getTransaction().getOffer());
-		p2.getOpenedBeans().addAll(p1.getTransaction().getOffer());
-		p1.getTransaction().getOffer().clear();
-		p2.getTransaction().getOffer().clear();
 	}
 
 	/**
@@ -235,6 +175,29 @@ public class Game extends Thread {
 		Collections.shuffle(orders);
 	}
 
+	/**
+	 * 선택한 두 플레이어의 거래를 수행
+	 * 
+	 * @param p1 거래에 참여하는 플레이어 1
+	 * @param p2 거래에 참여하는 플레이어 2
+	 */
+	public void performTrade(Player p1, Player p2) {
+		for (Beans b : p1.getTransaction().getOffer()) {
+			p1.getHands().remove(b);
+			p1.getOpenedBeans().remove(b);
+			b.setTraded(true);
+		}
+		for (Beans b : p2.getTransaction().getOffer()) {
+			p2.getHands().remove(b);
+			p2.getOpenedBeans().remove(b);
+			b.setTraded(true);
+		}
+		p1.getOpenedBeans().addAll(p2.getTransaction().getOffer());
+		p2.getOpenedBeans().addAll(p1.getTransaction().getOffer());
+		p1.getTransaction().getOffer().clear();
+		p2.getTransaction().getOffer().clear();
+	}
+
 	public synchronized void setMessage(Message message) {
 		this.message = message;
 		notifyAll();
@@ -263,15 +226,38 @@ public class Game extends Thread {
 				player.harvest((String) message.getContents());
 				return message.getMessageType();
 			case 421:
-				Optional<Beans> b;
+				Beans b;
 				for (int i = 0; i < 2; i++) {
 					b = deck.draw();
-					if (b.isPresent())
-						player.getOpenedBeans().add(b.get());
+					if (b != null)
+						player.getOpenedBeans().add(b);
 					else
 						gameEndFlag = true;
 				}
+				for (String name : orders)
+					players.get(name).setEndTradeFlag(false);
 				return 421;
+			case 431:
+				return player.addOffer((Integer) message.getContents());
+			case 432:
+				return player.removeOffer((Integer) message.getContents());
+			case 433:
+				player.addDemand((Integer) message.getContents());
+				return 433;
+			case 434:
+				player.removeDemand((Integer) message.getContents());
+				return 434;
+			case 435:
+				return 435;
+			case 436:
+				performTrade(player, players.get((String) message.getContents()));
+				return 436;
+			case 437:
+				return 437;
+			case 438:
+				player.setEndTradeFlag(true);
+				if (isTradePhaseEnded())
+					return 438;
 			case 441:
 				if (isOpenedBeansEmpty()) {
 					gameEndFlag = !getCurrentPlayer().draw(3);
@@ -305,6 +291,26 @@ public class Game extends Thread {
 			break;
 		case 421:
 			update(421);
+			break;
+		case 431:
+		case 432:
+		case 433:
+		case 434:
+			update(451);
+			break;
+		case 435:
+			updateIndividual((String) message.getContents(), messageType);
+			break;
+		case 436:
+			updateIndividual(message.getPlayerName(), messageType);
+			updateIndividual((String) message.getContents(), messageType);
+			update(451);
+			break;
+		case 437:
+			updateIndividual((String) message.getContents(), messageType);
+			break;
+		case 438:
+			update(messageType);
 			break;
 		case 441:
 			update(messageType);

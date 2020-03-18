@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.Scanner;
 
@@ -26,6 +25,11 @@ public class Player implements java.io.Serializable {
 	private static int order_generated = 0;
 
 	private static Scanner sc = new Scanner(System.in);
+
+	/**
+	 * 거래 단계 종료 플래그
+	 */
+	private boolean endTradeFlag;
 
 	/**
 	 * 현재 돈 보유량
@@ -77,6 +81,7 @@ public class Player implements java.io.Serializable {
 	public Player(String name, Deck deck, int number) {
 		this.name = name;
 		int numberOfField = number > 3 ? 2 : 3;
+		this.endTradeFlag = false;
 		this.gold = 0;
 		this.id = ++order_generated;
 		this.deck = deck;
@@ -94,6 +99,14 @@ public class Player implements java.io.Serializable {
 
 	public Beans getHandsByOrder(int order) {
 		return ((LinkedList<Beans>) hands).get(order);
+	}
+
+	public boolean getEndTradeFlag() {
+		return endTradeFlag;
+	}
+
+	public void setEndTradeFlag(boolean flag) {
+		endTradeFlag = flag;
 	}
 
 	public int getId() {
@@ -131,6 +144,41 @@ public class Player implements java.io.Serializable {
 	 */
 	public Transaction getTransaction() {
 		return transaction;
+	}
+
+	public int addOffer(int id) {
+		Beans bean = openedBeans.stream().filter(b -> b.getId() == id).reduce(null, (b1, b2) -> b1 != null ? b1 : b2);
+		if (bean != null) {
+			if (!bean.isTraded()) {
+				transaction.addToOffer(bean);
+				return 431;
+			}
+		} else {
+			bean = hands.stream().filter(b -> b.getId() == id).reduce(null, (b1, b2) -> b1 != null ? b1 : b2);
+			if (bean != null) {
+				transaction.addToOffer(bean);
+				return 431;
+			}
+		}
+		return 0;
+	}
+
+	public int removeOffer(int id) {
+		Beans bean = transaction.getOffer().stream().filter(b -> b.getId() == id).reduce(null,
+				(b1, b2) -> b1 != null ? b1 : b2);
+		if (bean != null) {
+			transaction.getOffer().remove(bean);
+			return 432;
+		}
+		return 0;
+	}
+
+	public void addDemand(int number) {
+		transaction.getDemand().add(number);
+	}
+
+	public void removeDemand(int number) {
+		transaction.getDemand().remove(number);
 	}
 
 	/**
@@ -214,11 +262,11 @@ public class Player implements java.io.Serializable {
 	 * @return 뽑을 카드가 있는 경우 true, 없을 경우 false
 	 */
 	public boolean draw(int n) {
-		Optional<Beans> b;
+		Beans b;
 		for (int i = 0; i < n; i++) {
 			b = deck.draw();
-			if (b.isPresent())
-				hands.offer(b.get());
+			if (b != null)
+				hands.offer(b);
 			else
 				return false;
 		}
@@ -241,13 +289,13 @@ public class Player implements java.io.Serializable {
 	 */
 	public boolean plant(Beans b) {
 		List<Field> tempFields;
-		tempFields = fields.stream().filter(f -> f.getNumber() == b.getNumber())
-				.collect(() -> new ArrayList<Field>(), (c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
-		if(tempFields.isEmpty()) {
-			tempFields=fields.stream().filter(f -> f.isEmpty())
-					.collect(() -> new ArrayList<Field>(), (c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
+		tempFields = fields.stream().filter(f -> f.getNumber() == b.getNumber()).collect(() -> new ArrayList<Field>(),
+				(c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
+		if (tempFields.isEmpty()) {
+			tempFields = fields.stream().filter(f -> f.isEmpty()).collect(() -> new ArrayList<Field>(),
+					(c, s) -> c.add(s), (lst1, lst2) -> lst1.addAll(lst2));
 		}
-		if(tempFields.isEmpty())
+		if (tempFields.isEmpty())
 			return false;
 		tempFields.get(0).plant(b);
 		return true;
@@ -345,6 +393,7 @@ public class Player implements java.io.Serializable {
 
 	/**
 	 * id에 해당되는 밭을 수확
+	 * 
 	 * @param id 수확할 밭의 id
 	 * @return true(성공) false(실패 : 재요청)
 	 */
