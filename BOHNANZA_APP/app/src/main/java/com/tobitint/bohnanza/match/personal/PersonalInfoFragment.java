@@ -69,20 +69,23 @@ public class PersonalInfoFragment extends Fragment {
         ListIterator<Beans> iterator = ((LinkedList) hands).listIterator(hands.size());
 
         while (iterator.hasPrevious()) {
-            Beans bean =
+            Beans bean = iterator.previous();
+
+
         }
 
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 dp2px(40),
                 dp2px(60));
 
-        params.leftMargin = margin;
 
     }
 
     private int computeMargin() {
         return -10;
     }
+
+//    private void add
 
     private int dp2px(int dp) {
         return Math.round(dp * dm.density);
