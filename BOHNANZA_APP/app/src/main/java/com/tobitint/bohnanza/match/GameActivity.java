@@ -8,12 +8,14 @@ import com.tobitint.bohnanza.InfoApplication;
 import com.tobitint.bohnanza.OkAlertDialog;
 import com.tobitint.bohnanza.R;
 import com.tobitint.bohnanza.match.common.CommonInfoFragment;
-import com.tobitint.bohnanza.match.opponent.OpponentInfoFragment;
+import com.tobitint.bohnanza.match.player.PlayerInfoFragment;
 import com.tobitint.bohnanza.match.personal.PersonalInfoFragment;
+import com.tobitint.bohnanza.match.trade.TradeInfoFragment;
 
 import java.util.ArrayList;
 
 import game.game.GameInfo;
+import game.players.Player;
 
 /**
  *
@@ -36,9 +38,14 @@ public class GameActivity extends BaseActivity {
     CommonInfoFragment commonInfoFragment;
 
     /**
-     * 상대 플레이어의 정보가 보이는 프래그먼트
+     * 모든 플레이어의 정보가 보이는 프래그먼트
      */
-    OpponentInfoFragment opponentInfoFragment;
+    PlayerInfoFragment playerInfoFragment;
+
+    /**
+     * 거래 정보가 보이는 프래그먼트
+     */
+    TradeInfoFragment tradeInfoFragment;
 
     /**
      * 플레이어 이름
@@ -57,12 +64,15 @@ public class GameActivity extends BaseActivity {
 
         personalInfoFragment = (PersonalInfoFragment) getSupportFragmentManager().findFragmentById(R.id.personalInfoFragment);
         commonInfoFragment = (CommonInfoFragment) getSupportFragmentManager().findFragmentById(R.id.commonInfoFragment);
-        opponentInfoFragment = (OpponentInfoFragment) getSupportFragmentManager().findFragmentById(R.id.opponentInfoFragment);
+        playerInfoFragment = (PlayerInfoFragment) getSupportFragmentManager().findFragmentById(R.id.playerInfoFragment);
+        tradeInfoFragment = (TradeInfoFragment) getSupportFragmentManager().findFragmentById(R.id.tradeInfoFragment);
 
         init();
     }
 
     private void init() {
+
+
         // Get player name
         playerName = ((InfoApplication) getApplicationContext()).getPlayerName();
 
@@ -70,15 +80,31 @@ public class GameActivity extends BaseActivity {
         Intent intent = getIntent();
         GameInfo gameInfo = (GameInfo) intent.getSerializableExtra("game info");
 
-
-
         // Init information
         orders = (ArrayList<String>) gameInfo.getOrders();
 
-        // Show player turn
-        String[] ordinalNum = {"", "first", "second", "third", "fourth", "fifth"};
+        // Init personalInfoFragment
+        initPersonalInfoFragment(gameInfo.getPlayer(playerName));
 
-        OkAlertDialog.show(this, "You are in the " + ordinalNum[orders.indexOf(playerName) + 1] + " order.");
+        // Init playerInfoFragment
+        for (String _playerName: orders) {
+            initPlayerInfoFragment(gameInfo.getPlayer(_playerName));
+        }
+
+        playerInfoFragment.reapplyPlayerInfoListView();
+
+        // Show player turn
+        String[] ordinalNum = {"1st", "2nd", "3rd", "4th", "5th"};
+
+        OkAlertDialog.show(this, "You are in the " + ordinalNum[orders.indexOf(playerName)] + " order.");
+    }
+
+    private void initPersonalInfoFragment(Player player) {
+
+    }
+
+    private void initPlayerInfoFragment(Player player) {
+        playerInfoFragment.addPlayer(player);
     }
 
 }

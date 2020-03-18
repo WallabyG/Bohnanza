@@ -3,6 +3,7 @@ package com.tobitint.bohnanza;
 import android.app.Activity;
 import android.app.Application;
 
+import java.util.HashMap;
 import java.util.Stack;
 
 /**
@@ -14,6 +15,13 @@ import java.util.Stack;
  *
  */
 public class InfoApplication extends Application {
+
+    /**
+     * 각 콩의 이미지 파일을 저장하는 맵
+     */
+    private static final HashMap<Integer, Integer> beanImageMap = new HashMap<Integer, Integer>() {{
+        put(1, 1);
+    }};
 
     /**
      * 액티비티 스택

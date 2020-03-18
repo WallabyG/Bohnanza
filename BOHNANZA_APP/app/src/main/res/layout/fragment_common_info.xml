@@ -1,83 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
     >
 
     <TextView
         android:id="@+id/refillNumTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10sp"
         android:text="1st\npile"
-        android:textSize="10sp"
         android:textColor="#FF000000"
-        />
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:id="@+id/drawLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
         android:gravity="center_horizontal"
-        >
+        android:orientation="vertical"
+        app:layout_constraintLeft_toRightOf="@id/refillNumTextView"
+        app:layout_constraintStart_toEndOf="@id/refillNumTextView"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="draw"
-            android:textSize="8sp"
             android:textColor="#FF000000"
-            />
+            android:textSize="8sp" />
 
-        <Space
+        <com.tobitint.bohnanza.match.common.CardView
+            android:id="@+id/drawCard"
             android:layout_width="wrap_content"
-            android:layout_height="5dp"
-            />
-
-        <ImageView
-            android:id="@+id/leftoverPileImageView"
-            android:layout_width="@dimen/card_default_width"
-            android:layout_height="@dimen/card_default_height"
-            android:src="@drawable/empty_card"
-            />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
 
     </LinearLayout>
 
-    <Space
-        android:layout_width="20dp"
-        android:layout_height="wrap_content"
-        />
-
     <LinearLayout
+        android:id="@+id/discardedLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:gravity="center_horizontal"
-        >
+        android:orientation="vertical"
+        app:layout_constraintLeft_toRightOf="@id/drawLayout"
+        app:layout_constraintStart_toEndOf="@id/drawLayout"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="discarded"
-            android:textSize="8sp"
             android:textColor="#FF000000"
-            />
+            android:textSize="8sp" />
 
-        <Space
+        <com.tobitint.bohnanza.match.common.CardView
+            android:id="@+id/discardedCard"
             android:layout_width="wrap_content"
-            android:layout_height="5dp"
-            />
-
-        <ImageView
-            android:id="@+id/discardedPileImageView"
-            android:layout_width="@dimen/card_default_width"
-            android:layout_height="@dimen/card_default_height"
-            android:src="@drawable/empty_card"
-            />
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp" />
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

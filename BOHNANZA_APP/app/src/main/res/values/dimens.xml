@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <dimen name="card_default_width">40dp</dimen>
-    <dimen name="card_default_height">60dp</dimen>
-
 </resources>

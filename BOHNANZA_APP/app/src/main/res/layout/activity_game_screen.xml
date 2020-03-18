@@ -14,8 +14,8 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <fragment
-            android:id="@+id/opponentInfoFragment"
-            android:name="com.tobitint.bohnanza.match.opponent.OpponentInfoFragment"
+            android:id="@+id/playerInfoFragment"
+            android:name="com.tobitint.bohnanza.match.player.PlayerInfoFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/linearLayout"
-            android:layout_below="@id/opponentInfoFragment"
+            android:layout_below="@id/playerInfoFragment"
             android:background="#FFFEF9E7" />
 
         <LinearLayout

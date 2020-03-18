@@ -11,6 +11,14 @@ import androidx.fragment.app.Fragment;
 
 import com.tobitint.bohnanza.R;
 
+/**
+ *
+ * 거래 정보가 보이는 프래그먼트
+ *
+ * @author YJH
+ * @version 1.0
+ *
+ */
 public class TradeInfoFragment extends Fragment {
 
     @Nullable
