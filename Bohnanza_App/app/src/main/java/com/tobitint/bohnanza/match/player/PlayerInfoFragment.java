@@ -44,6 +44,8 @@ public class PlayerInfoFragment extends BaseFragment {
 
         playerInfoLayout = rootView.findViewById(R.id.playerInfoLayout);
 
+        initDm();
+
         return rootView;
     }
 

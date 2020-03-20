@@ -89,7 +89,7 @@ public class GameActivity extends BaseActivity {
             initPlayerInfoFragment(gameInfo.getPlayer(_playerName));
         }
 
-        playerInfoFragment.reapplyPlayerInfoListView();
+//        playerInfoFragment.reapplyPlayerInfoListView();
 
         // Show player turn
         String[] ordinalNum = {"1st", "2nd", "3rd", "4th", "5th"};

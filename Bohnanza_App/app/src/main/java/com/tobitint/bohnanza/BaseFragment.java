@@ -17,9 +17,11 @@ public class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        dm = getResources().getDisplayMetrics();
-
         return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    protected void initDm() {
+        dm = getResources().getDisplayMetrics();
     }
 
     protected int dp2px(int dp) {

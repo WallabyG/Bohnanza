@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.tobitint.bohnanza.BaseFragment;
 import com.tobitint.bohnanza.R;
 
 /**
@@ -19,12 +20,14 @@ import com.tobitint.bohnanza.R;
  * @version 1.0
  *
  */
-public class TradeInfoFragment extends Fragment {
+public class TradeInfoFragment extends BaseFragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_trade_info, container, false);
+
+        initDm();
 
         return rootView;
     }

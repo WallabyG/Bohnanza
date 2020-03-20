@@ -48,6 +48,8 @@ public class PersonalInfoFragment extends BaseFragment {
         fieldView = rootView.findViewById(R.id.field);
         playerHandView = rootView.findViewById(R.id.playerHand);
 
+        initDm();
+
         return rootView;
     }
 
