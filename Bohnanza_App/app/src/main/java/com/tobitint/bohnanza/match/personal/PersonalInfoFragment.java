@@ -5,7 +5,6 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -33,12 +32,12 @@ public class PersonalInfoFragment extends Fragment {
     /**
      * 플레이어 밭이 보여지는 뷰
      */
-    FieldView field;
+    FieldView fieldView;
 
     /**
      * 플레이어 패가 보여지는 뷰
      */
-    PlayerHandView playerHand;
+    PlayerHandView playerHandView;
 
     DisplayMetrics dm;
 
@@ -47,8 +46,8 @@ public class PersonalInfoFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup)inflater.inflate(R.layout.fragment_personal_info, container, false);
 
-        field = rootView.findViewById(R.id.field);
-        playerHand = rootView.findViewById(R.id.playerHand);
+        fieldView = rootView.findViewById(R.id.field);
+        playerHandView = rootView.findViewById(R.id.playerHand);
 
         dm = getResources().getDisplayMetrics();
 
@@ -88,11 +87,11 @@ public class PersonalInfoFragment extends Fragment {
         params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
         params.leftMargin = margin;
 
-        PlayerHandCardView card = new PlayerHandCardView(getContext());
-        card.setBeanImage(bean.getNumber());
-        card.setLayoutParams(params);
+        PlayerHandCardView cardView = new PlayerHandCardView(getContext());
+        cardView.setBeanImage(bean.getNumber());
+        cardView.setLayoutParams(params);
 
-        playerHand.addView(card);
+        playerHandView.addView(cardView);
     }
 
     private int dp2px(int dp) {

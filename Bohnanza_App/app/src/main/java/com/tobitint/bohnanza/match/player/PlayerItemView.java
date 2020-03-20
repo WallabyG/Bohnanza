@@ -12,7 +12,7 @@ import com.tobitint.bohnanza.R;
 
 /**
  *
- * 플레이어의 정보를 보여주는 뷰<br>
+ * 플레이어의 정보가 보이는 뷰<br>
  * - 리스트 뷰의 각 아이템
  *
  * @author YJH
@@ -34,7 +34,7 @@ public class PlayerItemView extends LinearLayout {
     /**
      * 플레이어 밭이 보여지는 뷰
      */
-    FieldView field;
+    FieldView fieldView;
 
     /**
      * 플레이어 패 개수
@@ -59,7 +59,7 @@ public class PlayerItemView extends LinearLayout {
 
         playerNameTextView = findViewById(R.id.playerNameTextView);
         playerGoldTextView = findViewById(R.id.playerGoldTextView);
-        field = findViewById(R.id.field);
+        fieldView = findViewById(R.id.field);
     }
 
     public void setPlayerNameTextView(String playerName) {

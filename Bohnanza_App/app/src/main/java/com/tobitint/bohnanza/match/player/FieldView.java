@@ -21,12 +21,12 @@ public class FieldView extends ConstraintLayout {
     /**
      * 첫 번째 밭
      */
-    SingleFieldView firstField;
+    SingleFieldView firstFieldView;
 
     /**
      * 두 번째 밭
      */
-    SingleFieldView secondField;
+    SingleFieldView secondFieldView;
 
     public FieldView(Context context) {
         super(context);
@@ -44,8 +44,8 @@ public class FieldView extends ConstraintLayout {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.player_field, this, true);
 
-        firstField = findViewById(R.id.firstField);
-        secondField = findViewById(R.id.secondField);
+        firstFieldView = findViewById(R.id.firstField);
+        secondFieldView = findViewById(R.id.secondField);
     }
 
 }
