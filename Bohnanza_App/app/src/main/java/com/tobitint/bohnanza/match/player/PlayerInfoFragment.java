@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
+import com.tobitint.bohnanza.BaseFragment;
 import com.tobitint.bohnanza.R;
 
 import java.util.HashMap;
@@ -24,31 +24,25 @@ import game.players.Player;
  * @version 1.0
  *
  */
-public class PlayerInfoFragment extends Fragment {
+public class PlayerInfoFragment extends BaseFragment {
 
     /**
-     * 각 플레이어의 playerItemView 객체를 저장하는 맵
+     * 각 플레이어의 PlayerItemView 객체를 저장하는 맵
      */
-    private HashMap<String, PlayerItemView> playerItemViewMap = new HashMap<>();
+    private HashMap<String, PlayerInfoView> playerItemViewMap = new HashMap<>();
 
     /**
-     * 플레이어의 정보가 보이는 리스트 뷰를 관리하는 어댑터
+     * 플레이어의 정보가 보이는 레이아웃
      */
-    PlayerAdapter playerAdapter = new PlayerAdapter();
+    LinearLayout playerInfoLayout;
 
-    /**
-     * 플레이어의 정보가 보이는 리스트 뷰
-     */
-    ListView playerInfoListView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_player_info, container, false);
 
-        playerInfoListView = rootView.findViewById(R.id.playerInfoListView);
-
-        playerInfoListView.setAdapter(playerAdapter);
+        playerInfoLayout = rootView.findViewById(R.id.playerInfoLayout);
 
         return rootView;
     }
@@ -59,20 +53,25 @@ public class PlayerInfoFragment extends Fragment {
      * @param player 플레이어
      */
     public void addPlayer(Player player) {
-        PlayerItemView playerItemView = new PlayerItemView(getContext());
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        params.rightMargin = dp2px(20);
 
-        playerItemView.setPlayerNameTextView(player.getName());
-        playerItemView.setPlayerGoldTextView(player.getGold());
-        playerItemView.setHandsNum(player.getHands().size());
+        PlayerInfoView playerInfoView = new PlayerInfoView(getContext());
 
-        playerAdapter.addItemView(playerItemView);
+        playerInfoView.setPlayerNameTextView(player.getName());
+        playerInfoView.setPlayerGoldTextView(player.getGold());
+        playerInfoView.setHandsNum(player.getHands().size());
+
+        playerInfoLayout.addView(playerInfoView);
     }
 
     /**
-     * 플레이어의 정보가 보이는 리스트 뷰 재적용
+     * 플레이어의 정보가 보이는 뷰 재적용
      */
-    public void reapplyPlayerInfoListView() {
-        playerAdapter.notifyDataSetChanged();
+    public void reapplyPlayerInfoView(String playerName) {
+        playerItemViewMap.get(playerName).invalidate();
     }
 
 }

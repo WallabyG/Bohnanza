@@ -18,8 +18,7 @@
             android:name="com.tobitint.bohnanza.match.player.PlayerInfoFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:background="#FFF1C40F" />
+            android:layout_alignParentTop="true" />
 
         <fragment
             android:id="@+id/tradeInfoFragment"
@@ -27,8 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@id/linearLayout"
-            android:layout_below="@id/playerInfoFragment"
-            android:background="#FFFEF9E7" />
+            android:layout_below="@id/playerInfoFragment" />
 
         <LinearLayout
             android:id="@+id/linearLayout"

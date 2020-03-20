@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.tobitint.bohnanza.BaseFragment;
 import com.tobitint.bohnanza.R;
 
 import java.util.LinkedList;
@@ -27,7 +28,7 @@ import game.cards.Beans;
  * @version 1.0
  *
  */
-public class PersonalInfoFragment extends Fragment {
+public class PersonalInfoFragment extends BaseFragment {
 
     /**
      * 플레이어 밭이 보여지는 뷰
@@ -39,8 +40,6 @@ public class PersonalInfoFragment extends Fragment {
      */
     PlayerHandView playerHandView;
 
-    DisplayMetrics dm;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -48,8 +47,6 @@ public class PersonalInfoFragment extends Fragment {
 
         fieldView = rootView.findViewById(R.id.field);
         playerHandView = rootView.findViewById(R.id.playerHand);
-
-        dm = getResources().getDisplayMetrics();
 
         return rootView;
     }
@@ -92,10 +89,6 @@ public class PersonalInfoFragment extends Fragment {
         cardView.setLayoutParams(params);
 
         playerHandView.addView(cardView);
-    }
-
-    private int dp2px(int dp) {
-        return Math.round(dp * dm.density);
     }
 
 }

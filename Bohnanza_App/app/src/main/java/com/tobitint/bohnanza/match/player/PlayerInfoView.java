@@ -19,7 +19,7 @@ import com.tobitint.bohnanza.R;
  * @version 1.0
  *
  */
-public class PlayerItemView extends LinearLayout {
+public class PlayerInfoView extends LinearLayout {
 
     /**
      * 플레이어 이름이 보여지는 텍스트 뷰
@@ -41,13 +41,13 @@ public class PlayerItemView extends LinearLayout {
      */
     int handsNum;
 
-    public PlayerItemView(Context context) {
+    public PlayerInfoView(Context context) {
         super(context);
 
         init(context);
     }
 
-    public PlayerItemView(Context context, @Nullable AttributeSet attrs) {
+    public PlayerInfoView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         init(context);
@@ -55,7 +55,7 @@ public class PlayerItemView extends LinearLayout {
 
     private void init(Context context) {
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.player_item, this, true);
+        inflater.inflate(R.layout.player_info, this, true);
 
         playerNameTextView = findViewById(R.id.playerNameTextView);
         playerGoldTextView = findViewById(R.id.playerGoldTextView);
