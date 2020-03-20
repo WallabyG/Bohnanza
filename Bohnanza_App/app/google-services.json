@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "945126446392",
+    "firebase_url": "https://bohnanza-tobitint.firebaseio.com",
+    "project_id": "bohnanza-tobitint",
+    "storage_bucket": "bohnanza-tobitint.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:945126446392:android:49f8056608cd84d41c1dcd",
+        "android_client_info": {
+          "package_name": "com.tobitint.bohnanza"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "945126446392-1d7998sojuh9934297egc2nvetn6i7up.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdNVqpNdKzZsRk7t3r0NXzQbrFwiewd6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "945126446392-1d7998sojuh9934297egc2nvetn6i7up.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
