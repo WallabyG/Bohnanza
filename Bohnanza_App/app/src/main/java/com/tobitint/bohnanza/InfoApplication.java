@@ -40,6 +40,11 @@ public class InfoApplication extends Application {
      */
     private String playerName = null;
 
+    /**
+     * 서수
+     */
+    private String[] ordinalNumber = {"1st", "2nd", "3rd", "4th", "5th"};
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -67,6 +72,10 @@ public class InfoApplication extends Application {
 
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
+    }
+
+    public String getOrdinalNumber(int order) {
+        return ordinalNumber[order];
     }
 
 }
