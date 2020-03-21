@@ -89,12 +89,8 @@ public class GameActivity extends BaseActivity {
             initPlayerInfoFragment(gameInfo.getPlayer(_playerName));
         }
 
-//        playerInfoFragment.reapplyPlayerInfoListView();
-
         // Show player turn
-        String[] ordinalNum = {"1st", "2nd", "3rd", "4th", "5th"};
-
-        OkAlertDialog.show(this, "You are in the " + ordinalNum[orders.indexOf(playerName)] + " order.");
+        OkAlertDialog.show(this, "You are in the " + ((InfoApplication) getApplicationContext()).getOrdinalNumber(orders.indexOf(playerName)) + " order.");
     }
 
     private void initPersonalInfoFragment(Player player) {
