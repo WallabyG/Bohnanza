@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.tobitint.bohnanza.BaseFragment;
+import com.tobitint.bohnanza.InfoApplication;
 import com.tobitint.bohnanza.R;
 
 import java.util.HashMap;
@@ -44,8 +45,6 @@ public class PlayerInfoFragment extends BaseFragment {
 
         playerInfoLayout = rootView.findViewById(R.id.playerInfoLayout);
 
-        initDm();
-
         return rootView;
     }
 
@@ -58,13 +57,14 @@ public class PlayerInfoFragment extends BaseFragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.rightMargin = dp2px(20);
+        params.rightMargin = ((InfoApplication) getContext().getApplicationContext()).dp2px(20);
 
         PlayerInfoView playerInfoView = new PlayerInfoView(getContext());
 
         playerInfoView.setPlayerNameTextView(player.getName());
         playerInfoView.setPlayerGoldTextView(player.getGold());
         playerInfoView.setHandsNum(player.getHands().size());
+        playerInfoView.setLayoutParams(params);
 
         playerInfoLayout.addView(playerInfoView);
     }

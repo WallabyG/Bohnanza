@@ -47,6 +47,9 @@ public class MainActivity extends BaseActivity {
 
         playerNameTextView = findViewById(R.id.playerNameTextView);
 
+        // Init display metrics
+        ((InfoApplication) getApplicationContext()).initDm();
+
         // Start communication
         (new Client(this)).start();
 

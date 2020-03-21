@@ -36,9 +36,9 @@
             android:background="#FFD1F2EB"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingLeft="30dp"
+            android:paddingLeft="40dp"
             android:paddingTop="10dp"
-            android:paddingRight="30dp"
+            android:paddingRight="70dp"
             android:paddingBottom="10dp">
 
             <fragment
@@ -52,8 +52,8 @@
                 android:name="com.tobitint.bohnanza.match.personal.PersonalInfoFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="50dp"
-                android:layout_marginLeft="50dp" />
+                android:layout_marginStart="70dp"
+                android:layout_marginLeft="70dp" />
 
         </LinearLayout>
 

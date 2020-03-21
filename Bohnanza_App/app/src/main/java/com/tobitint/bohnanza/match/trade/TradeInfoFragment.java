@@ -27,8 +27,6 @@ public class TradeInfoFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(R.layout.fragment_trade_info, container, false);
 
-        initDm();
-
         return rootView;
     }
 }

@@ -2,6 +2,7 @@ package com.tobitint.bohnanza;
 
 import android.app.Activity;
 import android.app.Application;
+import android.util.DisplayMetrics;
 
 import java.util.HashMap;
 import java.util.Stack;
@@ -45,6 +46,8 @@ public class InfoApplication extends Application {
      */
     private String[] ordinalNumber = {"1st", "2nd", "3rd", "4th", "5th"};
 
+    DisplayMetrics dm;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -76,6 +79,14 @@ public class InfoApplication extends Application {
 
     public String getOrdinalNumber(int order) {
         return ordinalNumber[order];
+    }
+
+    public void initDm() {
+        dm = getResources().getDisplayMetrics();
+    }
+
+    public int dp2px(int dp) {
+        return Math.round(dp * dm.density);
     }
 
 }

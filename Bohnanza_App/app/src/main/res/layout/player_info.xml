@@ -16,8 +16,9 @@
         android:layout_marginStart="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="5dp"
-        android:text="진호"
-        android:textSize="10sp" />
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#FF000000" />
 
     <TextView
         android:id="@+id/playerGoldTextView"
@@ -29,8 +30,9 @@
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:text="10"
-        android:textSize="8sp" />
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="#FF000000" />
 
     <com.tobitint.bohnanza.match.player.FieldView
         android:id="@+id/field"

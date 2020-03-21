@@ -22,8 +22,8 @@
         android:id="@+id/drawLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
         android:gravity="center_horizontal"
         android:orientation="vertical"
         app:layout_constraintLeft_toRightOf="@id/refillNumTextView"
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="draw"
             android:textColor="#FF000000"
-            android:textSize="8sp" />
+            android:textSize="10sp" />
 
         <com.tobitint.bohnanza.match.common.CardView
             android:id="@+id/drawCard"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:text="discarded"
             android:textColor="#FF000000"
-            android:textSize="8sp" />
+            android:textSize="10sp" />
 
         <com.tobitint.bohnanza.match.common.CardView
             android:id="@+id/discardedCard"

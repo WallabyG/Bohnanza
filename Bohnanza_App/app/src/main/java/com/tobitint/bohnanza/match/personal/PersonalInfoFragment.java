@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.tobitint.bohnanza.BaseFragment;
+import com.tobitint.bohnanza.InfoApplication;
 import com.tobitint.bohnanza.R;
 
 import java.util.LinkedList;
@@ -48,8 +49,6 @@ public class PersonalInfoFragment extends BaseFragment {
         fieldView = rootView.findViewById(R.id.field);
         playerHandView = rootView.findViewById(R.id.playerHand);
 
-        initDm();
-
         return rootView;
     }
 
@@ -61,9 +60,9 @@ public class PersonalInfoFragment extends BaseFragment {
     public void initPlayerHand(Queue<Beans> hands) {
         int handsNum = hands.size();
 
-        int cardWidth = dp2px(40);
-        int cardHeight = dp2px(60);
-        int cardDefaultMargin = computeCardDefaultMargin();
+        int cardWidth = ((InfoApplication) getContext().getApplicationContext()).dp2px(50);
+        int cardHeight = ((InfoApplication) getContext().getApplicationContext()).dp2px(75);
+        int cardDefaultMargin = computeCardDefaultMargin(handsNum, cardWidth);
         int cardMargin = cardDefaultMargin * (handsNum - 1);
 
         ListIterator<Beans> iterator = ((LinkedList) hands).listIterator(hands.size());
@@ -77,8 +76,19 @@ public class PersonalInfoFragment extends BaseFragment {
         }
     }
 
-    private int computeCardDefaultMargin() {
-        return -10;
+    private int computeCardDefaultMargin(int handsNum, int cardWidth) {
+        int playerHandViewWidth = playerHandView.getWidth();
+        float minimumOverlapRatio = 1.0f / 6;
+
+        int requiredWidth = cardWidth * handsNum - Math.round(cardWidth * minimumOverlapRatio) * (handsNum - 1);
+
+        if (playerHandViewWidth == 0 || playerHandViewWidth >= requiredWidth) {
+            return cardWidth - Math.round(cardWidth * minimumOverlapRatio);
+        }
+
+        int overlapWidth = (int) Math.ceil((double) (cardWidth * handsNum - playerHandViewWidth) / (handsNum - 1));
+
+        return cardWidth - overlapWidth;
     }
 
     private void addCardToPlayerHand(Beans bean, int width, int height, int margin) {
