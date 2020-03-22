@@ -57,6 +57,13 @@ public class GameActivity extends BaseActivity {
      */
     private ArrayList<String> orders;
 
+    boolean stateShowPlayerTurn = false;
+
+    /**
+     * 게임 정보
+     */
+    GameInfo gameInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,35 +77,60 @@ public class GameActivity extends BaseActivity {
         init();
     }
 
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+
+        personalInfoFragment.getPlayerHandViewWidth();
+
+        // Init personalInfoFragment
+        initPersonalInfoFragment(gameInfo.getPlayer(playerName));
+
+        // Show player turn
+        if (!stateShowPlayerTurn) {
+            OkAlertDialog.show(this, "You are in the " + ((InfoApplication) getApplicationContext()).getOrdinalNumber(orders.indexOf(playerName)) + " order.");
+
+            stateShowPlayerTurn = true;
+        }
+    }
+
     private void init() {
         // Get player name
         playerName = ((InfoApplication) getApplicationContext()).getPlayerName();
 
         // Get intent
         Intent intent = getIntent();
-        GameInfo gameInfo = (GameInfo) intent.getSerializableExtra("game info");
+        gameInfo = (GameInfo) intent.getSerializableExtra("game info");
 
         // Init information
         orders = (ArrayList<String>) gameInfo.getOrders();
-
-        // Init personalInfoFragment
-        initPersonalInfoFragment(gameInfo.getPlayer(playerName));
 
         // Init playerInfoFragment
         for (String _playerName: orders) {
             initPlayerInfoFragment(gameInfo.getPlayer(_playerName));
         }
-
-        // Show player turn
-        OkAlertDialog.show(this, "You are in the " + ((InfoApplication) getApplicationContext()).getOrdinalNumber(orders.indexOf(playerName)) + " order.");
     }
 
+    /**
+     * 자신의 정보가 보이는 프래그먼트 초기화
+     *
+     * @param player 플레이어
+     */
     private void initPersonalInfoFragment(Player player) {
         personalInfoFragment.initPlayerHand(player.getHands());
     }
 
+    /**
+     * 모든 플레이어의 정보가 보이는 프래그먼트 초기화
+     *
+     * @param player 플레이어
+     */
     private void initPlayerInfoFragment(Player player) {
         playerInfoFragment.addPlayer(player);
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
 }

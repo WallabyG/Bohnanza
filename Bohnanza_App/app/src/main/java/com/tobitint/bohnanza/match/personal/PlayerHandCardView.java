@@ -5,8 +5,10 @@ import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
 
 import com.tobitint.bohnanza.InfoApplication;
+import com.tobitint.bohnanza.R;
 
 /**
  *
@@ -20,10 +22,18 @@ public class PlayerHandCardView extends AppCompatImageView {
 
     public PlayerHandCardView(Context context) {
         super(context);
+
+        init();
     }
 
     public PlayerHandCardView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
+
+        init();
+    }
+
+    private void init() {
+        setBackgroundDrawable(ContextCompat.getDrawable(getContext(), R.drawable.player_hand_card_border));
     }
 
     /**
