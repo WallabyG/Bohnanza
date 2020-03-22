@@ -20,7 +20,7 @@
         app:layout_constraintStart_toEndOf="@id/firstField"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp" />
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

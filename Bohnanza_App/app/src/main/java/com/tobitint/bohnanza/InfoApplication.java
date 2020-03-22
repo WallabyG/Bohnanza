@@ -21,14 +21,16 @@ public class InfoApplication extends Application {
      * 각 콩의 이미지를 저장하는 맵
      */
     private static final HashMap<Integer, Integer> beanImageIdMap = new HashMap<Integer, Integer>() {{
-        put(6, R.drawable.empty_card);
-        put(8, R.drawable.empty_card);
-        put(10, R.drawable.empty_card);
-        put(12, R.drawable.empty_card);
-        put(14, R.drawable.empty_card);
-        put(16, R.drawable.empty_card);
-        put(18, R.drawable.empty_card);
-        put(20, R.drawable.empty_card);
+        put(6, R.drawable.gardenbean_card);
+        put(8, R.drawable.redbean_card);
+        put(10, R.drawable.blackeyedbean_card);
+        put(12, R.drawable.soybean_card);
+        put(14, R.drawable.greenbean_card);
+        put(16, R.drawable.stinkbean_card);
+        put(18, R.drawable.chilibean_card);
+        put(20, R.drawable.bluebean_card);
+        put(0, R.drawable.empty_card);
+        put(-1, R.drawable.card_back);
     }};
 
     /**

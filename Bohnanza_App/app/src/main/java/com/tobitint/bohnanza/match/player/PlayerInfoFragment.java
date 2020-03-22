@@ -57,7 +57,7 @@ public class PlayerInfoFragment extends BaseFragment {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        params.rightMargin = ((InfoApplication) getContext().getApplicationContext()).dp2px(20);
+        params.rightMargin = ((InfoApplication) getContext().getApplicationContext()).dp2px(10);
 
         PlayerInfoView playerInfoView = new PlayerInfoView(getContext());
 
