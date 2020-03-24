@@ -57,7 +57,10 @@ public class GameActivity extends BaseActivity {
      */
     private ArrayList<String> orders;
 
-    boolean stateShowPlayerTurn = false;
+    /**
+     * 플레이어 턴을 보여주었는지 여부
+     */
+    boolean stateShowPlayerTurn;
 
     /**
      * 게임 정보
@@ -104,6 +107,7 @@ public class GameActivity extends BaseActivity {
 
         // Init information
         orders = (ArrayList<String>) gameInfo.getOrders();
+        stateShowPlayerTurn = false;
 
         // Init playerInfoFragment
         for (String _playerName: orders) {
