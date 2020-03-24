@@ -1,26 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:orientation="horizontal"
     android:padding="5dp">
 
-    <com.tobitint.bohnanza.match.player.SingleFieldView
-        android:id="@+id/firstField"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <com.tobitint.bohnanza.match.player.SingleFieldView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toEndOf="@id/firstField"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginStart="5dp"
-        android:layout_marginLeft="5dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

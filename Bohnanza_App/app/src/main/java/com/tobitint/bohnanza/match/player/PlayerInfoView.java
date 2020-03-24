@@ -10,6 +10,10 @@ import androidx.annotation.Nullable;
 
 import com.tobitint.bohnanza.R;
 
+import java.util.List;
+
+import game.players.Field;
+
 /**
  *
  * 플레이어의 정보가 보이는 뷰<br>
@@ -68,6 +72,10 @@ public class PlayerInfoView extends LinearLayout {
 
     public void setPlayerGoldTextView(int playerGold) {
         playerGoldTextView.setText(playerGold + "G");
+    }
+
+    public void setFieldView(List<Field> fields) {
+        fieldView.setSingleFieldViews(fields);
     }
 
     public void setHandsNum(int handsNum) {

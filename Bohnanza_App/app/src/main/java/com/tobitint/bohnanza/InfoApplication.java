@@ -17,6 +17,17 @@ import java.util.Stack;
  */
 public class InfoApplication extends Application {
 
+    private static final HashMap<Integer, String> beanNameMap = new HashMap<Integer, String>() {{
+       put(6, "gardenbean");
+       put(8, "redbean");
+       put(10, "blackeyedbean");
+       put(12, "soybean");
+       put(14, "greenbean");
+       put(16, "stinkbean");
+       put(18, "chilibean");
+       put(20, "bluebean");
+    }};
+
     /**
      * 각 콩의 이미지를 저장하는 맵
      */
@@ -53,6 +64,10 @@ public class InfoApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+    }
+
+    public String getBeanName(int beanNumber) {
+        return beanNameMap.get(beanNumber);
     }
 
     public int getBeanImageId(int beanNumber) {

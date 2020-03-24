@@ -63,6 +63,7 @@ public class PlayerInfoFragment extends BaseFragment {
 
         playerInfoView.setPlayerNameTextView(player.getName());
         playerInfoView.setPlayerGoldTextView(player.getGold());
+        playerInfoView.setFieldView(player.getFields());
         playerInfoView.setHandsNum(player.getHands().size());
         playerInfoView.setLayoutParams(params);
 
