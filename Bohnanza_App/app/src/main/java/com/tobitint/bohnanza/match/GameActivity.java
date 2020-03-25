@@ -109,6 +109,9 @@ public class GameActivity extends BaseActivity {
         orders = (ArrayList<String>) gameInfo.getOrders();
         stateShowPlayerTurn = false;
 
+        // Init commonInfoFragment
+        initCommonInfoFragment();
+
         // Init playerInfoFragment
         for (String _playerName: orders) {
             initPlayerInfoFragment(gameInfo.getPlayer(_playerName));
@@ -122,6 +125,10 @@ public class GameActivity extends BaseActivity {
      */
     private void initPersonalInfoFragment(Player player) {
         personalInfoFragment.initPlayerHand(player.getHands());
+    }
+
+    private void initCommonInfoFragment() {
+
     }
 
     /**

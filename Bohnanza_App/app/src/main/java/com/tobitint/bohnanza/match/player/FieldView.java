@@ -2,11 +2,8 @@ package com.tobitint.bohnanza.match.player;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
-
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.tobitint.bohnanza.InfoApplication;
 import com.tobitint.bohnanza.R;
@@ -24,7 +21,7 @@ import game.players.Field;
  * @version 1.0
  *
  */
-public class FieldView extends ConstraintLayout {
+public class FieldView extends LinearLayout {
 
     /**
      * 플레이어 싱글 밭 리스트
@@ -50,7 +47,6 @@ public class FieldView extends ConstraintLayout {
 
     public void setSingleFieldViews(List<Field> fields) {
         for (Field field: fields) {
-            Log.d("PFV", "setSingleFieldViews: " + fields.size());
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT);
