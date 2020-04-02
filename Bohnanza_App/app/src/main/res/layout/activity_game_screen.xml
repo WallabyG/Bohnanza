@@ -5,34 +5,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <fragment
-            android:id="@+id/playerInfoFragment"
-            android:name="com.tobitint.bohnanza.match.player.PlayerInfoFragment"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true" />
+            android:layout_height="0dp"
+            android:layout_weight="1">
 
-        <fragment
-            android:id="@+id/tradeInfoFragment"
-            android:name="com.tobitint.bohnanza.match.trade.TradeInfoFragment"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@id/linearLayout"
-            android:layout_below="@id/playerInfoFragment" />
+            <fragment
+                android:id="@+id/tradeInfoFragment"
+                android:name="com.tobitint.bohnanza.match.trade.TradeInfoFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+            <fragment
+                android:id="@+id/playerInfoFragment"
+                android:name="com.tobitint.bohnanza.match.player.PlayerInfoFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible" />
+
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:background="#FFD1F2EB"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -59,6 +66,6 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
