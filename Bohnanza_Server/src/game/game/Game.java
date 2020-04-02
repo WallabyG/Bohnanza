@@ -332,6 +332,7 @@ public class Game extends Thread {
 		shuffleOrder();
 		for (String name : orders)
 			players.get(name).draw(5);
+		update(301);
 		while (!gameEndFlag) {
 			try {
 				wait();

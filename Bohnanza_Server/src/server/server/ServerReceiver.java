@@ -178,7 +178,6 @@ public class ServerReceiver extends Thread {
 			if (match != null) {
 				if (match.isFull()) {
 					match.start();
-					match.update(301);
 				}
 			}
 		default:
