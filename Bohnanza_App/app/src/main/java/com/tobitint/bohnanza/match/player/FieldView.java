@@ -3,10 +3,15 @@ package com.tobitint.bohnanza.match.player;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.widget.LinearLayout;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
+import com.tobitint.bohnanza.InfoApplication;
 import com.tobitint.bohnanza.R;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import game.players.Field;
 
 /**
  *
@@ -16,17 +21,12 @@ import com.tobitint.bohnanza.R;
  * @version 1.0
  *
  */
-public class FieldView extends ConstraintLayout {
+public class FieldView extends LinearLayout {
 
     /**
-     * 첫 번째 밭
+     * 플레이어 싱글 밭 리스트
      */
-    SingleFieldView firstFieldView;
-
-    /**
-     * 두 번째 밭
-     */
-    SingleFieldView secondFieldView;
+    ArrayList<SingleFieldView> singleFieldViews = new ArrayList<>();
 
     public FieldView(Context context) {
         super(context);
@@ -43,9 +43,35 @@ public class FieldView extends ConstraintLayout {
     private void init(Context context) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.player_field, this, true);
+    }
 
-        firstFieldView = findViewById(R.id.firstField);
-        secondFieldView = findViewById(R.id.secondField);
+    public void setSingleFieldViews(List<Field> fields) {
+        for (Field field: fields) {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.rightMargin = ((InfoApplication) getContext().getApplicationContext()).dp2px(5);
+
+            SingleFieldView singleFieldView = new SingleFieldView(getContext());
+
+            singleFieldView.setId(field.getId());
+
+            if (field.getField().isEmpty()) {
+                singleFieldView.setEmpty();
+            } else {
+                int beanValue = field.getField().get(0).getNumber();
+
+                singleFieldView.setBeanNameTextView(((InfoApplication) getContext().getApplicationContext()).getBeanName(beanValue));
+                singleFieldView.setBeanValueTextView(beanValue);
+                singleFieldView.setBeanNumTextView(field.getField().size());
+            }
+
+            singleFieldView.setLayoutParams(params);
+
+            singleFieldViews.add(singleFieldView);
+
+            addView(singleFieldView);
+        }
     }
 
 }

@@ -1,7 +1,6 @@
 package com.tobitint.bohnanza.match.personal;
 
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +8,6 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.tobitint.bohnanza.BaseFragment;
 import com.tobitint.bohnanza.InfoApplication;
@@ -41,6 +39,11 @@ public class PersonalInfoFragment extends BaseFragment {
      */
     PlayerHandView playerHandView;
 
+    /**
+     * 플레이어 패가 보여지는 뷰의 너비
+     */
+    int playerHandViewWidth;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -65,6 +68,8 @@ public class PersonalInfoFragment extends BaseFragment {
         int cardDefaultMargin = computeCardDefaultMargin(handsNum, cardWidth);
         int cardMargin = cardDefaultMargin * (handsNum - 1);
 
+        playerHandView.removeAllViews();
+
         ListIterator<Beans> iterator = ((LinkedList) hands).listIterator(hands.size());
 
         while (iterator.hasPrevious()) {
@@ -74,15 +79,16 @@ public class PersonalInfoFragment extends BaseFragment {
 
             cardMargin -= cardDefaultMargin;
         }
+
+        playerHandView.invalidate();
     }
 
     private int computeCardDefaultMargin(int handsNum, int cardWidth) {
-        int playerHandViewWidth = playerHandView.getWidth();
         float minimumOverlapRatio = 1.0f / 6;
 
         int requiredWidth = cardWidth * handsNum - Math.round(cardWidth * minimumOverlapRatio) * (handsNum - 1);
 
-        if (playerHandViewWidth == 0 || playerHandViewWidth >= requiredWidth) {
+        if (playerHandViewWidth >= requiredWidth) {
             return cardWidth - Math.round(cardWidth * minimumOverlapRatio);
         }
 
@@ -97,10 +103,15 @@ public class PersonalInfoFragment extends BaseFragment {
         params.leftMargin = margin;
 
         PlayerHandCardView cardView = new PlayerHandCardView(getContext());
+
         cardView.setBeanImage(bean.getNumber());
         cardView.setLayoutParams(params);
 
         playerHandView.addView(cardView);
+    }
+
+    public void getPlayerHandViewWidth() {
+        playerHandViewWidth = playerHandView.getWidth();
     }
 
 }
