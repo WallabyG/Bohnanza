@@ -2,6 +2,7 @@ package com.tobitint.bohnanza.match;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.tobitint.bohnanza.BaseActivity;
 import com.tobitint.bohnanza.InfoApplication;

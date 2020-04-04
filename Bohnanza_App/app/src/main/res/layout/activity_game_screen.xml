@@ -23,14 +23,14 @@
                 android:id="@+id/tradeInfoFragment"
                 android:name="com.tobitint.bohnanza.match.trade.TradeInfoFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="gone" />
 
             <fragment
                 android:id="@+id/playerInfoFragment"
                 android:name="com.tobitint.bohnanza.match.player.PlayerInfoFragment"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:visibility="visible" />
 
         </FrameLayout>

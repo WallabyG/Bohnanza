@@ -113,7 +113,6 @@ public class PersonalInfoFragment extends BaseFragment {
 
     public void getPlayerHandViewWidth() {
         playerHandViewWidth = playerHandView.getWidth();
-        Log.d("Personal", "getPlayerHandViewWidth: " + playerHandViewWidth);
     }
 
 }
