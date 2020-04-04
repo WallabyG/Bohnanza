@@ -12,17 +12,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.SignInButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.tobitint.bohnanza.client.ClientSender;
 
 import server.message.Message;
 
 /**
- *
  * 로그인 액티비티
  *
  * @author YJH
  * @version 1.0
- *
  */
 public class LoginActivity extends BaseActivity {
 
@@ -37,6 +41,21 @@ public class LoginActivity extends BaseActivity {
     Button loginButton;
 
     /**
+     * 파이어베이스 인증 객체
+     */
+    FirebaseAuth mAuth = null;
+
+    /**
+     * 구글 로그인 버튼
+     */
+    SignInButton signInButton;
+
+    /**
+     * 구글 로그인 클라이언트
+     */
+    GoogleSignInClient mGoogleSignInClient;
+
+    /**
      * 로그인 정보가 유효하지 않을 경우 안내 메시지가 보여지는 텍스트 뷰
      */
     TextView noticeTextView;
@@ -48,9 +67,20 @@ public class LoginActivity extends BaseActivity {
 
         setFinishOnTouchOutside(false);
 
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+
+        updateUI(account);
+
         playerNameEditText = findViewById(R.id.playerNameEditText);
         loginButton = findViewById(R.id.loginButton);
+        signInButton = findViewById(R.id.sign_in_button);
         noticeTextView = findViewById(R.id.noticeTextView);
+
+        signInButton.setSize(SignInButton.SIZE_STANDARD);
 
         playerNameEditText.setFilters(new InputFilter[]{new BaseInputFilter()});
 
@@ -59,10 +89,12 @@ public class LoginActivity extends BaseActivity {
         // Add text changed listener to playerNameEditText
         playerNameEditText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable arg) {
@@ -102,6 +134,11 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    public void updateUI(GoogleSignInAccount account) {
+        if (account != null)
+            signInButton.setVisibility(View.GONE);
+    }
+
     public void onLoginButtonClicked(View v) {
         String playerName = playerNameEditText.getText().toString();
 
@@ -123,5 +160,6 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    public void onBackPressed() { }
+    public void onBackPressed() {
+    }
 }
