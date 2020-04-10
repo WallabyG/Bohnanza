@@ -325,7 +325,7 @@ public class Player implements java.io.Serializable {
 		if (!hands.isEmpty())
 			if (!plant(hands.poll()))
 				return 411;
-		return 401;
+		return 402;
 	}
 
 	/**
@@ -337,7 +337,7 @@ public class Player implements java.io.Serializable {
 		if (!hands.isEmpty())
 			if (!plant(hands.poll()))
 				return 412;
-		return 402;
+		return 409;
 	}
 
 	/**
@@ -397,8 +397,8 @@ public class Player implements java.io.Serializable {
 	 * @param id 수확할 밭의 id
 	 * @return true(성공) false(실패 : 재요청)
 	 */
-	public boolean harvest(String id) {
-		Field field = fields.stream().filter(f -> f.getId().equals(id)).reduce(null, (f1, f2) -> f1 != null ? f1 : f2);
+	public boolean harvest(int index) {
+		Field field = fields.get(index);
 		if (field != null) {
 			gold += field.harvest(deck);
 			return true;
