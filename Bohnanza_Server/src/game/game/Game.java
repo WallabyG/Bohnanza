@@ -56,6 +56,11 @@ public class Game extends Thread {
 	private int capacity;
 
 	/**
+	 * 턴 종료 시 활성화되는 플래그
+	 */
+	private volatile boolean turnEndFlag;
+
+	/**
 	 * 게임의 종료를 판단하는 플래그
 	 */
 	private volatile boolean gameEndFlag;
@@ -94,7 +99,7 @@ public class Game extends Thread {
 	}
 
 	public boolean isTradePhaseEnded() {
-		return players.entrySet().stream().allMatch(p -> ((Player) p).getEndTradeFlag());
+		return players.get(orders.get(currentPlayerIndex)).getEndTradeFlag();
 	}
 
 	public GameInfo getInfo() {
@@ -109,6 +114,7 @@ public class Game extends Thread {
 	public Game(OnlineMatch match) {
 		this.match = match;
 		this.capacity = match.getCapacity();
+		this.turnEndFlag = false;
 		this.gameEndFlag = false;
 		this.deck = new Deck();
 		players = new HashMap<>();
@@ -219,11 +225,12 @@ public class Game extends Thread {
 			case 402:
 				return player.plantAdditionalBean();
 			case 403:
-				return player.plantOpenedBeans((Integer) message.getContents());
+				int returnMessage = player.plantOpenedBeans((Integer) message.getContents());
+				return player.getOpenedBeans().isEmpty() ? 441 : returnMessage;
 			case 411:
 			case 412:
 			case 413:
-				player.harvest((String) message.getContents());
+				player.harvest((Integer) message.getContents());
 				return message.getMessageType();
 			case 421:
 				Beans b;
@@ -256,15 +263,7 @@ public class Game extends Thread {
 				return 437;
 			case 438:
 				player.setEndTradeFlag(true);
-				if (isTradePhaseEnded())
-					return 438;
-			case 441:
-				if (isOpenedBeansEmpty()) {
-					gameEndFlag = !getCurrentPlayer().draw(3);
-					currentPlayerIndex = (currentPlayerIndex + 1) % capacity;
-					return 441;
-				}
-				break;
+				return isTradePhaseEnded() ? 439 : 438;
 			default:
 				break;
 			}
@@ -283,6 +282,7 @@ public class Game extends Thread {
 		case 401:
 		case 402:
 		case 403:
+		case 409:
 		case 411:
 		case 412:
 		case 413:
@@ -310,10 +310,16 @@ public class Game extends Thread {
 			updateIndividual((String) message.getContents(), messageType);
 			break;
 		case 438:
+		case 439:
 			update(messageType);
 			break;
 		case 441:
-			update(messageType);
+			update(451);
+			if (isOpenedBeansEmpty()) {
+				gameEndFlag = !getCurrentPlayer().draw(3);
+				currentPlayerIndex = (currentPlayerIndex + 1) % capacity;
+			}
+			update(452);
 			break;
 		default:
 			break;
@@ -333,7 +339,7 @@ public class Game extends Thread {
 		for (String name : orders)
 			players.get(name).draw(5);
 		update(301);
-		while (!gameEndFlag) {
+		while (!(gameEndFlag && turnEndFlag)) {
 			try {
 				wait();
 			} catch (InterruptedException e) {
@@ -343,5 +349,4 @@ public class Game extends Thread {
 		for (String name : orders)
 			players.get(name).gameSet();
 	}
-
 }
