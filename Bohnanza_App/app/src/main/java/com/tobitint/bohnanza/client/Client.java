@@ -19,7 +19,7 @@ import java.net.Socket;
  */
 public class Client extends Thread {
 
-    private static final String serverHostIP = "147.46.211.57";
+    private static final String serverHostIP = "49.50.164.27";
     private static final int portNumber = 55555;
 
     static ObjectOutputStream outStream;

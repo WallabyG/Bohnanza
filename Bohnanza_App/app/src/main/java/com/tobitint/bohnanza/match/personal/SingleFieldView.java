@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import com.tobitint.bohnanza.InfoApplication;
 import com.tobitint.bohnanza.R;
 
 /**
@@ -49,6 +50,19 @@ public class SingleFieldView extends LinearLayout {
 
         beanImageView = findViewById(R.id.beanImageView);
         beanNumTextView = findViewById(R.id.beanNumTextView);
+    }
+
+    public void setBeanImageView(int beanImageId) {
+        beanImageView.setImageResource(beanImageId);
+    }
+
+    public void setBeanNumTextView(int beanNum) {
+        beanNumTextView.setText(String.valueOf(beanNum));
+    }
+
+    public void setEmpty() {
+        beanImageView.setImageResource(((InfoApplication) getContext().getApplicationContext()).getBeanImageId(0));
+        beanNumTextView.setText("empty");
     }
 
 }

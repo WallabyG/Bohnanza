@@ -2,15 +2,14 @@ package com.tobitint.bohnanza.match;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 
 import com.tobitint.bohnanza.BaseActivity;
 import com.tobitint.bohnanza.InfoApplication;
 import com.tobitint.bohnanza.OkAlertDialog;
 import com.tobitint.bohnanza.R;
 import com.tobitint.bohnanza.match.common.CommonInfoFragment;
-import com.tobitint.bohnanza.match.player.PlayerInfoFragment;
 import com.tobitint.bohnanza.match.personal.PersonalInfoFragment;
+import com.tobitint.bohnanza.match.player.PlayerInfoFragment;
 import com.tobitint.bohnanza.match.trade.TradeInfoFragment;
 
 import java.util.ArrayList;
@@ -59,9 +58,9 @@ public class GameActivity extends BaseActivity {
     private ArrayList<String> orders;
 
     /**
-     * 플레이어 턴을 보여주었는지 여부
+     * 초기화하였는지 여부
      */
-    boolean stateShowPlayerTurn;
+    boolean stateInit;
 
     /**
      * 게임 정보
@@ -85,16 +84,14 @@ public class GameActivity extends BaseActivity {
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        personalInfoFragment.getPlayerHandViewWidth();
+        if (!stateInit) {
+            // Init personalInfoFragment
+            initPersonalInfoFragment(gameInfo.getPlayer(playerName));
 
-        // Init personalInfoFragment
-        initPersonalInfoFragment(gameInfo.getPlayer(playerName));
-
-        // Show player turn
-        if (!stateShowPlayerTurn) {
+            // Show player turn
             OkAlertDialog.show(this, "You are in the " + ((InfoApplication) getApplicationContext()).getOrdinalNumber(orders.indexOf(playerName)) + " order.");
 
-            stateShowPlayerTurn = true;
+            stateInit = true;
         }
     }
 
@@ -108,7 +105,7 @@ public class GameActivity extends BaseActivity {
 
         // Init information
         orders = (ArrayList<String>) gameInfo.getOrders();
-        stateShowPlayerTurn = false;
+        stateInit = false;
 
         // Init commonInfoFragment
         initCommonInfoFragment();
@@ -125,6 +122,9 @@ public class GameActivity extends BaseActivity {
      * @param player 플레이어
      */
     private void initPersonalInfoFragment(Player player) {
+        personalInfoFragment.initFieldView(player.getFields());
+
+        personalInfoFragment.getPlayerHandViewWidth();
         personalInfoFragment.initPlayerHand(player.getHands());
     }
 

@@ -1,7 +1,6 @@
 package com.tobitint.bohnanza.match.personal;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,12 @@ import com.tobitint.bohnanza.InfoApplication;
 import com.tobitint.bohnanza.R;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
 import java.util.Queue;
 
 import game.cards.Beans;
+import game.players.Field;
 
 /**
  *
@@ -54,6 +55,15 @@ public class PersonalInfoFragment extends BaseFragment {
         playerHandView = rootView.findViewById(R.id.playerHand);
 
         return rootView;
+    }
+
+    /**
+     * 플레이어 밭이 보여지는 뷰 초기화
+     *
+     * @param fields 플레이어 밭
+     */
+    public void initFieldView(List<Field> fields) {
+        fieldView.setSingleFieldViews(fields);
     }
 
     /**
