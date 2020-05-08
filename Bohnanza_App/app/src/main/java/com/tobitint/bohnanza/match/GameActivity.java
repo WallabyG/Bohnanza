@@ -129,7 +129,7 @@ public class GameActivity extends BaseActivity {
     }
 
     private void initCommonInfoFragment() {
-
+        commonInfoFragment.initDeckInfo(gameInfo.getDeck());
     }
 
     /**
